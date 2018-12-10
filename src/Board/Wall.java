@@ -1,3 +1,5 @@
+package Board;
+
 public class Wall extends Border {
     //pour afficher un mur vertical alignement="v" sinon ="h"
     private String alignement;

@@ -1,12 +1,15 @@
+package Server;
 
+import Board.Grid;
+import Client.Avatar;
 
 public class GameServerSimple {
     private boolean available;
-    private Map gMap;
+    private Grid gGrid;
     protected GameServerSimple(){
         available=true;
-        gMap = new Map(8);
-        gMap.displayGrid();
+        gGrid = new Grid(8);
+        gGrid.displayGrid();
     }
 
     public GameServerSimple(boolean state){

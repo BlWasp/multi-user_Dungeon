@@ -1,3 +1,7 @@
+package Server;
+
+import Client.Avatar;
+
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -37,6 +41,6 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer {
         LocateRegistry.createRegistry(1099);
         GameServerImpl obj = new GameServerImpl();
         Naming.rebind("Dungeon", obj);
-        System.out.println("GameServerImpl launched");
+        System.out.println("Server.GameServerImpl launched");
     }
 }

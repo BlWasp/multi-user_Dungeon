@@ -1,4 +1,7 @@
+package Client;
+
 import java.rmi.Naming;
+import Server.IGameServer;
 
 public class Player {
     private static String uid = "Rmi31";

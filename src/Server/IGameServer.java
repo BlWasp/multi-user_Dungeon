@@ -1,3 +1,7 @@
+package Server;
+
+import Client.Avatar;
+
 import java.rmi.RemoteException;
 
 public interface IGameServer extends java.rmi.Remote{

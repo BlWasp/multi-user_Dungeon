@@ -1,12 +1,14 @@
+package Board;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Set;
 
-public class Map {
+public class Grid {
     int size;
     private Room board[][];
 
-    public Map(int size) {
+    public Grid(int size) {
         this.size = size;
         board = new Room[size][size];
 

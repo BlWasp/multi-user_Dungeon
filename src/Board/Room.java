@@ -1,3 +1,5 @@
+package Board;
+
 public class Room {
     private final int id;
     private Border north;

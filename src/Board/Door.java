@@ -1,3 +1,5 @@
+package Board;
+
 public class Door extends Border {
 
     public Door(int dest) {
