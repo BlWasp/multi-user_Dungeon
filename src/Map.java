@@ -33,16 +33,19 @@ public class Map {
     }
 
     public void displayGrid(){
-        for (int i = 0; i < size; i++) {
-            System.out.print(" "+board[0][i].getNorth().toString()+" ");
-        }
-        System.out.println("\n");
-        for (int i = 0; i < size; i++) {
-            System.out.print(board[0][i].getWest().toString()+board[0][i].getId()+board[0][i].getEast().toString());
-        }
-        System.out.println("\n");
-        for (int i = 0; i < size; i++) {
-            System.out.print(" "+board[0][i].getSouth().toString()+" ");
+        for (int j = 0; j < size; j++) {
+            for (int i = 0; i < size; i++) {
+                System.out.print("  " + board[j][i].getNorth().toString() + "  ");
+            }
+            System.out.println();
+            for (int i = 0; i < size; i++) {
+                System.out.print(" " + board[j][i].getWest().toString() + board[j][i].getId() + board[j][i].getEast().toString() + " ");
+            }
+            System.out.println();
+            for (int i = 0; i < size; i++) {
+                System.out.print("  " + board[j][i].getSouth().toString() + "  ");
+            }
+            System.out.println();
         }
     }
 }
