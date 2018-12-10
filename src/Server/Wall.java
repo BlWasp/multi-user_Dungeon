@@ -1,4 +1,4 @@
-package Board;
+package Server;
 
 public class Wall extends Border {
     //pour afficher un mur vertical alignement="v" sinon ="h"

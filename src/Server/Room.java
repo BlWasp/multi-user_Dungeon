@@ -1,4 +1,4 @@
-package Board;
+package Server;
 
 public class Room {
     private final int id;

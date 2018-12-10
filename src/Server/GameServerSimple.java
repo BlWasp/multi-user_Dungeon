@@ -1,6 +1,5 @@
 package Server;
 
-import Board.Grid;
 import Client.Avatar;
 
 public class GameServerSimple {

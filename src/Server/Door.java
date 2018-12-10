@@ -1,4 +1,4 @@
-package Board;
+package Server;
 
 public class Door extends Border {
 

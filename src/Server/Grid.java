@@ -1,8 +1,4 @@
-package Board;
-
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Set;
+package Server;
 
 public class Grid {
     int size;

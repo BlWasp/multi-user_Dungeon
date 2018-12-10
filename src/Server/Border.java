@@ -1,4 +1,4 @@
-package Board;
+package Server;
 
 public abstract class Border {
     protected boolean crossable;
