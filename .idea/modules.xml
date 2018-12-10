@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/projetMUD.iml" filepath="$PROJECT_DIR$/projetMUD.iml" />
+      <module fileurl="file://$PROJECT_DIR$/multi-user_Dungeon.iml" filepath="$PROJECT_DIR$/multi-user_Dungeon.iml" />
     </modules>
   </component>
 </project>

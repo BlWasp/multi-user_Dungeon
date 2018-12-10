@@ -3,12 +3,12 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class GameServer extends UnicastRemoteObject implements IGameServer {
+public class GameServerImpl extends UnicastRemoteObject implements IGameServer {
 
 
-    private GameServerImpl gs = new GameServerImpl();
+    private GameServerSimple gs = new GameServerSimple();
 
-    protected GameServer() throws RemoteException {
+    protected GameServerImpl() throws RemoteException {
         super();
     }
 
@@ -35,8 +35,8 @@ public class GameServer extends UnicastRemoteObject implements IGameServer {
     public static void main(String args[]) throws Exception {
         // Démarre le rmiregistry
         LocateRegistry.createRegistry(1099);
-        GameServer obj = new GameServer();
+        GameServerImpl obj = new GameServerImpl();
         Naming.rebind("Dungeon", obj);
-        System.out.println("GameServer launched");
+        System.out.println("GameServerImpl launched");
     }
 }

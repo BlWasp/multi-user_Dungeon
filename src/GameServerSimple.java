@@ -1,12 +1,15 @@
 
 
-public class GameServerImpl {
+public class GameServerSimple {
     private boolean available;
-    protected GameServerImpl(){
+    private Map gMap;
+    protected GameServerSimple(){
         available=true;
+        gMap = new Map(8);
+        gMap.displayGrid();
     }
 
-    public GameServerImpl(boolean state){
+    public GameServerSimple(boolean state){
         available=state;
     }
 

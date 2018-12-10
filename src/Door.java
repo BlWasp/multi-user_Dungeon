@@ -1,4 +1,13 @@
-package PACKAGE_NAME;
+public class Door extends Border {
 
-public class Door {
+    public Door(int dest) {
+        this.crossable=true;
+        this.dest=dest;
+    }
+
+    @Override
+    public String toString() {
+        return "D";
+    }
+
 }
