@@ -1,19 +1,15 @@
 package Server;
 
 public class Wall extends Border {
-    //pour afficher un mur vertical alignement="v" sinon ="h"
-    private String alignement;
-    public Wall(String alignment) {
+
+    public Wall() {
         crossable=false;
         dest=-1;
-        this.alignement=alignment;
+
     }
 
     @Override
     public String toString() {
-        if(alignement=="v")
-            return "|";
-        else
-            return "_";
+        return "x";
     }
 }
