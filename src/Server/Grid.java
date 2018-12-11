@@ -52,4 +52,8 @@ public class Grid {
             System.out.println();
         }
     }
+
+    public Room getRoom(Integer x, Integer y){
+        return board[x][y];
+    }
 }

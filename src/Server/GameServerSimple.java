@@ -7,9 +7,9 @@ import java.util.*;
 public class GameServerSimple {
     private int available;
     private Grid gGrid;
+    int size = 8;
     private Map<Integer, List<String>> positionMap;
     protected GameServerSimple(){
-        int size = 8;
         available=1;
         gGrid = new Grid(size);
         gGrid.displayGrid();
@@ -39,7 +39,26 @@ public class GameServerSimple {
 
     }
 
-    public void move(Avatar avUsed, int position, String goTo) {
+    public int move(String avUsed, int position, String goTo) {
+        List<String> src = positionMap.get(position);
+        src.remove(avUsed);
+        Integer x,y;
+        x=position/8;
+        y=position%8;
+        Room r = gGrid.getRoom(x,y);
+        Integer dest;
+        switch (goTo) {
+            case "N" : dest = r.getNorth().dest; break;
+            case "W" : dest = r.getWest().dest; break;
+            case "E" : dest = r.getEast().dest; break;
+            case "S" : dest = r.getSouth().dest; break;
+            default : dest = -1; break;
+        }
+        if(dest==-1)
+            return -1;
+        List<String> lDest = positionMap.get(dest);
+        lDest.add(avUsed);
+        return dest;
 
     }
 

@@ -9,6 +9,6 @@ public interface IGameServer extends java.rmi.Remote{
     int connection(String avName, Integer position) throws RemoteException;
     //permet au joueur de s'échaper d'une case
     void escape(Avatar avUsed, String goTo) throws RemoteException;
-    void move(Avatar avUsed, String goTo) throws RemoteException;
+    int move(Avatar avUsed, String goTo) throws RemoteException;
     void displayGameInfo() throws RemoteException;
 }

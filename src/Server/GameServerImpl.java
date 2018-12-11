@@ -27,8 +27,12 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer {
     }
 
     @Override
-    public void move(Avatar avUsed, String goTo) throws RemoteException{
-        gs.move(avUsed, gs.getPosition(avUsed), goTo);
+    public int move(Avatar avUsed, String goTo) throws RemoteException{
+        int res = gs.move(avUsed.getName(), avUsed.getPosition(), goTo);
+        if(res!=-1){
+            System.out.println(res);
+        }
+        return res;
     }
 
     @Override
