@@ -17,8 +17,8 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer {
     }
 
     @Override
-    public boolean connection(String uid, String avName) throws RemoteException{
-        return gs.connection(uid, avName);
+    public int connection(String avName, Integer position) throws RemoteException{
+        return gs.connection(avName, position);
     }
 
     @Override

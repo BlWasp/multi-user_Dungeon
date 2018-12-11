@@ -11,7 +11,8 @@ public class Player {
             Avatar avTest = new Avatar("Ping");
             // Récupération d'un proxy sur l'objet
             IGameServer obj = (IGameServer) Naming.lookup("//localhost/Dungeon");
-            if(obj.connection(uid, avTest.getName()))
+            if(obj.connection(avTest.getName(), 1)==1)
+                avTest.setPosition(1);
                 System.out.println("Connected");
             else
                 System.out.println("Connection failed");

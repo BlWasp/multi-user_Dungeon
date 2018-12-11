@@ -2,21 +2,37 @@ package Server;
 
 import Client.Avatar;
 
+import java.util.*;
+
 public class GameServerSimple {
-    private boolean available;
+    private int available;
     private Grid gGrid;
+    private Map<Integer, List<String>> positionMap;
     protected GameServerSimple(){
-        available=true;
-        gGrid = new Grid(8);
+        int size = 8;
+        available=1;
+        gGrid = new Grid(size);
         gGrid.displayGrid();
+        positionMap = new LinkedHashMap<>();
+        for (int i = 0; i < size; i++) {
+            positionMap.put(i, new ArrayList<String>());
+        }
     }
 
-    public GameServerSimple(boolean state){
+    public GameServerSimple(int state){
         available=state;
     }
 
-    public boolean connection(String uid, String avUsed) {
+    public int connection(String avUsed, Integer position) {
+
+        if(available==0)
+            return available;
+        List<String> user = positionMap.get(position);
+        user.add(avUsed);
+        List<String> test = positionMap.get(position);
+        System.out.println(test);
         return available;
+
     }
 
     public void escape(Avatar avUsed, int position, String goTo) {

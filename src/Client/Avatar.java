@@ -1,28 +1,27 @@
 package Client;
 
+import Server.Entity;
+
 import java.io.Serializable;
 
-public class Avatar implements Serializable {
+public class Avatar extends Entity {
 
     private static final long serialVersionUID = 1548468510L;
 
-    private final String name;
-    private int lifePoint;
 
     public Avatar(String name) {
-        this.name = name;
+        super(name);
         lifePoint=10;
     }
 
-    public String getName() {
-        return name;
+    public Avatar (String name, Integer pos){
+        super(name);
+        lifePoint=10;
+        position = pos;
     }
 
-    public int getLifePoint() {
-        return lifePoint;
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
-    public void setLifePoint(int lifePoint) {
-        this.lifePoint = lifePoint;
-    }
 }
