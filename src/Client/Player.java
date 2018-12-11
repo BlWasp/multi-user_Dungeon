@@ -31,6 +31,8 @@ public class Player {
             else
                 System.out.println("Connection failed");
             moveAvatar(avTest,"E", obj);
+            moveAvatar(avTest,"W", obj);
+            moveAvatar(avTest,"E", obj);
         } catch (Exception e) {
             e.printStackTrace();
         }
