@@ -16,8 +16,21 @@ public class Player {
             res = gameServer.move(av, way);
         }
         av.setPosition(res);
-        System.out.println("Vous êtes arrivé sure la case n°" + av.getPosition());
+        System.out.println("Vous êtes arrivé sur la case n°" + av.getPosition());
     }
+
+
+    //Permet au joueur de s'échapper pendant un combat
+    //Pareil que moveAvatar mais affecte un malus de -2 pt à l'avatar
+    private int escapeAvatar (Avatar av, String way, IGameServer gameServer) throws RemoteException {
+        this.moveAvatar(av,way,gameServer);
+        gameServer.escape(av,way);
+        av.setLifePoint(av.getLifePoint() - 2);
+        System.out.println("Votre vie est maintenant de : " + av.getLifePoint());
+
+        return av.getLifePoint();
+    }
+
 
     public static void main(String args[]) {
         try {

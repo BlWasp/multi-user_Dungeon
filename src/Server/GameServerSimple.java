@@ -24,7 +24,6 @@ public class GameServerSimple {
     }
 
     public int connection(String avUsed, Integer position) {
-
         if(available==0)
             return available;
         List<String> user = positionMap.get(position);
@@ -35,9 +34,6 @@ public class GameServerSimple {
 
     }
 
-    public void escape(Avatar avUsed, int position, String goTo) {
-
-    }
 
     public int move(String avUsed, int position, String goTo) {
         List<String> src = positionMap.get(position);
@@ -61,6 +57,11 @@ public class GameServerSimple {
         return dest;
 
     }
+
+    public void escape(Avatar avUsed, int position, String goTo) {
+        this.move(avUsed.getName(), position, goTo);
+    }
+
 
     public void displayGameInfo() {
 
