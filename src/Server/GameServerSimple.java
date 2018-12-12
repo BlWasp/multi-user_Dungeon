@@ -9,6 +9,7 @@ public class GameServerSimple {
     private Grid gGrid;
     int size = 8;
     private Map<Integer, List<String>> positionMap;
+    private Set<Avatar> listAvatar;
     protected GameServerSimple(){
         available=1;
         gGrid = new Grid(size);
@@ -35,8 +36,9 @@ public class GameServerSimple {
             return available;
         List<String> user = positionMap.get(position);
         user.add(avUsed);
-        List<String> test = positionMap.get(position);
-        System.out.println(test);
+
+        Avatar avConnect = new Avatar(avUsed);
+        listAvatar.add(avConnect);
         return available;
 
     }
@@ -67,6 +69,8 @@ public class GameServerSimple {
 
     public void escape(Avatar avUsed, int position, String goTo) {
         this.move(avUsed.getName(), position, goTo);
+        listAvatar.remove(avUsed);
+        listAvatar.add(avUsed);
     }
 
 
