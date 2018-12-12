@@ -19,6 +19,13 @@ public class GameServerSimple {
         }
     }
 
+    public GameServerSimple(Grid grid, int size){
+        gGrid=grid;
+        this.size = size;
+        positionMap = new LinkedHashMap<>();
+        available=1;
+    }
+
     public GameServerSimple(int state){
         available=state;
     }
@@ -71,7 +78,4 @@ public class GameServerSimple {
         return 0;
     }
 
-    public static void main(String args[]) throws Exception {
-
-    }
 }

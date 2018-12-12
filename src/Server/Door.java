@@ -1,6 +1,8 @@
 package Server;
 
-public class Door extends Border {
+import java.io.Serializable;
+
+public class Door extends Border implements Serializable {
     //pour afficher une porte vertical alignement="v" sinon ="h"
     private String alignment;
 

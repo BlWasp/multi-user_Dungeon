@@ -7,8 +7,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class GameServerImpl extends UnicastRemoteObject implements IGameServer {
-
+public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
 
     private GameServerSimple gs = new GameServerSimple();
 
@@ -42,9 +41,12 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer {
 
     public static void main(String args[]) throws Exception {
         // Démarre le rmiregistry
-        LocateRegistry.createRegistry(1099);
+        //LocateRegistry.createRegistry(1099);
         GameServerImpl obj = new GameServerImpl();
-        Naming.rebind("Dungeon", obj);
-        System.out.println("Server.GameServerImpl launched");
+        IServerController mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
+        mainServer.gameServerConnection(obj);
+        //Naming.rebind("Dungeon", obj);
+       // System.out.println("Server.GameServerImpl launched");
     }
+
 }

@@ -1,6 +1,8 @@
 package Server;
 
-public class Room {
+import java.io.Serializable;
+
+public class Room implements Serializable {
     private final int id;
     private Border north;
     private Border west;

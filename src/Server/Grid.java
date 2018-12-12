@@ -1,6 +1,8 @@
 package Server;
 
-public class Grid {
+import java.io.Serializable;
+
+public class Grid implements Serializable {
     int size;
     private Room board[][];
 

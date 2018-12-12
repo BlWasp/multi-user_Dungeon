@@ -4,6 +4,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 
 import Server.IGameServer;
+import Server.IServerController;
 
 public class Player {
     private static String uid = "Rmi31";
@@ -36,7 +37,9 @@ public class Player {
         try {
             Avatar avTest = new Avatar("Ping");
             // Récupération d'un proxy sur l'objet
-            IGameServer obj = (IGameServer) Naming.lookup("//localhost/Dungeon");
+            //IGameServer obj = (IGameServer) Naming.lookup("//localhost/Dungeon");
+            IServerController mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
+            IGameServer obj = mainServer.findGameServer(0);
             if(obj.connection(avTest.getName(), 0)==1) {
                 avTest.setPosition(0);
                 System.out.println("Connected");
