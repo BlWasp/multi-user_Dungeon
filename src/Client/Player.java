@@ -8,6 +8,8 @@ import Server.IServerController;
 
 public class Player {
     private static String uid = "Rmi31";
+    private static IServerController mainServer;
+    private static IGameServer obj;
 
     private static void moveAvatar(Avatar av, String way, IGameServer gameServer) throws RemoteException {
         int res = gameServer.move(av, way);
@@ -15,6 +17,10 @@ public class Player {
             System.out.println("Il y a pas moyen de passer par là");
             System.out.println("Dites-nous vers où vous voulez aller.");
             res = gameServer.move(av, way);
+        }
+        if(res==-2){
+            System.out.println("Case non géré par le serveur");
+            obj = mainServer.findGameServer(av.getPosition());
         }
         av.setPosition(res);
         System.out.println("Vous êtes arrivé sur la case n°" + av.getPosition());
@@ -38,8 +44,8 @@ public class Player {
             Avatar avTest = new Avatar("Ping");
             // Récupération d'un proxy sur l'objet
             //IGameServer obj = (IGameServer) Naming.lookup("//localhost/Dungeon");
-            IServerController mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
-            IGameServer obj = mainServer.findGameServer(0);
+            mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
+            obj = mainServer.findGameServer(0);
             if(obj.connection(avTest.getName(), 0)==1) {
                 avTest.setPosition(0);
                 System.out.println("Connected");

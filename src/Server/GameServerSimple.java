@@ -7,6 +7,7 @@ import java.util.*;
 public class GameServerSimple {
     private int available;
     private Grid gGrid;
+    private Zone z;
     int size = 8;
     private Map<Integer, List<String>> positionMap;
     private Set<Avatar> listAvatar;
@@ -20,11 +21,16 @@ public class GameServerSimple {
         }
     }
 
-    public GameServerSimple(Grid grid, int size){
+    public GameServerSimple(Grid grid, int size, Zone z){
         gGrid=grid;
         this.size = size;
         positionMap = new LinkedHashMap<>();
         available=1;
+        this.z = z;
+        for (int i =(Integer) z.getKey(); i < (Integer) z.getValue(); i++) {
+            positionMap.put(i, new ArrayList<String>());
+        }
+        gGrid.displayGrid();
     }
 
     public GameServerSimple(int state){
@@ -61,6 +67,10 @@ public class GameServerSimple {
         }
         if(dest==-1)
             return -1;
+        //Si le serveur ne gère pas la case
+        if(dest<(Integer) z.getKey() || dest>(Integer) z.getValue())
+            return -2;
+
         List<String> lDest = positionMap.get(dest);
         lDest.add(avUsed);
         return dest;
@@ -82,4 +92,7 @@ public class GameServerSimple {
         return 0;
     }
 
+    public Zone getZ() {
+        return z;
+    }
 }

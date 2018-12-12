@@ -1,6 +1,7 @@
 package Server;
 
 import Client.Avatar;
+import javafx.util.Pair;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -9,7 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
 
-    private GameServerSimple gs = new GameServerSimple();
+    private static GameServerSimple gs;
 
     protected GameServerImpl() throws RemoteException {
         super();
@@ -44,7 +45,9 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
         //LocateRegistry.createRegistry(1099);
         GameServerImpl obj = new GameServerImpl();
         IServerController mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
-        mainServer.gameServerConnection(obj);
+        Pair<Grid,Zone> res = mainServer.gameServerConnection(obj);
+        gs = new GameServerSimple(res.getKey(),res.getKey().size,res.getValue());
+        System.out.println(gs.getZ().getKey()+ " " + gs.getZ().getValue());
         //Naming.rebind("Dungeon", obj);
        // System.out.println("Server.GameServerImpl launched");
     }

@@ -25,12 +25,13 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
 
 
     @Override
-    public Grid gameServerConnection(IGameServer serv) throws RemoteException{
+    public Pair gameServerConnection(IGameServer serv) throws RemoteException{
         //ajouter la gestion dynamique de la répartition des cases!!!
         Integer begin=0, end=(size*size)-1;
         Zone z = new Zone(begin,end);
         lgame.put(z,serv);
-        return board;
+        Pair<Grid,Zone> res = new Pair<>(board,z);
+        return res;
     }
 
     @Override
@@ -48,6 +49,14 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         Zone z = new Zone(0,(size*size)-1);
         return lgame.get(z);
     }
+
+    @Override
+    public IGameServer findGameServer(Integer position, String way) throws RemoteException {
+        Zone z = new Zone(0,(size*size)-1);
+        return lgame.get(z);
+    }
+
+
 
     public static void main(String args[]) throws Exception {
         // Démarre le rmiregistry
