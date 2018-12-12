@@ -14,7 +14,7 @@ public class GameServerSimple {
         gGrid = new Grid(size);
         gGrid.displayGrid();
         positionMap = new LinkedHashMap<>();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size*size; i++) {
             positionMap.put(i, new ArrayList<String>());
         }
     }
