@@ -31,5 +31,9 @@ public abstract class Entity implements Serializable {
         return position;
     }
 
-
+    public int loseLife(int lifeLosed) {
+        int currentLife = this.getLifePoint();
+        this.setLifePoint(currentLife - lifeLosed);
+        return this.getLifePoint();
+    }
 }

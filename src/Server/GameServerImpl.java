@@ -17,8 +17,8 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
     }
 
     @Override
-    public int connection(String avName, Integer position) throws RemoteException{
-        return gs.connection(avName, position);
+    public int connection(Avatar avUsed, Integer position) throws RemoteException{
+        return gs.connection(avUsed, position);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
 
     @Override
     public int move(Avatar avUsed, String goTo) throws RemoteException{
-        int res = gs.move(avUsed.getName(), avUsed.getPosition(), goTo);
+        int res = gs.move(avUsed, avUsed.getPosition(), goTo);
         if(res!=-1){
             System.out.println(res);
         }
@@ -36,8 +36,8 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
     }
 
     @Override
-    public void attack(Entity enUsed, Integer position) throws RemoteException {
-
+    public int attack(Entity enUsed, Integer position, int lifeLosed) throws RemoteException {
+        return gs.attack(enUsed, position, lifeLosed);
     }
 
     @Override

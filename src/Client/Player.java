@@ -46,8 +46,8 @@ public class Player {
     }
 
 
-    private static void attackAvatar (Avatar av, Integer position, IGameServer gameServer) throws RemoteException {
-        gameServer.attack(av, position);
+    private static void attackAvatar (Avatar av, Integer position, IGameServer gameServer, int power) throws RemoteException {
+        gameServer.attack(av, position, power);
         System.out.println("Petite attaque de derrière les fagots !");
     }
 
@@ -63,7 +63,7 @@ public class Player {
                 System.out.println("Aucun serveur trouvé");
                 return;
             }
-            if(obj.connection(avTest.getName(), 0)==1) {
+            if(obj.connection(avTest, 0)==1) {
                 avTest.setPosition(0);
                 System.out.println("Connected");
             }
@@ -74,6 +74,7 @@ public class Player {
             moveAvatar(avTest,"S", obj);
             moveAvatar(avTest,"S", obj);
             moveAvatar(avTest,"S", obj);
+
             escapeAvatar(avTest, "S", obj);
         } catch (Exception e) {
             e.printStackTrace();
