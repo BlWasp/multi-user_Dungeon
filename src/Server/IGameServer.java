@@ -13,4 +13,5 @@ public interface IGameServer extends java.rmi.Remote{
     //permet de gérer les attaques des entités
     void attack(Entity enUsed, Integer position) throws RemoteException;
     void displayGameInfo() throws RemoteException;
+    void updateZone(Zone z) throws RemoteException;
 }

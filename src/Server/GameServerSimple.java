@@ -7,7 +7,7 @@ import java.util.*;
 public class GameServerSimple {
     private int available;
     private Grid gGrid;
-    private Zone z;
+    private Zone z = new Zone(0,0);
     int size = 8;
     private Map<Integer, List<String>> positionMap;
     private Map<Integer, List<Monster>> positionMonster;
@@ -35,7 +35,7 @@ public class GameServerSimple {
 
         available=1;
         this.z = z;
-        for (int i =(Integer) z.getKey(); i < (Integer) z.getValue(); i++) {
+        for (int i = 0; i < size*size; i++) {
             positionMap.put(i, new ArrayList<String>());
             positionMonster.put(i, new ArrayList<Monster>());
         }
@@ -122,5 +122,10 @@ public class GameServerSimple {
 
     public Zone getZ() {
         return z;
+    }
+
+    public void setZ(Zone z) {
+        if (this.z!=null)
+            this.z = z;
     }
 }

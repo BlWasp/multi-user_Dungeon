@@ -45,6 +45,12 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
         gs.displayGameInfo();
     }
 
+    @Override
+    public void updateZone(Zone z) throws RemoteException {
+        gs.setZ(z);
+        System.out.println(gs.getZ());
+    }
+
     public static void main(String args[]) throws Exception {
         // Démarre le rmiregistry
         //LocateRegistry.createRegistry(1099);
