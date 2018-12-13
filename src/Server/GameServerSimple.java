@@ -10,11 +10,13 @@ public class GameServerSimple {
     private Zone z = new Zone(0,0);
     int size = 8;
     private Map<Integer, List<String>> positionMap;
+    private List<Avatar> listAvatar;
     protected GameServerSimple(){
         available=1;
         gGrid = new Grid(size);
         gGrid.displayGrid();
         positionMap = new LinkedHashMap<>();
+        listAvatar = new LinkedList<>();
         for (int i = 0; i < size*size; i++) {
             positionMap.put(i, new ArrayList<String>());
         }
@@ -24,6 +26,7 @@ public class GameServerSimple {
         gGrid=grid;
         this.size = size;
         positionMap = new LinkedHashMap<>();
+        listAvatar = new LinkedList<>();
         available=1;
         this.z = z;
         for (int i = 0; i < size*size; i++) {
@@ -41,10 +44,10 @@ public class GameServerSimple {
             return available;
         List<String> user = positionMap.get(position);
         user.add(avUsed);
-        List<String> test = positionMap.get(position);
-        System.out.println(test);
-        return available;
 
+        Avatar avConnect = new Avatar(avUsed,position);
+        listAvatar.add(avConnect);
+        return available;
     }
 
 
@@ -77,6 +80,12 @@ public class GameServerSimple {
 
     public void escape(Avatar avUsed, int position, String goTo) {
         this.move(avUsed.getName(), position, goTo);
+        for (int i=0;i<listAvatar.size();i++) {
+            if (listAvatar.get(i).getName().contentEquals(avUsed.getName())) {
+                listAvatar.remove(i);
+            }
+        }
+        listAvatar.add(avUsed);
     }
 
 

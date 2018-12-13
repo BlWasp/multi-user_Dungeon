@@ -36,10 +36,10 @@ public class Player {
 
     //Permet au joueur de s'échapper pendant un combat
     //Pareil que moveAvatar mais affecte un malus de -2 pt à l'avatar
-    private int escapeAvatar (Avatar av, String way, IGameServer gameServer) throws RemoteException {
-        this.moveAvatar(av,way,gameServer);
-        gameServer.escape(av,way);
+    private static int escapeAvatar (Avatar av, String way, IGameServer gameServer) throws RemoteException {
+        moveAvatar(av,way,gameServer);
         av.setLifePoint(av.getLifePoint() - 2);
+        gameServer.escape(av,way);
         System.out.println("Votre vie est maintenant de : " + av.getLifePoint());
 
         return av.getLifePoint();
@@ -65,10 +65,8 @@ public class Player {
                 System.out.println("Connection failed");
             moveAvatar(avTest,"E", obj);
             moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
+            moveAvatar(avTest,"W", obj);
+            escapeAvatar(avTest, "N", obj);
         } catch (Exception e) {
             e.printStackTrace();
         }
