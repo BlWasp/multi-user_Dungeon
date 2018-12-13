@@ -39,6 +39,12 @@ public class Player {
     }
 
 
+    private static void attackAvatar (Avatar av, Integer position, IGameServer gameServer) throws RemoteException {
+        gameServer.attack(av, position);
+        System.out.println("Petite attaque de derrière les fagots !");
+    }
+
+
     public static void main(String args[]) {
         try {
             Avatar avTest = new Avatar("Ping");

@@ -10,15 +10,19 @@ public class GameServerSimple {
     private Zone z;
     int size = 8;
     private Map<Integer, List<String>> positionMap;
+    private Map<Integer, List<Monster>> positionMonster;
     private List<Avatar> listAvatar;
+
     protected GameServerSimple(){
         available=1;
         gGrid = new Grid(size);
         gGrid.displayGrid();
         positionMap = new LinkedHashMap<>();
+        positionMonster = new LinkedHashMap<>();
         listAvatar = new LinkedList<>();
         for (int i = 0; i < size*size; i++) {
             positionMap.put(i, new ArrayList<String>());
+            positionMonster.put(i, new ArrayList<Monster>());
         }
     }
 
@@ -26,11 +30,14 @@ public class GameServerSimple {
         gGrid=grid;
         this.size = size;
         positionMap = new LinkedHashMap<>();
+        positionMonster = new LinkedHashMap<>();
         listAvatar = new LinkedList<>();
+
         available=1;
         this.z = z;
         for (int i =(Integer) z.getKey(); i < (Integer) z.getValue(); i++) {
             positionMap.put(i, new ArrayList<String>());
+            positionMonster.put(i, new ArrayList<Monster>());
         }
         gGrid.displayGrid();
     }
@@ -38,6 +45,7 @@ public class GameServerSimple {
     public GameServerSimple(int state){
         available=state;
     }
+
 
     public int connection(String avUsed, Integer position) {
         if(available==0)
@@ -88,6 +96,21 @@ public class GameServerSimple {
         listAvatar.add(avUsed);
     }
 
+
+    public void attack(Entity enUsed, Integer position) {
+        if (enUsed.getClass() == Avatar.class) {
+
+        } else {
+            int currentLife;
+            for (int i=0;i<listAvatar.size();i++) {
+                if (listAvatar.get(i).getName() == positionMap.get(position).toString()) {
+                    currentLife = listAvatar.get(i).getLifePoint();
+                    listAvatar.get(i).setLifePoint(currentLife - 1);
+                }
+            }
+
+        }
+    }
 
     public void displayGameInfo() {
 
