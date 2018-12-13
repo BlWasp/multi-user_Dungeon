@@ -40,12 +40,20 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
 
     }
 
+    public void updateAllServ(IGameServer serv) throws RemoteException {
+        for (Map.Entry<Zone, IGameServer> pair : lgame.entrySet()) {
+            if(pair.getValue()!=serv)
+                pair.getValue().updateZone(pair.getKey());
+        }
+    }
+
     @Override
     public Pair gameServerConnection(IGameServer serv) throws RemoteException{
         //ajouter la gestion dynamique de la répartition des cases!!!
         nbServ++;
         lgame.put(new Zone(9999,9999),serv);
         Zone z = distributeZone();
+        updateAllServ(serv);
         Pair<Grid,Zone> res = new Pair<>(board,z);
         return res;
     }

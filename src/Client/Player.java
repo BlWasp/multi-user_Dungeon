@@ -25,6 +25,8 @@ public class Player {
                 System.out.println("aucun serveur trouvé");
                 return -1;
             }
+            moveAvatar(av, way, obj);
+            return -1;
         }
         av.setPosition(res);
         System.out.println("Vous êtes arrivé sur la case n°" + av.getPosition());
@@ -63,7 +65,10 @@ public class Player {
                 System.out.println("Connection failed");
             moveAvatar(avTest,"E", obj);
             moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"W", obj);
+            moveAvatar(avTest,"S", obj);
+            moveAvatar(avTest,"S", obj);
+            moveAvatar(avTest,"S", obj);
+            moveAvatar(avTest,"S", obj);
         } catch (Exception e) {
             e.printStackTrace();
         }
