@@ -20,7 +20,7 @@ public class Player {
         }
         if(res==-2){
             System.out.println("Case non géré par le serveur");
-            obj = mainServer.findGameServer(av.getPosition());
+            obj = mainServer.findGameServer(av.getPosition(),way);
             if(obj==null){
                 System.out.println("aucun serveur trouvé");
                 return -1;
@@ -63,10 +63,12 @@ public class Player {
             }
             else
                 System.out.println("Connection failed");
-            moveAvatar(avTest,"E", obj);
             moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"W", obj);
-            escapeAvatar(avTest, "N", obj);
+            moveAvatar(avTest,"S", obj);
+            moveAvatar(avTest,"S", obj);
+            moveAvatar(avTest,"S", obj);
+            moveAvatar(avTest,"S", obj);
+            escapeAvatar(avTest, "S", obj);
         } catch (Exception e) {
             e.printStackTrace();
         }
