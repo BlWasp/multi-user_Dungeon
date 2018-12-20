@@ -7,6 +7,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Scanner;
 
 public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
 
@@ -61,6 +62,13 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
         System.out.println(gs.getZ().getKey()+ " " + gs.getZ().getValue());
         //Naming.rebind("Dungeon", obj);
        // System.out.println("Server.GameServerImpl launched");
+        Scanner scan = new Scanner(System.in);
+        String answer=scan.nextLine();
+        //if(answer=="Q"){
+        mainServer.gameServerDisconnection(gs.getZ());
+        System.out.println(answer);
+        return;
+        //}
     }
 
 }

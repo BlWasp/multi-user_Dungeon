@@ -2,6 +2,7 @@ package Client;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.Scanner;
 
 import Server.IChatServer;
 import Server.IGameServer;
@@ -86,10 +87,10 @@ public class Player {
 
             escapeAvatar(avTest,"S", obj);
             escapeAvatar(avTest,"S", obj);
+            //escapeAvatar(avTest,"S", obj);
             escapeAvatar(avTest,"S", obj);
-            escapeAvatar(avTest,"S", obj);
-            escapeAvatar(avTest,"S", obj);
-            escapeAvatar(avTest, "S", obj);
+            //escapeAvatar(avTest,"S", obj);
+            //escapeAvatar(avTest, "S", obj);
         } catch (Exception e) {
             e.printStackTrace();
         }

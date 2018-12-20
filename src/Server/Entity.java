@@ -2,7 +2,7 @@ package Server;
 
 import java.io.Serializable;
 
-public abstract class Entity implements Serializable {
+public abstract class Entity implements Serializable, Cloneable {
     protected final String name;
     protected int lifePoint;
     protected Integer position;
@@ -11,6 +11,11 @@ public abstract class Entity implements Serializable {
     public Entity(){
         name="Boo";
         isInLife=true;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public Entity(String name){
