@@ -9,31 +9,27 @@ public class GameServerSimple {
     private Grid gGrid;
     private Zone z = new Zone(0,0);
     int size = 8;
-    private Map<Integer, List<String>> positionMap;
+    private Map<Integer, List<Avatar>> positionAvatar;
     private Map<Integer, Monster> positionMonster;
-    private Map<Integer, List<Avatar>> listAvatar;
     protected GameServerSimple(){
         available=1;
         gGrid = new Grid(size);
         gGrid.displayGrid();
-        positionMap = new LinkedHashMap<>();
-        listAvatar = new LinkedHashMap<>();
+        positionAvatar = new LinkedHashMap<>();
         for (int i = 0; i < size*size; i++) {
-            positionMap.put(i, new ArrayList<String>());
+            positionAvatar.put(i, new ArrayList<Avatar>());
         }
     }
 
     public GameServerSimple(Grid grid, int size, Zone z){
         gGrid=grid;
         this.size = size;
-        positionMap = new LinkedHashMap<>();
-        listAvatar = new LinkedHashMap<>();
+        positionAvatar = new LinkedHashMap<>();
         positionMonster = new LinkedHashMap<>();
         available=1;
         this.z = z;
         for (int i = 0; i < size*size; i++) {
-            positionMap.put(i, new ArrayList<String>());
-            listAvatar.put(i, new ArrayList<Avatar>());
+            positionAvatar.put(i, new ArrayList<Avatar>());
             //positionMonster.put(i, new Monster());
         }
         gGrid.displayGrid();
@@ -46,17 +42,14 @@ public class GameServerSimple {
     public int connection(Avatar avUsed, Integer position) {
         if(available==0)
             return available;
-        List<String> user = positionMap.get(position);
-        user.add(avUsed.getName());
-
-        List<Avatar> tmp = listAvatar.get(position);
-        tmp.add(avUsed);
+        List<Avatar> user = positionAvatar.get(position);
+        user.add(avUsed);
         return available;
     }
 
 
     public int move(Avatar avUsed, int position, String goTo) {
-        List<String> src = positionMap.get(position);
+        List<Avatar> src = positionAvatar.get(position);
         src.remove(avUsed);
         Integer x,y;
         x=position/8;
@@ -76,8 +69,8 @@ public class GameServerSimple {
         if(dest<(Integer) z.getKey() || dest>(Integer) z.getValue())
             return -2;
 
-        List<String> lDest = positionMap.get(dest);
-        lDest.add(avUsed.getName());
+        List<Avatar> lDest = positionAvatar.get(dest);
+        lDest.add(avUsed);
         return dest;
 
     }
@@ -98,7 +91,7 @@ public class GameServerSimple {
             positionMonster.get(position).loseLife(lifeLosed);
             return positionMonster.get(position).getLifePoint();
         } else {
-            List<Avatar> tmp = listAvatar.get(position);
+            List<Avatar> tmp = positionAvatar.get(position);
             tmp.get(0).loseLife(lifeLosed);
             return tmp.get(0).getLifePoint();
         }

@@ -84,11 +84,11 @@ public class Player {
             else
                 System.out.println("Connection failed");
 
-            moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
+            escapeAvatar(avTest,"S", obj);
+            escapeAvatar(avTest,"S", obj);
+            escapeAvatar(avTest,"S", obj);
+            escapeAvatar(avTest,"S", obj);
+            escapeAvatar(avTest,"S", obj);
             escapeAvatar(avTest, "S", obj);
         } catch (Exception e) {
             e.printStackTrace();
