@@ -3,6 +3,7 @@ package Client;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 
+import Server.IChatServer;
 import Server.IGameServer;
 import Server.IServerController;
 
@@ -10,6 +11,7 @@ public class Player {
     private static String uid = "Rmi31";
     private static IServerController mainServer;
     private static IGameServer obj;
+    private static IChatServer cs;
 
     private static int moveAvatar(Avatar av, String way, IGameServer gameServer) throws RemoteException {
         int res = gameServer.move(av, way);
@@ -69,12 +71,24 @@ public class Player {
             }
             else
                 System.out.println("Connection failed");
-            moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
-            moveAvatar(avTest,"S", obj);
 
+            cs = mainServer.findChatServer(0);
+            if(cs==null){
+                System.out.println("Aucun serveur de chat trouvé");
+                return;
+            }
+            if(cs.connection(avTest, 0)==1) {
+                avTest.setPosition(0);
+                System.out.println("Connected");
+            }
+            else
+                System.out.println("Connection failed");
+
+            moveAvatar(avTest,"S", obj);
+            moveAvatar(avTest,"S", obj);
+            moveAvatar(avTest,"S", obj);
+            moveAvatar(avTest,"S", obj);
+            moveAvatar(avTest,"S", obj);
             escapeAvatar(avTest, "S", obj);
         } catch (Exception e) {
             e.printStackTrace();

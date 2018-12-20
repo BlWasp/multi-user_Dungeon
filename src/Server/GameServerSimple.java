@@ -9,31 +9,30 @@ public class GameServerSimple {
     private Grid gGrid;
     private Zone z = new Zone(0,0);
     int size = 8;
+    private Map<Integer, List<String>> positionMap;
     private Map<Integer, Monster> positionMonster;
     private Map<Integer, List<Avatar>> listAvatar;
-
     protected GameServerSimple(){
         available=1;
         gGrid = new Grid(size);
         gGrid.displayGrid();
-        positionMonster = new LinkedHashMap<>();
+        positionMap = new LinkedHashMap<>();
         listAvatar = new LinkedHashMap<>();
-
         for (int i = 0; i < size*size; i++) {
-            listAvatar.put(i, new ArrayList<Avatar>());
-            //positionMonster.put(i, new Monster());
+            positionMap.put(i, new ArrayList<String>());
         }
     }
 
     public GameServerSimple(Grid grid, int size, Zone z){
         gGrid=grid;
         this.size = size;
-        positionMonster = new LinkedHashMap<>();
+        positionMap = new LinkedHashMap<>();
         listAvatar = new LinkedHashMap<>();
-
+        positionMonster = new LinkedHashMap<>();
         available=1;
         this.z = z;
         for (int i = 0; i < size*size; i++) {
+            positionMap.put(i, new ArrayList<String>());
             listAvatar.put(i, new ArrayList<Avatar>());
             //positionMonster.put(i, new Monster());
         }
@@ -44,10 +43,11 @@ public class GameServerSimple {
         available=state;
     }
 
-
     public int connection(Avatar avUsed, Integer position) {
         if(available==0)
             return available;
+        List<String> user = positionMap.get(position);
+        user.add(avUsed.getName());
 
         List<Avatar> tmp = listAvatar.get(position);
         tmp.add(avUsed);
@@ -56,7 +56,7 @@ public class GameServerSimple {
 
 
     public int move(Avatar avUsed, int position, String goTo) {
-        List<Avatar> src = listAvatar.get(position);
+        List<String> src = positionMap.get(position);
         src.remove(avUsed);
         Integer x,y;
         x=position/8;
@@ -76,8 +76,8 @@ public class GameServerSimple {
         if(dest<(Integer) z.getKey() || dest>(Integer) z.getValue())
             return -2;
 
-        List<Avatar> lDest = listAvatar.get(dest);
-        lDest.add(avUsed);
+        List<String> lDest = positionMap.get(dest);
+        lDest.add(avUsed.getName());
         return dest;
 
     }
@@ -85,8 +85,13 @@ public class GameServerSimple {
     public void escape(Avatar avUsed, int position, String goTo) {
         this.move(avUsed, position, goTo);
         avUsed.setLifePoint(avUsed.getLifePoint() - 2);
+        /*for (int i=0;i<listAvatar.size();i++) {
+            if (listAvatar.get(i).getName().contentEquals(avUsed.getName())) {
+                listAvatar.remove(i);
+            }
+        }*/
+        //listAvatar.add(avUsed);
     }
-
 
     public int attack(Entity enUsed, Integer position, int lifeLosed) {
         if (enUsed.getClass() == Avatar.class) {
