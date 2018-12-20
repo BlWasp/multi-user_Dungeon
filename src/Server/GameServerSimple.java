@@ -49,6 +49,7 @@ public class GameServerSimple {
 
 
     public int move(Avatar avUsed, int position, String goTo) {
+        if(!avUsed.isInLife)return -9;
         List<Avatar> src = positionAvatar.get(position);
         src.remove(avUsed);
         Integer x,y;
@@ -77,7 +78,7 @@ public class GameServerSimple {
 
     public void escape(Avatar avUsed, int position, String goTo) {
         this.move(avUsed, position, goTo);
-        avUsed.setLifePoint(avUsed.getLifePoint() - 2);
+        avUsed.loseLife(-2);
         /*for (int i=0;i<listAvatar.size();i++) {
             if (listAvatar.get(i).getName().contentEquals(avUsed.getName())) {
                 listAvatar.remove(i);

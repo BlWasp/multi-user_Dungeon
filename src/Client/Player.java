@@ -40,7 +40,7 @@ public class Player {
     //Pareil que moveAvatar mais affecte un malus de -2 pt à l'avatar
     private static int escapeAvatar (Avatar av, String way, IGameServer gameServer) throws RemoteException {
         moveAvatar(av,way,gameServer);
-        av.setLifePoint(av.getLifePoint() - 2);
+        av.loseLife(2);
         gameServer.escape(av,way);
         System.out.println("Votre vie est maintenant de : " + av.getLifePoint());
 
