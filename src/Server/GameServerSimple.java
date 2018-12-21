@@ -2,6 +2,7 @@ package Server;
 
 import Client.Avatar;
 
+import java.awt.datatransfer.DataFlavor;
 import java.util.*;
 
 public class GameServerSimple {
@@ -77,7 +78,9 @@ public class GameServerSimple {
     }
 
     public void escape(Avatar avUsed, int position, String goTo) {
-        this.move(avUsed, position, goTo);
+        //On récupère l'avatar de la liste pour être sûr de manipuler le bon objet
+        avUsed=getAvatar(avUsed);
+        move(avUsed, position, goTo);
         avUsed.loseLife(-2);
         /*for (int i=0;i<listAvatar.size();i++) {
             if (listAvatar.get(i).getName().contentEquals(avUsed.getName())) {
@@ -113,5 +116,37 @@ public class GameServerSimple {
     public void setZ(Zone z) {
         if (this.z!=null)
             this.z = z;
+    }
+
+    public Avatar getAvatar(Avatar av){
+
+        List<Avatar> lav = positionAvatar.get(av.getPosition());
+        for (Avatar avatar : lav) {
+            if(avatar.equals(av))
+                return  avatar;
+        }
+
+        //Si on ne le trouves pas à la bonne position on le cherche dans les cases ajacentes
+        int pos[]={av.getPosition()+1,av.getPosition()-1,av.getPosition()+size,av.getPosition()-1};
+        for (int i : pos) {
+            if(positionAvatar.get(pos[i]).contains(av)){
+                av.setPosition(pos[i]);
+                return getAvatar(av);
+            }
+        }
+
+        //Si il n'existe pas on quitte
+        if(positionAvatar.containsValue(av)) return null;
+
+        //Sinon on cherche dans toute la grille
+        for (Map.Entry<Integer, List<Avatar>> entry : positionAvatar.entrySet())
+        {
+            if(positionAvatar.get(entry.getKey()).contains(av)){
+                av.setPosition(entry.getKey());
+                return getAvatar(av);
+            }
+        }
+        return null;
+
     }
 }

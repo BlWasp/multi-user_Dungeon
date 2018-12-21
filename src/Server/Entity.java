@@ -1,16 +1,37 @@
 package Server;
-
 import java.io.Serializable;
+import java.util.Objects;
 
 public abstract class Entity implements Serializable, Cloneable {
+
     protected final String name;
     protected int lifePoint;
     protected Integer position;
     protected boolean isInLife;
+    protected long uid;
 
     public Entity(){
+        uid=Long.MIN_VALUE + ((long) Math.random() * (Long.MAX_VALUE - Long.MIN_VALUE));
         name="Boo";
         isInLife=true;
+    }
+
+    //On redéfinis la méthode equals pour pouvoir comparer des Entité
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        // null check
+        if (obj == null)
+            return false;
+        // type check and cast
+        if (getClass() != obj.getClass())
+            return false;
+
+        Entity ent = (Entity) obj;
+        // field comparison
+        return Objects.equals(uid, ent.uid)
+                && Objects.equals(name, ent.name);
     }
 
     @Override
