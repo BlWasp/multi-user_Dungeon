@@ -1,6 +1,7 @@
 package Server;
 
 import Client.Avatar;
+import Client.IPlayer;
 import javafx.util.Pair;
 
 import java.rmi.Naming;
@@ -19,8 +20,8 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
     }
 
     @Override
-    public int connection(Avatar avUsed, Integer position) throws RemoteException{
-        return gs.connection(avUsed, position);
+    public int connection(Avatar avUsed, Integer position, IPlayer player) throws RemoteException{
+        return gs.connection(avUsed, position, player);
     }
 
     @Override
