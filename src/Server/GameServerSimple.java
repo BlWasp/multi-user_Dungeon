@@ -43,16 +43,19 @@ public class GameServerSimple {
     public int connection(Avatar avUsed, Integer position) {
         if(available==0)
             return available;
-        List<Avatar> user = positionAvatar.get(position);
-        user.add(avUsed);
+        if(positionAvatar.containsValue(avUsed)) return -1;
+        avUsed.setPosition(position);
+        positionAvatar.get(position).add(avUsed);
         return available;
     }
 
 
-    public int move(Avatar avUsed, int position, String goTo) {
+    public int move(Avatar avUsed, String goTo) {
+        avUsed=getAvatar(avUsed);
+        if(avUsed==null) return -10;
         if(!avUsed.isInLife)return -9;
-        List<Avatar> src = positionAvatar.get(position);
-        src.remove(avUsed);
+        int position = avUsed.getPosition();
+        positionAvatar.get(position).remove(avUsed);
         Integer x,y;
         x=position/8;
         y=position%8;
@@ -71,23 +74,25 @@ public class GameServerSimple {
         if(dest<(Integer) z.getKey() || dest>(Integer) z.getValue())
             return -2;
 
-        List<Avatar> lDest = positionAvatar.get(dest);
-        lDest.add(avUsed);
+        positionAvatar.get(dest).add(avUsed);
+        avUsed.setPosition(dest);
         return dest;
 
     }
 
-    public void escape(Avatar avUsed, int position, String goTo) {
+    public int escape(Avatar avUsed, int position, String goTo) {
         //On récupère l'avatar de la liste pour être sûr de manipuler le bon objet
         avUsed=getAvatar(avUsed);
-        move(avUsed, position, goTo);
-        avUsed.loseLife(-2);
+        if (avUsed==null) return -10;
+        int res = move(avUsed, goTo);
+        if (res > 0) avUsed.loseLife(-2);
         /*for (int i=0;i<listAvatar.size();i++) {
             if (listAvatar.get(i).getName().contentEquals(avUsed.getName())) {
                 listAvatar.remove(i);
             }
         }*/
         //listAvatar.add(avUsed);
+        return res;
     }
 
     public int attack(Entity enUsed, Integer position, int lifeLosed) {
@@ -127,11 +132,13 @@ public class GameServerSimple {
         }
 
         //Si on ne le trouves pas à la bonne position on le cherche dans les cases ajacentes
-        int pos[]={av.getPosition()+1,av.getPosition()-1,av.getPosition()+size,av.getPosition()-1};
+        int pos[]={(av.getPosition()+1 & 0xff)%(size*size),(av.getPosition()-1 & 0xff)%(size*size),(av.getPosition()+size & 0xff)%(size*size),(av.getPosition()-size & 0xff)%(size*size)};
         for (int i : pos) {
-            if(positionAvatar.get(pos[i]).contains(av)){
-                av.setPosition(pos[i]);
-                return getAvatar(av);
+            if(positionAvatar.get(i).contains(av)){
+                av.setPosition(i);
+                Avatar avatar= getAvatar(av);
+                avatar.setPosition(i);
+                return avatar;
             }
         }
 
@@ -143,7 +150,9 @@ public class GameServerSimple {
         {
             if(positionAvatar.get(entry.getKey()).contains(av)){
                 av.setPosition(entry.getKey());
-                return getAvatar(av);
+                Avatar avatar= getAvatar(av);
+                avatar.setPosition(entry.getKey());
+                return avatar;
             }
         }
         return null;

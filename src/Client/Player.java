@@ -86,6 +86,7 @@ public class Player {
                 System.out.println("Connection failed");
 
             escapeAvatar(avTest,"S", obj);
+            avTest.setPosition(avTest.getPosition()+1);
             escapeAvatar(avTest,"S", obj);
             //escapeAvatar(avTest,"S", obj);
             escapeAvatar(avTest,"S", obj);
