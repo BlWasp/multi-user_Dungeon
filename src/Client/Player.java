@@ -70,6 +70,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             Avatar avBis = new Avatar("Pong");
 
             Player p = new Player(avTest);
+            Player p2 = new Player(avBis);
 
             // Récupération d'un proxy sur l'objet
             //IGameServer obj = (IGameServer) Naming.lookup("//localhost/Dungeon");
@@ -86,19 +87,21 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             else
                 System.out.println("Connection failed");
 
-            if(p.obj.connection(avBis, 0,p)==1) {
+            p2.mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
+            p2.obj = p2.mainServer.findGameServer(0);
+            if(p2.obj==null){
+                System.out.println("Aucun serveur trouvé");
+                return;
+            }
+            if(p2.obj.connection(p2.av, 0,p2)==1) {
                 avTest.setPosition(0);
                 System.out.println("Connected");
             }
             else
                 System.out.println("Connection failed");
 
-            /*cs = mainServer.findChatServer(0);
-            if(cs==null){
-=======
-            p.cs = p.mainServer.findChatServer(0);
+            /*p.cs = p.mainServer.findChatServer(0);
             if(p.cs==null){
->>>>>>> 0bc75999ea20ca73d1ba1a2917ee4e95ad9bff77
                 System.out.println("Aucun serveur de chat trouvé");
                 return;
             }
@@ -109,7 +112,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             else
                 System.out.println("Connection failed");*/
 
-            attackAvatar(avBis,avBis,avTest.getPosition(),p.obj,1);
+            p.attackAvatar(avBis,avBis,avTest.getPosition(),p.obj,1);
             System.out.println(avBis.getLifePoint());
 
             p.escapeAvatar(p.av,"S", p.obj);

@@ -119,20 +119,21 @@ public class GameServerSimple {
     //Permet à un joueur d'attaquer au choix le monstre ou un autre joueur
     public int attackAvatar(Entity target, Avatar ifAvatar, Integer position, int lifeLosed) {
         if (target.getClass() == Avatar.class) {
-            List<Avatar> tmp = positionAvatar.get(position);
-            Avatar tmpAv = ifAvatar;
-            for (int i=0; i<tmp.size(); i++) {
-                if (tmp.get(i).equals(ifAvatar)) {
-                    tmpAv = tmp.get(i);
-                    makeDamage(tmpAv, lifeLosed);
-                }
-            }
-            return tmpAv.getLifePoint();
+            Avatar tmpAv = getAvatar(ifAvatar);
+            makeDamage(tmpAv,lifeLosed);
+            return target.getLifePoint();
         } else {
             positionMonster.get(position).loseLife(lifeLosed);
             return positionMonster.get(position).getLifePoint();
         }
     }
+
+    public int attackMonster(Avatar target, int lifeLosed) {
+        Avatar tmpAv = getAvatar(target);
+        makeDamage(tmpAv,lifeLosed);
+        return target.getLifePoint();
+    }
+
 
     public void displayGameInfo() {
 
