@@ -82,6 +82,16 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
         Pair<Grid,Zone> res = mainServer.chatServerConnection(obj);
         obj.setChatServer(res.getKey(),res.getKey().size,res.getValue());
         System.out.println(obj.getZ().getKey()+ " " + obj.getZ().getValue());
+        System.out.println("Q pour arrêter le serveur.");
+        Scanner scan = new Scanner(System.in);
+
+        String answer=scan.nextLine();
+        System.out.println(answer);
+        //if(answer=="Q"){
+            mainServer.chatServerDisconnection(obj.getZ());
+            System.out.println(answer);
+            return;
+        //}
 
     }
 }

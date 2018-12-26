@@ -95,9 +95,24 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
     }
 
     @Override
-    public void serverDisconnection() throws RemoteException{
+    public void gameServerDisconnection(Zone z) throws RemoteException {
+        nbGameServ--;
+        updateAllServ(lgame.get(z));
+        lgame.remove(z);
 
     }
+
+
+    @Override
+    public void chatServerDisconnection(Zone z) throws RemoteException {
+        nbChatServ--;
+        updateAllChat(lchat.get(z));
+        lchat.remove(z);
+
+    }
+
+
+
 
     @Override
     public IGameServer findGameServer(Integer position) throws RemoteException{
@@ -185,5 +200,6 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         ServerController obj = new ServerController();
         Naming.rebind("Dungeon", obj);
         System.out.println("Server.ServerController launched");
+
     }
 }

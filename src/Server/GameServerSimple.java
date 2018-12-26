@@ -1,7 +1,11 @@
 package Server;
 
 import Client.Avatar;
+import Client.IPlayer;
+import com.sun.security.ntlm.Client;
 
+import java.awt.datatransfer.DataFlavor;
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class GameServerSimple {
@@ -11,6 +15,7 @@ public class GameServerSimple {
     int size = 8;
     private Map<Integer, List<Avatar>> positionAvatar;
     private Map<Integer, Monster> positionMonster;
+    private Map<Avatar, IPlayer> lclient = new LinkedHashMap<>();
     protected GameServerSimple(){
         available=1;
         gGrid = new Grid(size);
@@ -39,18 +44,23 @@ public class GameServerSimple {
         available=state;
     }
 
-    public int connection(Avatar avUsed, Integer position) {
+    public int connection(Avatar avUsed, Integer position, IPlayer player) {
         if(available==0)
             return available;
-        List<Avatar> user = positionAvatar.get(position);
-        user.add(avUsed);
+        if(lclient.containsKey(avUsed)) return -1;
+        avUsed.setPosition(position);
+        positionAvatar.get(position).add(avUsed);
+        lclient.put(avUsed,player);
         return available;
     }
 
 
-    public int move(Avatar avUsed, int position, String goTo) {
-        List<Avatar> src = positionAvatar.get(position);
-        src.remove(avUsed);
+    public int move(Avatar avUsed, String goTo) {
+        avUsed=getAvatar(avUsed);
+        if(avUsed==null) return -10;
+        if(!avUsed.isInLife)return -9;
+        int position = avUsed.getPosition();
+        positionAvatar.get(position).remove(avUsed);
         Integer x,y;
         x=position/8;
         y=position%8;
@@ -69,23 +79,44 @@ public class GameServerSimple {
         if(dest<(Integer) z.getKey() || dest>(Integer) z.getValue())
             return -2;
 
-        List<Avatar> lDest = positionAvatar.get(dest);
-        lDest.add(avUsed);
+        positionAvatar.get(dest).add(avUsed);
+        avUsed.setPosition(dest);
+        try {
+            lclient.get(avUsed).updateAvatar(avUsed);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         return dest;
 
     }
 
-    public void escape(Avatar avUsed, int position, String goTo) {
-        this.move(avUsed, position, goTo);
-        avUsed.setLifePoint(avUsed.getLifePoint() - 2);
+    public void makeDamage(Avatar av, int damage){
+        av.loseLife(damage);
+        try {
+            lclient.get(av).updateAvatar(av);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int escape(Avatar avUsed, int position, String goTo) {
+        //On récupère l'avatar de la liste pour être sûr de manipuler le bon objet
+        avUsed=getAvatar(avUsed);
+        if (avUsed==null) return -10;
+        //int res = move(avUsed, goTo);
+        makeDamage(avUsed,2);
+
         /*for (int i=0;i<listAvatar.size();i++) {
             if (listAvatar.get(i).getName().contentEquals(avUsed.getName())) {
                 listAvatar.remove(i);
             }
         }*/
         //listAvatar.add(avUsed);
+        return 1;
     }
 
+
+    //Permet à un joueur d'attaquer au choix le monstre ou un autre joueur
     public int attackAvatar(Entity target, Avatar ifAvatar, Integer position, int lifeLosed) {
         if (target.getClass() == Avatar.class) {
             List<Avatar> tmp = positionAvatar.get(position);
@@ -93,15 +124,13 @@ public class GameServerSimple {
             for (int i=0; i<tmp.size(); i++) {
                 if (tmp.get(i).equals(ifAvatar)) {
                     tmpAv = tmp.get(i);
-                    tmpAv.loseLife(lifeLosed);
+                    makeDamage(tmpAv, lifeLosed);
                 }
             }
-            System.out.println(positionAvatar.get(position));
             return tmpAv.getLifePoint();
         } else {
-            Monster tmp = positionMonster.get(position);
-            tmp.loseLife(lifeLosed);
-            return tmp.getLifePoint();
+            positionMonster.get(position).loseLife(lifeLosed);
+            return positionMonster.get(position).getLifePoint();
         }
     }
 
@@ -120,5 +149,41 @@ public class GameServerSimple {
     public void setZ(Zone z) {
         if (this.z!=null)
             this.z = z;
+    }
+
+    public Avatar getAvatar(Avatar av){
+
+        List<Avatar> lav = positionAvatar.get(av.getPosition());
+        for (Avatar avatar : lav) {
+            if(avatar.equals(av))
+                return  avatar;
+        }
+
+        //Si on ne le trouves pas à la bonne position on le cherche dans les cases ajacentes
+        int pos[]={(av.getPosition()+1 & 0xff)%(size*size),(av.getPosition()-1 & 0xff)%(size*size),(av.getPosition()+size & 0xff)%(size*size),(av.getPosition()-size & 0xff)%(size*size)};
+        for (int i : pos) {
+            if(positionAvatar.get(i).contains(av)){
+                av.setPosition(i);
+                Avatar avatar= getAvatar(av);
+                avatar.setPosition(i);
+                return avatar;
+            }
+        }
+
+        //Si il n'existe pas on quitte
+        if(positionAvatar.containsValue(av)) return null;
+
+        //Sinon on cherche dans toute la grille
+        for (Map.Entry<Integer, List<Avatar>> entry : positionAvatar.entrySet())
+        {
+            if(positionAvatar.get(entry.getKey()).contains(av)){
+                av.setPosition(entry.getKey());
+                Avatar avatar= getAvatar(av);
+                avatar.setPosition(entry.getKey());
+                return avatar;
+            }
+        }
+        return null;
+
     }
 }

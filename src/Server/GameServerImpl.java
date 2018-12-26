@@ -1,12 +1,15 @@
 package Server;
 
 import Client.Avatar;
+import Client.IPlayer;
 import javafx.util.Pair;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Scanner;
+
+import static javafx.application.Platform.exit;
 
 public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
 
@@ -17,18 +20,18 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
     }
 
     @Override
-    public int connection(Avatar avUsed, Integer position) throws RemoteException{
-        return gs.connection(avUsed, position);
+    public int connection(Avatar avUsed, Integer position, IPlayer player) throws RemoteException{
+        return gs.connection(avUsed, position, player);
     }
 
     @Override
-    public void escape(Avatar avUsed, String goTo) throws RemoteException{
-        gs.escape(avUsed, gs.getPosition(avUsed), goTo);
+    public int escape(Avatar avUsed, String goTo) throws RemoteException{
+        return gs.escape(avUsed, gs.getPosition(avUsed), goTo);
     }
 
     @Override
     public int move(Avatar avUsed, String goTo) throws RemoteException{
-        int res = gs.move(avUsed, avUsed.getPosition(), goTo);
+        int res = gs.move(avUsed, goTo);
         if(res!=-1){
             System.out.println(res);
         }
@@ -61,6 +64,13 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
         System.out.println(gs.getZ().getKey()+ " " + gs.getZ().getValue());
         //Naming.rebind("Dungeon", obj);
        // System.out.println("Server.GameServerImpl launched");
+        Scanner scan = new Scanner(System.in);
+        String answer=scan.nextLine();
+        //if(answer=="Q"){
+        mainServer.gameServerDisconnection(gs.getZ());
+        System.out.println(answer);
+        exit();
+        //}
     }
 
 }
