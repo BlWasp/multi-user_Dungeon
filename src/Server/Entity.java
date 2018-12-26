@@ -36,4 +36,12 @@ public abstract class Entity implements Serializable {
         this.setLifePoint(currentLife - lifeLosed);
         return this.getLifePoint();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof Entity) {
+            Entity en = (Entity) obj;
+            return name.equals(en.getName());
+        } return false;
+    }
 }

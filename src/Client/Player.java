@@ -3,6 +3,7 @@ package Client;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 
+import Server.Entity;
 import Server.IChatServer;
 import Server.IGameServer;
 import Server.IServerController;
@@ -47,9 +48,11 @@ public class Player {
         return av.getLifePoint();
     }
 
-
-    private static void attackAvatar (Avatar av, Integer position, IGameServer gameServer, int power) throws RemoteException {
-        gameServer.attack(av, position, power);
+    //target est la cible qui est attaquée
+    //ifAvatar est utilisé lorsqu'un joueur en attaque un autre. Il spécifie ici lequel il attaque, sinon à null
+    private static void attackAvatar (Entity target, Avatar ifAvatar, Integer position, IGameServer gameServer, int power) throws RemoteException {
+        gameServer.attackAvatar(target, ifAvatar, position, power);
+        target.loseLife(power);
         System.out.println("Petite attaque de derrière les fagots !");
     }
 
@@ -57,6 +60,7 @@ public class Player {
     public static void main(String args[]) {
         try {
             Avatar avTest = new Avatar("Ping");
+            Avatar avBis = new Avatar("Pong");
             // Récupération d'un proxy sur l'objet
             //IGameServer obj = (IGameServer) Naming.lookup("//localhost/Dungeon");
             mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
@@ -72,7 +76,14 @@ public class Player {
             else
                 System.out.println("Connection failed");
 
-            cs = mainServer.findChatServer(0);
+            if(obj.connection(avBis, 0)==1) {
+                avTest.setPosition(0);
+                System.out.println("Connected");
+            }
+            else
+                System.out.println("Connection failed");
+
+            /*cs = mainServer.findChatServer(0);
             if(cs==null){
                 System.out.println("Aucun serveur de chat trouvé");
                 return;
@@ -82,14 +93,16 @@ public class Player {
                 System.out.println("Connected");
             }
             else
-                System.out.println("Connection failed");
+                System.out.println("Connection failed");*/
 
+            attackAvatar(avBis,avBis,avTest.getPosition(),obj,1);
+            System.out.println(avBis.getLifePoint());
+            /*escapeAvatar(avTest,"S", obj);
             escapeAvatar(avTest,"S", obj);
             escapeAvatar(avTest,"S", obj);
             escapeAvatar(avTest,"S", obj);
             escapeAvatar(avTest,"S", obj);
-            escapeAvatar(avTest,"S", obj);
-            escapeAvatar(avTest, "S", obj);
+            escapeAvatar(avTest, "S", obj);*/
         } catch (Exception e) {
             e.printStackTrace();
         }

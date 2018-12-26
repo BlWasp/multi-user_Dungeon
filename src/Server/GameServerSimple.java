@@ -86,14 +86,22 @@ public class GameServerSimple {
         //listAvatar.add(avUsed);
     }
 
-    public int attack(Entity enUsed, Integer position, int lifeLosed) {
-        if (enUsed.getClass() == Avatar.class) {
-            positionMonster.get(position).loseLife(lifeLosed);
-            return positionMonster.get(position).getLifePoint();
-        } else {
+    public int attackAvatar(Entity target, Avatar ifAvatar, Integer position, int lifeLosed) {
+        if (target.getClass() == Avatar.class) {
             List<Avatar> tmp = positionAvatar.get(position);
-            tmp.get(0).loseLife(lifeLosed);
-            return tmp.get(0).getLifePoint();
+            Avatar tmpAv = ifAvatar;
+            for (int i=0; i<tmp.size(); i++) {
+                if (tmp.get(i).equals(ifAvatar)) {
+                    tmpAv = tmp.get(i);
+                    tmpAv.loseLife(lifeLosed);
+                }
+            }
+            System.out.println(positionAvatar.get(position));
+            return tmpAv.getLifePoint();
+        } else {
+            Monster tmp = positionMonster.get(position);
+            tmp.loseLife(lifeLosed);
+            return tmp.getLifePoint();
         }
     }
 
