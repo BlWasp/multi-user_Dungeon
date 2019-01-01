@@ -8,8 +8,9 @@ import java.awt.datatransfer.DataFlavor;
 import java.rmi.RemoteException;
 import java.util.*;
 
-public class GameServerSimple {
+public class GameServerSimple implements Runnable{
     private int available;
+    private Integer round;
     private Grid gGrid;
     private Zone z = new Zone(0,0);
     int size = 8;
@@ -24,6 +25,7 @@ public class GameServerSimple {
         for (int i = 0; i < size*size; i++) {
             positionAvatar.put(i, new ArrayList<Avatar>());
         }
+        round=0;
     }
 
     public GameServerSimple(Grid grid, int size, Zone z){
@@ -37,6 +39,7 @@ public class GameServerSimple {
             positionAvatar.put(i, new ArrayList<Avatar>());
             //positionMonster.put(i, new Monster());
         }
+        round=0;
         gGrid.displayGrid();
     }
 
@@ -55,12 +58,12 @@ public class GameServerSimple {
     }
 
 
-    public int move(Avatar avUsed, String goTo) {
+    public synchronized int move(Avatar avUsed, String goTo) throws InterruptedException {
+        Integer currentRound = round;
         avUsed=getAvatar(avUsed);
         if(avUsed==null) return -10;
         if(!avUsed.isInLife)return -9;
         int position = avUsed.getPosition();
-        positionAvatar.get(position).remove(avUsed);
         Integer x,y;
         x=position/8;
         y=position%8;
@@ -78,7 +81,10 @@ public class GameServerSimple {
         //Si le serveur ne gère pas la case
         if(dest<(Integer) z.getKey() || dest>(Integer) z.getValue())
             return -2;
-
+        //permet d'attendre le prochain tour, pour synchroniser les tour de jeux
+        if(round==currentRound)
+            wait();
+        positionAvatar.get(position).remove(avUsed);
         positionAvatar.get(dest).add(avUsed);
         avUsed.setPosition(dest);
         try {
@@ -117,12 +123,18 @@ public class GameServerSimple {
 
 
     //Permet à un joueur d'attaquer au choix le monstre ou un autre joueur
-    public int attackAvatar(Entity target, Avatar ifAvatar, Integer position, int lifeLosed) {
+    public synchronized int attackAvatar(Entity target, Avatar ifAvatar, Integer position, int lifeLosed) throws InterruptedException {
+        Integer currentRound = round;
         if (target.getClass() == Avatar.class) {
+
             Avatar tmpAv = getAvatar(ifAvatar);
+            if(round==currentRound)
+                wait();
             makeDamage(tmpAv,lifeLosed);
             return target.getLifePoint();
         } else {
+            if(round==currentRound)
+                wait();
             positionMonster.get(position).loseLife(lifeLosed);
             return positionMonster.get(position).getLifePoint();
         }
@@ -186,5 +198,24 @@ public class GameServerSimple {
         }
         return null;
 
+    }
+
+    @Override
+    public void run() {
+        while(available==1){
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            addRound();
+
+        }
+    }
+
+    public synchronized void addRound() {
+        round++;
+        System.out.println(round);
+        notifyAll();
     }
 }

@@ -31,7 +31,12 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
 
     @Override
     public int move(Avatar avUsed, String goTo) throws RemoteException{
-        int res = gs.move(avUsed, goTo);
+        int res = 0;
+        try {
+            res = gs.move(avUsed, goTo);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if(res!=-1){
             System.out.println(res);
         }
@@ -40,7 +45,12 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
 
     @Override
     public int attackAvatar(Entity target, Avatar ifAvatar, Integer position, int lifeLosed) throws RemoteException {
-        return gs.attackAvatar(target, ifAvatar, position, lifeLosed);
+        try {
+            return gs.attackAvatar(target, ifAvatar, position, lifeLosed);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
@@ -67,6 +77,8 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
         Pair<Grid,Zone> res = mainServer.gameServerConnection(obj);
         gs = new GameServerSimple(res.getKey(),res.getKey().size,res.getValue());
         System.out.println(gs.getZ().getKey()+ " " + gs.getZ().getValue());
+        Thread thread = new Thread(gs);
+        thread.start();
         //Naming.rebind("Dungeon", obj);
        // System.out.println("Server.GameServerImpl launched");
         Scanner scan = new Scanner(System.in);
