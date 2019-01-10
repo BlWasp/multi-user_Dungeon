@@ -13,8 +13,8 @@ public interface IGameServer extends java.rmi.Remote{
     int move(Avatar avUsed, String goTo) throws RemoteException;
 
     //permet de gérer les attaques des entités
-    int attackAvatar(Entity target, Avatar ifAvatar, Integer position, int lifeLosed) throws RemoteException;
-    int attackMonster(Avatar target, int lifeLosed) throws RemoteException;
+    int attackAvatar(Entity target, Avatar ifAvatar, Avatar attacker, Integer position, int lifeLosed) throws RemoteException;
+    int attackMonster(Avatar target, Integer position, int lifeLosed) throws RemoteException;
 
     void displayGameInfo() throws RemoteException;
     void updateZone(Zone z) throws RemoteException;

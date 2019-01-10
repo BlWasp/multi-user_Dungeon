@@ -109,42 +109,58 @@ public class GameServerSimple implements Runnable{
         //On récupère l'avatar de la liste pour être sûr de manipuler le bon objet
         avUsed=getAvatar(avUsed);
         if (avUsed==null) return -10;
-        //int res = move(avUsed, goTo);
+        try {
+            int res = move(avUsed, goTo);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         makeDamage(avUsed,2);
-
-        /*for (int i=0;i<listAvatar.size();i++) {
-            if (listAvatar.get(i).getName().contentEquals(avUsed.getName())) {
-                listAvatar.remove(i);
-            }
-        }*/
-        //listAvatar.add(avUsed);
         return 1;
     }
 
 
     //Permet à un joueur d'attaquer au choix le monstre ou un autre joueur
-    public synchronized int attackAvatar(Entity target, Avatar ifAvatar, Integer position, int lifeLosed) throws InterruptedException {
+    public synchronized int attackAvatar(Entity target, Avatar ifAvatar, Avatar attacker, Integer position, int lifeLosed) throws InterruptedException {
         Integer currentRound = round;
+        double nbAleatoire = Math.random();
         if (target.getClass() == Avatar.class) {
-
-            Avatar tmpAv = getAvatar(ifAvatar);
+            Avatar avVic = getAvatar(ifAvatar);
+            Avatar avAtt = getAvatar(attacker);
             if(round==currentRound)
                 wait();
-            makeDamage(tmpAv,lifeLosed);
-            return target.getLifePoint();
+            if (nbAleatoire == 0) { //Le joueur touche le joueur
+                makeDamage(avVic,lifeLosed);
+                return target.getLifePoint();
+            } else { //L'autre joueur a contrer, l'attaquant se prend l'attaque
+                makeDamage(avAtt,lifeLosed);
+                return attacker.getLifePoint();
+            }
         } else {
             if(round==currentRound)
                 wait();
+            if (nbAleatoire == 0) { //Le joueur touche le monstre
+                positionMonster.get(position).loseLife(lifeLosed);
+                return positionMonster.get(position).getLifePoint();
+            } else {
+                Avatar avAtt = getAvatar(attacker);
+                makeDamage(avAtt,lifeLosed);
+                return  attacker.getLifePoint();
+            }
+        }
+    }
+
+    public int attackMonster(Avatar target, Integer position, int lifeLosed) {
+        Avatar tmpAv = getAvatar(target);
+        double nbAleatoire = Math.random();
+        if (nbAleatoire == 0) { //Le monstre touche
+            makeDamage(tmpAv,lifeLosed);
+            return target.getLifePoint();
+        } else { //Le monstre ne touche pas
             positionMonster.get(position).loseLife(lifeLosed);
             return positionMonster.get(position).getLifePoint();
         }
     }
 
-    public int attackMonster(Avatar target, int lifeLosed) {
-        Avatar tmpAv = getAvatar(target);
-        makeDamage(tmpAv,lifeLosed);
-        return target.getLifePoint();
-    }
 
 
     public void displayGameInfo() {

@@ -44,9 +44,9 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
     }
 
     @Override
-    public int attackAvatar(Entity target, Avatar ifAvatar, Integer position, int lifeLosed) throws RemoteException {
+    public int attackAvatar(Entity target, Avatar ifAvatar, Avatar attacker, Integer position, int lifeLosed) throws RemoteException {
         try {
-            return gs.attackAvatar(target, ifAvatar, position, lifeLosed);
+            return gs.attackAvatar(target, ifAvatar, attacker, position, lifeLosed);
         } catch (InterruptedException e) {
             e.printStackTrace();
             return -1;
@@ -54,8 +54,8 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
     }
 
     @Override
-    public int attackMonster(Avatar target, int lifeLosed) throws RemoteException {
-        return gs.attackMonster(target, lifeLosed);
+    public int attackMonster(Avatar target, Integer position, int lifeLosed) throws RemoteException {
+        return gs.attackMonster(target, position, lifeLosed);
     }
 
     @Override
