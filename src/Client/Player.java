@@ -60,9 +60,14 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
 
     //target est la cible qui est attaquée
     //ifAvatar est utilisé lorsqu'un joueur en attaque un autre. Il spécifie ici lequel il attaque, sinon à null
-    private void attackAvatar (Entity target, Avatar ifAvatar, Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
-        gameServer.attackAvatar(target,ifAvatar,attacker,position,power);
+    private void attackAvatar (Avatar ifAvatar, Avatar attacker, IGameServer gameServer, int power) throws RemoteException {
+        gameServer.attackAvatar(ifAvatar,attacker,power);
         System.out.println("Petite attaque de derrière les fagots !");
+    }
+
+    private void attackM (Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
+        gameServer.attackM(attacker, position, power);
+        System.out.println("Petite attaque sur le monstre en mode ninja !");
     }
 
 
@@ -126,7 +131,8 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 System.out.println("Connection failed");
             //fin connection
 
-            p.attackAvatar(avBis,avBis,avTest,avTest.getPosition(),p.obj,1);
+            p.attackAvatar(avBis,avTest,p.obj,1);
+            p.attackM(avBis,avBis.getPosition(),p.obj,1);
 
             p.escapeAvatar(p.av,"S", p.obj);
             p2.moveAvatar(p2.av, "S",p2.obj);
