@@ -6,10 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
-import Server.Entity;
-import Server.IChatServer;
-import Server.IGameServer;
-import Server.IServerController;
+import Server.*;
 
 public class Player extends UnicastRemoteObject implements IPlayer, Serializable {
     private String uid = "Rmi31";
@@ -17,13 +14,23 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     private IGameServer obj;
     private IChatServer cs;
     private Avatar av;
+    private OrderProcessor op;
 
     public Player(Avatar av) throws RemoteException {
         super();
         this.av=av;
+        op = new OrderProcessor(this, obj, cs);
     }
 
-    private int moveAvatar(Avatar av, String way, IGameServer gameServer) throws RemoteException {
+    public OrderProcessor getOp() {
+        return op;
+    }
+
+    public void setOp(OrderProcessor op) {
+        this.op = op;
+    }
+
+    public int moveAvatar(Avatar av, String way, IGameServer gameServer) throws RemoteException {
         int res = gameServer.move(av, way);
         while(res==-1){
             System.out.println("Il y a pas moyen de passer par là");
@@ -38,6 +45,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 System.out.println("aucun serveur trouvé");
                 return -3;
             }
+            op.setGameserver(obj);
             return moveAvatar(av, way, obj);
         }
        // System.out.println("Vous êtes arrivé sur la case n°" + av.getPosition());
@@ -47,7 +55,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
 
     //Permet au joueur de s'échapper pendant un combat
     //Pareil que moveAvatar mais affecte un malus de -2 pt à l'avatar
-    private int escapeAvatar (Avatar av, String way, IGameServer gameServer) throws RemoteException {
+    public int escapeAvatar(Avatar av, String way, IGameServer gameServer) throws RemoteException {
         int res = moveAvatar(av,way,gameServer);
         if(res>-1)
             System.out.println(av.getName()+": fuit");
@@ -142,6 +150,15 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             p.escapeAvatar(p.av,"S", p.obj);
             //escapeAvatar(avTest,"S", obj);
             //escapeAvatar(avTest, "S", obj);
+            Integer play=1;
+            while(play==1){
+                java.util.Scanner input = new java.util.Scanner(System.in);
+                System.out.println("Enter your command");
+                String command = input.next();
+                String way = input.next();
+                String[] order = {command, way};
+                play= p.getOp().process(order, avTest);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
