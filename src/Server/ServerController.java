@@ -8,6 +8,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
+/**
+ * Serveur permettant de centraliser le contrôle de tous les serveurs du jeu.
+ */
 public class ServerController extends UnicastRemoteObject implements IServerController {
     private Grid board;
     private int size = 8;

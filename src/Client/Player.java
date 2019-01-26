@@ -11,6 +11,10 @@ import Server.IChatServer;
 import Server.IGameServer;
 import Server.IServerController;
 
+/**
+ * Classe représentant le client.
+ * Permet de faire effectuer des actions à l'avatar sur le serveur
+ */
 public class Player extends UnicastRemoteObject implements IPlayer, Serializable {
     private String uid = "Rmi31";
     private IServerController mainServer;
@@ -18,11 +22,29 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     private IChatServer cs;
     private Avatar av;
 
+
+    /**
+     * Constructeur d'un Player (client)
+     * @param av
+     *          Son avatar
+     * @throws RemoteException
+     */
     public Player(Avatar av) throws RemoteException {
         super();
         this.av=av;
     }
 
+    /**
+     * Permet de déplacer l'avatar sur une case adjacente
+     * @param av
+     *          Son avatar
+     * @param way
+     *          La direction du déplacement
+     * @param gameServer
+     *          L'identifiant du serveur de jeu où se trouve l'avatar
+     * @return
+     * @throws RemoteException
+     */
     private int moveAvatar(Avatar av, String way, IGameServer gameServer) throws RemoteException {
         int res = gameServer.move(av, way);
         while(res==-1){
@@ -45,6 +67,18 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     }
 
 
+    /**
+     * Permet au joueur de s'échapper pendant un combat à allant sur une case adjacente
+     * Il perd de la vie en le faisant
+     * @param av
+     *          Son avatar
+     * @param way
+     *          La direction de l'échappatoire
+     * @param gameServer
+     *          L'identifiant du serveur où se trouve l'avatar
+     * @return
+     * @throws RemoteException
+     */
     //Permet au joueur de s'échapper pendant un combat
     //Pareil que moveAvatar mais affecte un malus de -2 pt à l'avatar
     private int escapeAvatar (Avatar av, String way, IGameServer gameServer) throws RemoteException {
@@ -58,6 +92,18 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     }
 
 
+    /**
+     * Permet à un joueur d'attaquer un autre joueur sur la même case
+     * @param ifAvatar
+     *              C'est l'avatar qui est attaqué
+     * @param attacker
+     *              C'est l'avatar attaquant
+     * @param gameServer
+     *              C'est le serveur où se trouve les avatars
+     * @param power
+     *              C'est la puissance de l'attaque
+     * @throws RemoteException
+     */
     //target est la cible qui est attaquée
     //ifAvatar est utilisé lorsqu'un joueur en attaque un autre. Il spécifie ici lequel il attaque, sinon à null
     private void attackAvatar (Avatar ifAvatar, Avatar attacker, IGameServer gameServer, int power) throws RemoteException {
@@ -65,6 +111,18 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         System.out.println("Petite attaque de derrière les fagots !");
     }
 
+    /**
+     * Permet à un joueur d'attaquer un monstre
+     * @param attacker
+     *              C'est le joueur attaquant
+     * @param position
+     *              C'est la position actuelle du joueur (sa case)
+     * @param gameServer
+     *              Serveur sur lequel se trouve le joueur actuellement
+     * @param power
+     *              C'est la puissance de l'attaque
+     * @throws RemoteException
+     */
     private void attackM (Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
         gameServer.attackM(attacker, position, power);
         System.out.println("Petite attaque sur le monstre en mode ninja !");
@@ -147,6 +205,12 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         }
     }
 
+    /**
+     * Permet d'effectuer une mise à jour de l'état de l'avatar vu par le Player, après une modification sur le serveur
+     * @param avatar
+     *              Avatar du joueur
+     * @throws RemoteException
+     */
     @Override
     public void updateAvatar(Avatar avatar) throws RemoteException {
         if(!avatar.getPosition().equals(av.getPosition())){
@@ -157,6 +221,13 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         }
         this.av=avatar;
     }
+
+    /**
+     *
+     * @param attacked
+     * @param attacker
+     * @throws RemoteException
+     */
     //a utiliser dans le futur pour les attaques. A discuter avec Guillaume
     @Override
     public void underAttack(Avatar attacked, Entity attacker) throws RemoteException {

@@ -4,6 +4,9 @@ import javafx.util.Pair;
 
 import java.rmi.RemoteException;
 
+/**
+ * Interface RMI du serveur controller, permettant de centraliser le contôle de tous les serveurs
+ */
 public interface IServerController extends java.rmi.Remote{
     public Pair gameServerConnection(IGameServer serv) throws RemoteException;
 

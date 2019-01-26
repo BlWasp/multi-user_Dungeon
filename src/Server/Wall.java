@@ -1,5 +1,8 @@
 package Server;
 
+/**
+ * Classe pour créer un mur non traversable
+ */
 public class Wall extends Border {
 
     public Wall() {

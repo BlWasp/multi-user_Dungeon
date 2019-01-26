@@ -2,6 +2,9 @@ package Server;
 
 import java.io.Serializable;
 
+/**
+ * Classe d'une case
+ */
 public class Room implements Serializable {
     private final int id;
     private Border north;
@@ -17,10 +20,18 @@ public class Room implements Serializable {
         this.east = east;
     }
 
+    /**
+     * Récupère le numéro de la case
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Récupère la destination en allant au Nord
+     * @return
+     */
     public Border getNorth() {
         return north;
     }
@@ -29,6 +40,10 @@ public class Room implements Serializable {
         this.north = north;
     }
 
+    /**
+     * Récupère la destination en allant à l'Ouest
+     * @return
+     */
     public Border getWest() {
         return west;
     }
@@ -37,6 +52,10 @@ public class Room implements Serializable {
         this.west = west;
     }
 
+    /**
+     * Récupère la destination en allant au Sud
+     * @return
+     */
     public Border getSouth() {
         return south;
     }
@@ -45,6 +64,10 @@ public class Room implements Serializable {
         this.south = south;
     }
 
+    /**
+     * Récupère la destination en allant à l'Est
+     * @return
+     */
     public Border getEast() {
         return east;
     }
