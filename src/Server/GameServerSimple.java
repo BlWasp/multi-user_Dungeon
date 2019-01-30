@@ -200,6 +200,13 @@ public class GameServerSimple implements Runnable{
             this.z = z;
     }
 
+    /**
+     * permet de retouver un avatar dans la grille
+     * @param av
+     * avatar à recherché
+     * @return
+     * l'avatar avec sa position mise à jour
+     */
     public Avatar getAvatar(Avatar av){
 
         List<Avatar> lav = positionAvatar.get(av.getPosition());

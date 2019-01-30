@@ -26,6 +26,12 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         board = new Grid(size);
         board.displayGrid();
     }
+
+    /**
+     * permet de distribuer la grille en fonction du nombre de serveur
+     * @return
+     * retourne la dernière zone
+     */
     public Zone distributeZone(){
         Integer last=0, i=0;
         Map<Zone,IGameServer> tmp = new TreeMap<>(lgame);
@@ -44,6 +50,11 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
 
     }
 
+    /**
+     * distribue les zones pour les serveur de chat
+     * @return
+     * retourne la zone du dernier server de chat (le dernier qui c'est connecté)
+     */
     public Zone distributeChatZone(){
         Integer last=0, i=0;
         Map<Zone,IChatServer> tmp = new TreeMap<>(lchat);
@@ -62,6 +73,13 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
 
     }
 
+    /**
+     * Mets à jour les zones de tous les servers de jeu
+     * intervient après un ajout ou une suppression de server de jeu
+     * @param serv
+     * serveur ajouté ou supprimé
+     * @throws RemoteException
+     */
     public void updateAllServ(IGameServer serv) throws RemoteException {
         for (Map.Entry<Zone, IGameServer> pair : lgame.entrySet()) {
             if(pair.getValue()!=serv)
@@ -69,6 +87,13 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         }
     }
 
+    /**
+     * Mets à jour les zones de tous les servers de chat
+     * intervient après un ajout ou une suppression de server de chat
+     * @param serv
+     * serveur ajouté ou supprimé
+     * @throws RemoteException
+     */
     public void updateAllChat(IChatServer serv) throws RemoteException {
         for (Map.Entry<Zone, IChatServer> pair : lchat.entrySet()) {
             if(pair.getValue()!=serv)
@@ -76,6 +101,14 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         }
     }
 
+    /**
+     * Permet de connecter un serveur de jeu
+     * @param serv
+     * nouveau serveur
+     * @return
+     * ensemble Grille et zone à géré par le dernier serveur
+     * @throws RemoteException
+     */
     @Override
     public Pair gameServerConnection(IGameServer serv) throws RemoteException{
         //ajouter la gestion dynamique de la répartition des cases!!!
@@ -87,6 +120,14 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         return res;
     }
 
+    /**
+     * permet de connecter un server de chat
+     * @param serv
+     * nouveau serveur de chat
+     * @return
+     * ensemble Grille et zone à géré par le dernier serveur
+     * @throws RemoteException
+     */
     @Override
     public Pair chatServerConnection(IChatServer serv) throws RemoteException{
         nbChatServ++;
@@ -97,6 +138,12 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         return res;
     }
 
+    /**
+     * Permet de déconnecter un serveur de jeu
+     * @param z
+     * zone du serveur à déconnecté
+     * @throws RemoteException
+     */
     @Override
     public void gameServerDisconnection(Zone z) throws RemoteException {
         nbGameServ--;
@@ -105,7 +152,12 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
 
     }
 
-
+    /**
+     * permet de déconnecter un serveur de chat
+     * @param z
+     * zone du serveur de chat a déconnecté
+     * @throws RemoteException
+     */
     @Override
     public void chatServerDisconnection(Zone z) throws RemoteException {
         nbChatServ--;
@@ -115,8 +167,14 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
     }
 
 
-
-
+    /**
+     * permet de donner à un client le server de jeu correspondant à sa position
+     * @param position
+     * position de l'avatar
+     * @return
+     * le serveur de jeu dédié à la zone
+     * @throws RemoteException
+     */
     @Override
     public IGameServer findGameServer(Integer position) throws RemoteException{
         Zone z = new Zone(0,(size*size)-1);
@@ -130,6 +188,14 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         return null;
     }
 
+    /**
+     * permet de donner à un client le server de chat correspondant à sa position
+     * @param position
+     * position de l'avatar
+     * @return
+     * le serveur de chat dédié à la zone
+     * @throws RemoteException
+     */
     @Override
     public IChatServer findChatServer(Integer position) throws RemoteException{
         Zone z = new Zone(0,(size*size)-1);
@@ -143,6 +209,16 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         return null;
     }
 
+    /**
+     * utilisé lors d'un changement de zone
+     * @param position
+     * position de l'avatar
+     * @param way
+     * direction souhaité
+     * @return
+     * le nouveau server de chat
+     * @throws RemoteException
+     */
     @Override
     public IChatServer findChatServer(Integer position, String way) throws RemoteException {
         Zone z = new Zone(0,(size*size)-1);
@@ -169,6 +245,16 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
 
     }
 
+    /**
+     * utilisé lors d'un changement de zone
+     * @param position
+     * position de l'avatar
+     * @param way
+     * direction souhaité
+     * @return
+     * le nouveau server de jeu
+     * @throws RemoteException
+     */
     @Override
     public IGameServer findGameServer(Integer position, String way) throws RemoteException {
         Zone z = new Zone(0,(size*size)-1);

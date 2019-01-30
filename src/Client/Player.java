@@ -241,3 +241,4 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         this.updateAvatar(attacked);
     }
 }
+//intro, cas d'utilisation, diagramme de sequence, diagramme de classe (diagramme de composant), explication design pattern + explication générale (pk on le fait comme ca)
