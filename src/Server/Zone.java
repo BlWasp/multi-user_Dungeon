@@ -4,6 +4,9 @@ import javafx.util.Pair;
 
 import java.io.Serializable;
 
+/**
+ * Création d'un zone de jeu
+ */
 public class Zone extends Pair implements Comparable, Serializable {
     /**
      * Creates a new pair

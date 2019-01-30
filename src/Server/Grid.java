@@ -2,10 +2,19 @@ package Server;
 
 import java.io.Serializable;
 
+/**
+ * Classe gérant la grille du jeu.
+ * Elle peut être de taille variable
+ */
 public class Grid implements Serializable {
     int size;
     private Room board[][];
 
+    /**
+     * Construction de la grille
+     * @param size
+     *              Taille voulue pour la grille
+     */
     public Grid(int size) {
         this.size = size;
         board = new Room[size][size];
@@ -32,6 +41,9 @@ public class Grid implements Serializable {
         }
     }
 
+    /**
+     * Affichage de la grille
+     */
     public void displayGrid(){
         for (int j = 0; j < size; j++) {
             for (int i = 0; i < size; i++) {
@@ -55,6 +67,12 @@ public class Grid implements Serializable {
         }
     }
 
+    /**
+     * Permet de récupérer une pièce en particulier
+     * @param x
+     * @param y
+     * @return
+     */
     public Room getRoom(Integer x, Integer y){
         return board[x][y];
     }

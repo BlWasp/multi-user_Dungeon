@@ -8,6 +8,10 @@ import java.awt.datatransfer.DataFlavor;
 import java.rmi.RemoteException;
 import java.util.*;
 
+/**
+ * Classe implémentant le code interne des différentes méthodes de GameServerImpl
+ * L'utilité de certaines méthodes et leurs paramètres sont décrit dans GameServerImpl
+ */
 public class GameServerSimple implements Runnable{
     private int available;
     private Integer round;
@@ -96,6 +100,13 @@ public class GameServerSimple implements Runnable{
 
     }
 
+    /**
+     * Retire de la vie à un avatar et met à jour la vue du player
+     * @param av
+     *              Avatar à update
+     * @param damage
+     *              Quantité de vie perdue
+     */
     public void makeDamage(Avatar av, int damage){
         av.loseLife(damage);
         try {
@@ -170,6 +181,12 @@ public class GameServerSimple implements Runnable{
 
     }
 
+    /**
+     * Récupère la position d'un avatar
+     * @param av
+     *              Avatar voulu
+     * @return
+     */
     public int getPosition(Avatar av){
         return 0;
     }
