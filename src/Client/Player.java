@@ -6,10 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
-import Server.Entity;
-import Server.IChatServer;
-import Server.IGameServer;
-import Server.IServerController;
+import Server.*;
 
 /**
  * Classe représentant le client.
@@ -21,6 +18,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     private IGameServer obj;
     private IChatServer cs;
     private Avatar av;
+    private OrderProcessor op;
 
 
     /**
@@ -34,6 +32,18 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         this.av=av;
     }
 
+    public IServerController getMainServer() {
+        return mainServer;
+    }
+
+    public IGameServer getObj() {
+        return obj;
+    }
+
+    public IChatServer getCs() {
+        return cs;
+    }
+
     /**
      * Permet de déplacer l'avatar sur une case adjacente
      * @param av
@@ -45,7 +55,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      * @return
      * @throws RemoteException
      */
-    private int moveAvatar(Avatar av, String way, IGameServer gameServer) throws RemoteException {
+    public int moveAvatar(Avatar av, String way, IGameServer gameServer) throws RemoteException {
         int res = gameServer.move(av, way);
         while(res==-1){
             System.out.println("Il y a pas moyen de passer par là");
@@ -81,7 +91,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      */
     //Permet au joueur de s'échapper pendant un combat
     //Pareil que moveAvatar mais affecte un malus de -2 pt à l'avatar
-    private int escapeAvatar (Avatar av, String way, IGameServer gameServer) throws RemoteException {
+    public int escapeAvatar(Avatar av, String way, IGameServer gameServer) throws RemoteException {
         int res = moveAvatar(av,way,gameServer);
         if(res>-1)
             System.out.println(av.getName()+": fuit");
@@ -189,7 +199,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 System.out.println("Connection failed");
             //fin connection
 
-            p.attackAvatar(avBis,avTest,p.obj,1);
+          /*  p.attackAvatar(avBis,avTest,p.obj,1);
             p.attackM(avBis,avBis.getPosition(),p.obj,1);
 
             p.escapeAvatar(p.av,"S", p.obj);
@@ -199,7 +209,15 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             //escapeAvatar(avTest,"S", obj);
             p.escapeAvatar(p.av,"S", p.obj);
             //escapeAvatar(avTest,"S", obj);
-            //escapeAvatar(avTest, "S", obj);
+            //escapeAvatar(avTest, "S", obj);*/
+            p.op=new OrderProcessor(p);
+            Scanner scan = new Scanner(System.in);
+
+            while(true) {
+                String answer=scan.nextLine();
+                p.op.process(p.op.spliter(answer), p.av);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
