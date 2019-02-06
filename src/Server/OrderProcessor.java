@@ -91,6 +91,8 @@ public class OrderProcessor {
      */
     public int process (String[] order, Avatar av) throws RemoteException, InterruptedException {
         switch (order[0]) {
+            case "M":
+            case "m":
             case "Move":
                 return p.moveAvatar(av, order[1], gameserver, chatserver);
             /*case "Attack":
@@ -102,6 +104,8 @@ public class OrderProcessor {
                 String message = catArray(order);
                 chatserver.speak(av, message);
                 break;
+            case "E":
+            case "e":
             case "Escape":
                 p.escapeAvatar(av, order[1], gameserver, chatserver);
                 break;

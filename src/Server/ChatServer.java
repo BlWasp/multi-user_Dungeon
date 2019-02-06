@@ -89,7 +89,7 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
             catch (RemoteException e){
                 System.out.println("client injoignable");
                 if(!reachable(lclient.get(receiver))){
-                    lclient.remove(receiver);
+                    disconnectPlayer(lclient.get(receiver),receiver);
                     System.out.println("client supprimé car injoignable");
                 }
                 else{
@@ -97,7 +97,7 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
                     lclient.get(receiver).receiveMessage(sender, text);
                     }
                     catch (RemoteException re){
-                        lclient.remove(receiver);
+                        disconnectPlayer(lclient.get(receiver),receiver);
                         System.out.println("client supprimé car instable");
                     }
 
@@ -140,7 +140,21 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
         lclient.put(av,player);
         return available;
     }
+    public void disconnectPlayer(IPlayer p, Avatar av){
+        //Ajouter ici la sauvegarde
+        positionMap.remove(av.getPosition(), av);
+        lclient.remove(p);
 
+    }
+
+    /**
+     * Teste si le client est joignable
+     * effectue 5 ping
+     * @param p
+     * @return
+     * true si un ping a fonctionné
+     * false sinon
+     */
     private boolean reachable(IPlayer p){
         Integer res=0;
         for (int i = 0; i < 3; i++) {
@@ -154,6 +168,12 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
         return false;
     }
 
+    /**
+     * Permet de retrouver la position d'un avatar sur la grille
+     * @param av
+     * @return
+     * L'avatar avec la bonne position
+     */
     public Avatar getAvatar(Avatar av){
 
         List<Avatar> lav = positionMap.get(av.getPosition());
