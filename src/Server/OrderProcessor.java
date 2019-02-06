@@ -80,10 +80,10 @@ public class OrderProcessor {
      * @return
      * @throws RemoteException
      */
-    public int process (String[] order, Avatar av) throws RemoteException {
+    public int process (String[] order, Avatar av) throws RemoteException, InterruptedException {
         switch (order[0]) {
             case "Move":
-                p.moveAvatar(av, order[1], gameserver);
+                p.moveAvatar(av, order[1], gameserver, chatserver);
                 break;
             /*case "Attack":
                 if (order[1])
@@ -94,7 +94,7 @@ public class OrderProcessor {
                // System.out.println(av.getName()+" : "+ order[1]);
                 break;
             case "Escape":
-                p.escapeAvatar(av, order[1], gameserver);
+                p.escapeAvatar(av, order[1], gameserver, chatserver);
                 break;
             case "Exit":
                // serverController.serverDisconnection();

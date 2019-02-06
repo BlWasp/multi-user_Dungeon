@@ -113,11 +113,84 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
     public int connection(Avatar av, Integer position, IPlayer player) throws RemoteException {
         if(available==0)
             return available;
+        if(lclient.containsKey(av)) return -1;
         List<Avatar> user = positionMap.get(position);
         user.add(av);
         listAvatar.add(av);
         lclient.put(av,player);
         return available;
+    }
+
+    public Avatar getAvatar(Avatar av){
+
+        List<Avatar> lav = positionMap.get(av.getPosition());
+        for (Avatar avatar : lav) {
+            if(avatar.equals(av))
+                return  avatar;
+        }
+
+        //Si on ne le trouves pas à la bonne position on le cherche dans les cases ajacentes
+        int pos[]={(av.getPosition()+1 & 0xff)%(size*size),(av.getPosition()-1 & 0xff)%(size*size),(av.getPosition()+size & 0xff)%(size*size),(av.getPosition()-size & 0xff)%(size*size)};
+        for (int i : pos) {
+            if(positionMap.get(i).contains(av)){
+                av.setPosition(i);
+                Avatar avatar= getAvatar(av);
+                avatar.setPosition(i);
+                return avatar;
+            }
+        }
+
+        //Si il n'existe pas on quitte
+        if(positionMap.containsValue(av)) return null;
+
+        //Sinon on cherche dans toute la grille
+        for (Map.Entry<Integer, List<Avatar>> entry : positionMap.entrySet())
+        {
+            if(positionMap.get(entry.getKey()).contains(av)){
+                av.setPosition(entry.getKey());
+                Avatar avatar= getAvatar(av);
+                avatar.setPosition(entry.getKey());
+                return avatar;
+            }
+        }
+        return null;
+
+    }
+
+    @Override
+    public int move(Avatar avUsed, String goTo) throws InterruptedException, RemoteException {
+        avUsed=getAvatar(avUsed);
+        if(avUsed==null) return -10;
+        if(!avUsed.isInLife)return -9;
+        int position = avUsed.getPosition();
+        Integer x,y;
+        x=position/8;
+        y=position%8;
+        Room r = gGrid.getRoom(x,y);
+        Integer dest;
+        switch (goTo) {
+            case "N" : dest = r.getNorth().dest; break;
+            case "W" : dest = r.getWest().dest; break;
+            case "E" : dest = r.getEast().dest; break;
+            case "S" : dest = r.getSouth().dest; break;
+            default : dest = -1; break;
+        }
+        if(dest==-1)
+            return -1;
+        //Si le serveur ne gère pas la case
+        if(dest<(Integer) z.getKey() || dest>(Integer) z.getValue())
+            return -2;
+        //permet d'attendre le prochain tour, pour synchroniser les tour de jeux
+        positionMap.get(position).remove(avUsed);
+        positionMap.get(dest).add(avUsed);
+        avUsed.setPosition(dest);
+        try {
+            lclient.get(avUsed).updateAvatar(avUsed);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return dest;
+
     }
 
     public Zone getZ() {

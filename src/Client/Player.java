@@ -55,7 +55,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      * @return
      * @throws RemoteException
      */
-    public int moveAvatar(Avatar av, String way, IGameServer gameServer) throws RemoteException {
+    public int moveAvatar(Avatar av, String way, IGameServer gameServer, IChatServer chatServer) throws RemoteException, InterruptedException {
         int res = gameServer.move(av, way);
         while(res==-1){
             System.out.println("Il y a pas moyen de passer par là");
@@ -70,7 +70,17 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 System.out.println("aucun serveur trouvé");
                 return -3;
             }
-            return moveAvatar(av, way, obj);
+            return moveAvatar(av, way, obj, chatServer);
+        }
+        int cres = chatServer.move(av, way);
+        if(res==-2){
+            System.out.println("Case non géré par le serveur");
+            cs = mainServer.findChatServer(av.getPosition(),way);
+            if(cs==null){
+                System.out.println("aucun serveur trouvé");
+                return -3;
+            }
+            return moveAvatar(av, way, gameServer, cs);
         }
        // System.out.println("Vous êtes arrivé sur la case n°" + av.getPosition());
         return 0;
@@ -91,8 +101,8 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      */
     //Permet au joueur de s'échapper pendant un combat
     //Pareil que moveAvatar mais affecte un malus de -2 pt à l'avatar
-    public int escapeAvatar(Avatar av, String way, IGameServer gameServer) throws RemoteException {
-        int res = moveAvatar(av,way,gameServer);
+    public int escapeAvatar(Avatar av, String way, IGameServer gameServer, IChatServer cs) throws RemoteException, InterruptedException {
+        int res = moveAvatar(av,way,gameServer, cs);
         if(res>-1)
             System.out.println(av.getName()+": fuit");
         if(res>=0) gameServer.escape(av,way);
