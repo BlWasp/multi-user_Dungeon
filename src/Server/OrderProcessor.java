@@ -12,13 +12,13 @@ public class OrderProcessor {
     private final Player p;
     private IGameServer gameserver;
     private IChatServer chatserver;
-    private ServerController serverController;
+    private IServerController serverController;
 
-    public OrderProcessor(Player p, IGameServer gameserver, IChatServer chatserver, ServerController serverController) {
+    public OrderProcessor(Player p) {
         this.p = p;
-        this.gameserver = gameserver;
-        this.chatserver = chatserver;
-        this.serverController = serverController;
+        gameserver = p.getObj();
+        chatserver = p.getCs();
+        serverController = p.getMainServer();
     }
 
     /**
@@ -57,7 +57,7 @@ public class OrderProcessor {
      *
      * @return
      */
-    public ServerController getServerController() {
+    public IServerController getServerController() {
         return serverController;
     }
 
@@ -67,6 +67,10 @@ public class OrderProcessor {
      */
     public void setServerController(ServerController serverController) {
         this.serverController = serverController;
+    }
+
+    public String[] spliter(String s) {
+        return s.split(" ");
     }
 
     /**
