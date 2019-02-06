@@ -2,6 +2,7 @@ package Server;
 
 import Client.Avatar;
 import Client.IPlayer;
+import Client.Player;
 import javafx.util.Pair;
 
 import java.rmi.Naming;
@@ -82,7 +83,26 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
     public void speak(Avatar sender, String text) throws RemoteException {
         List<Avatar> lav = positionMap.get(sender.getPosition());
         for (Avatar receiver : lav) {
-            lclient.get(receiver).receiveMessage(sender, text);
+            try{
+                lclient.get(receiver).receiveMessage(sender, text);
+            }
+            catch (RemoteException e){
+                System.out.println("client injoignable");
+                if(!reachable(lclient.get(receiver))){
+                    lclient.remove(receiver);
+                    System.out.println("client supprimé car injoignable");
+                }
+                else{
+                    try {
+                    lclient.get(receiver).receiveMessage(sender, text);
+                    }
+                    catch (RemoteException re){
+                        lclient.remove(receiver);
+                        System.out.println("client supprimé car instable");
+                    }
+
+                }
+            }
         }
     }
 
@@ -119,6 +139,19 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
         listAvatar.add(av);
         lclient.put(av,player);
         return available;
+    }
+
+    private boolean reachable(IPlayer p){
+        Integer res=0;
+        for (int i = 0; i < 3; i++) {
+            try {
+                res=p.ping();
+            } catch (RemoteException e) {
+
+            }
+            if(res==1)return true;
+        }
+        return false;
     }
 
     public Avatar getAvatar(Avatar av){
@@ -158,7 +191,7 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
     }
 
     @Override
-    public int move(Avatar avUsed, String goTo) throws InterruptedException, RemoteException {
+    public int move(Avatar avUsed, String goTo) throws RemoteException {
         avUsed=getAvatar(avUsed);
         if(avUsed==null) return -10;
         if(!avUsed.isInLife)return -9;

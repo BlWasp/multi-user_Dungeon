@@ -55,13 +55,21 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      * @return
      * @throws RemoteException
      */
-    public int moveAvatar(Avatar av, String way, IGameServer gameServer, IChatServer chatServer) throws RemoteException, InterruptedException {
+    public int moveAvatar(Avatar av, String way, IGameServer gameServer, IChatServer chatServer) throws RemoteException {
         int res = gameServer.move(av, way);
         while(res==-1){
             System.out.println("Il y a pas moyen de passer par là");
             System.out.println("Dites-nous vers où vous voulez aller.");
             //demander où aller
-            res = gameServer.move(av, way);
+            Scanner scan = new Scanner(System.in);
+            String answer=scan.nextLine();
+            try {
+                res = op.process(op.spliter(answer), av);
+            } catch (InterruptedException e) {
+                System.out.println("orderProcessor InterruptesException");
+                e.printStackTrace();
+            }
+            System.out.println(res);
         }
         if(res==-2){
             System.out.println("Case non géré par le serveur");
@@ -101,8 +109,9 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      */
     //Permet au joueur de s'échapper pendant un combat
     //Pareil que moveAvatar mais affecte un malus de -2 pt à l'avatar
-    public int escapeAvatar(Avatar av, String way, IGameServer gameServer, IChatServer cs) throws RemoteException, InterruptedException {
-        int res = moveAvatar(av,way,gameServer, cs);
+    public int escapeAvatar(Avatar av, String way, IGameServer gameServer, IChatServer cs) throws RemoteException {
+        int res = 0;
+        res = moveAvatar(av,way,gameServer, cs);
         if(res>-1)
             System.out.println(av.getName()+": fuit");
         if(res>=0) gameServer.escape(av,way);
@@ -151,7 +160,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
 
     public static void main(String args[]) {
         try {
-            Avatar avTest = new Avatar("Ping");
+            Avatar avTest = new Avatar("Pong");
             //Avatar avBis = new Avatar("Pong");
 
             Player p = new Player(avTest);
@@ -257,7 +266,14 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      * @param attacker
      * @throws RemoteException
      */
-    //a utiliser dans le futur pour les attaques. A discuter avec Guillaume
+    /**
+     * Permet de savoir si l'on est attaqué ou soigné
+     * @param attacked
+     * celui qui est ciblé
+     * @param attacker
+     * celui qui génère l'évènement
+     * @throws RemoteException
+     */
     @Override
     public void underAttack(Avatar attacked, Entity attacker) throws RemoteException {
         String attackedName = attacked.getName();
@@ -270,9 +286,28 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         this.updateAvatar(attacked);
     }
 
+    /**
+     * Permet de recevoir les messages des joueur présent sur la même case
+     * @param sender
+     * Emméteur du message
+     * @param message
+     * Contenu du message
+     * @throws RemoteException
+     */
     @Override
     public void receiveMessage(Avatar sender, String message) throws RemoteException{
         System.out.println(sender.getName()+" : "+message);
+    }
+
+    /**
+     * Permet au serveur de vérifier si le client est toujours joignable
+     * @return
+     * retourne 1 s'il est joignable -> génère une exception sinon (cote serveur)
+     * @throws RemoteException
+     */
+    @Override
+    public int ping() throws RemoteException {
+        return 1;
     }
 }
 //intro, cas d'utilisation, diagramme de sequence, diagramme de classe (diagramme de composant), explication design pattern + explication générale (pk on le fait comme ca)

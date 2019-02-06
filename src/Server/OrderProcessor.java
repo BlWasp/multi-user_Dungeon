@@ -4,6 +4,7 @@ import Client.Avatar;
 import Client.Player;
 
 import java.rmi.RemoteException;
+import java.util.Arrays;
 
 /**
  * Classe d'un gestionnaire d'ordre
@@ -73,6 +74,14 @@ public class OrderProcessor {
         return s.split(" ");
     }
 
+    public String catArray(String[] tab){
+        String res="";
+        for( String str : tab){
+            res = res + str +" ";
+        }
+        return res;
+    }
+
     /**
      * Gère l'ordre
      * @param order
@@ -83,15 +92,15 @@ public class OrderProcessor {
     public int process (String[] order, Avatar av) throws RemoteException, InterruptedException {
         switch (order[0]) {
             case "Move":
-                p.moveAvatar(av, order[1], gameserver, chatserver);
-                break;
+                return p.moveAvatar(av, order[1], gameserver, chatserver);
             /*case "Attack":
                 if (order[1])
                 p.attackAvatar(order[2], Avatar ifAvatar, av, pos, gameserver, pow);
                 break;*/
             case "/":
-                chatserver.speak(av, order[1]);
-               // System.out.println(av.getName()+" : "+ order[1]);
+                order[0]=" ";
+                String message = catArray(order);
+                chatserver.speak(av, message);
                 break;
             case "Escape":
                 p.escapeAvatar(av, order[1], gameserver, chatserver);
@@ -101,6 +110,7 @@ public class OrderProcessor {
                 return 0;
             default:
                 System.out.println("Unknown order, please enter one of the following orders : Move, Attack, Escape, Exit or start your order with / to chat");
+                return -1;
         }
 
         /**
