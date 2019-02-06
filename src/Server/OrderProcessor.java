@@ -89,6 +89,10 @@ public class OrderProcessor {
                 if (order[1])
                 p.attackAvatar(order[2], Avatar ifAvatar, av, pos, gameserver, pow);
                 break;*/
+            case "/":
+                chatserver.speak(av, order[1]);
+               // System.out.println(av.getName()+" : "+ order[1]);
+                break;
             case "Escape":
                 p.escapeAvatar(av, order[1], gameserver);
                 break;
@@ -96,7 +100,7 @@ public class OrderProcessor {
                // serverController.serverDisconnection();
                 return 0;
             default:
-                System.out.println("Unknown order, please enter one of the following orders : Move, Attack, Escape, Exit or start your order with \" to chat");
+                System.out.println("Unknown order, please enter one of the following orders : Move, Attack, Escape, Exit or start your order with / to chat");
         }
 
         /**

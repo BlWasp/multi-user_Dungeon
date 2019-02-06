@@ -180,7 +180,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 System.out.println("Aucun serveur de chat trouvé");
                 return;
             }
-            if(p.cs.connection(p.av, 0)==1) {
+            if(p.cs.connection(p.av, 0, p)==1) {
                 avTest.setPosition(0);
                 System.out.println("Connected");
             }
@@ -258,6 +258,11 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         else
             System.out.println(attackedName+" : se fait soigner par "+attackerName+" et gagne "+damage*-1+" PV.");
         this.updateAvatar(attacked);
+    }
+
+    @Override
+    public void receiveMessage(Avatar sender, String message) throws RemoteException{
+        System.out.println(sender.getName()+" : "+message);
     }
 }
 //intro, cas d'utilisation, diagramme de sequence, diagramme de classe (diagramme de composant), explication design pattern + explication générale (pk on le fait comme ca)

@@ -1,6 +1,7 @@
 package Server;
 
 import Client.Avatar;
+import Client.IPlayer;
 import javafx.util.Pair;
 
 import java.rmi.Naming;
@@ -14,6 +15,7 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
     private Zone z = new Zone(0,0);
     int size = 8;
     private Map<Integer, List<Avatar>> positionMap;
+    private Map<Avatar, IPlayer> lclient = new LinkedHashMap<>();
     private List<Avatar> listAvatar;
 
     /**
@@ -77,8 +79,11 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
 
 
     @Override
-    public void speak(String uid, String text) throws RemoteException {
-
+    public void speak(Avatar sender, String text) throws RemoteException {
+        List<Avatar> lav = positionMap.get(sender.getPosition());
+        for (Avatar receiver : lav) {
+            lclient.get(receiver).receiveMessage(sender, text);
+        }
     }
 
     /**
@@ -105,12 +110,13 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
      * @throws RemoteException
      */
     @Override
-    public int connection(Avatar av, Integer position) throws RemoteException {
+    public int connection(Avatar av, Integer position, IPlayer player) throws RemoteException {
         if(available==0)
             return available;
         List<Avatar> user = positionMap.get(position);
         user.add(av);
         listAvatar.add(av);
+        lclient.put(av,player);
         return available;
     }
 
