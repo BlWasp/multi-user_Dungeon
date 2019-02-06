@@ -109,6 +109,10 @@ public class OrderProcessor {
             case "Escape":
                 p.escapeAvatar(av, order[1], gameserver, chatserver);
                 break;
+            case "N":
+            case "n":
+            case "Neighbour":
+                p.getDm().displayNeighbour(p.getCs());
             case "Exit":
                // serverController.serverDisconnection();
                 return 0;

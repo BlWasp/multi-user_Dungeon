@@ -19,6 +19,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     private IChatServer cs;
     private Avatar av;
     private OrderProcessor op;
+    private DisplayManager dm;
 
 
     /**
@@ -30,6 +31,11 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     public Player(Avatar av) throws RemoteException {
         super();
         this.av=av;
+        dm = new DisplayManager(av);
+    }
+
+    public DisplayManager getDm() {
+        return dm;
     }
 
     public IServerController getMainServer() {
@@ -80,6 +86,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             }
             return moveAvatar(av, way, obj, chatServer);
         }
+        //!Mauvaise gestion changement de serveur chat
         int cres = chatServer.move(av, way);
         if(res==-2){
             System.out.println("Case non géré par le serveur");
@@ -160,7 +167,10 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
 
     public static void main(String args[]) {
         try {
-            Avatar avTest = new Avatar("Pong");
+            Scanner scan = new Scanner(System.in);
+            System.out.println("Enter your avatar's name :");
+            String name=scan.next();
+            Avatar avTest = new Avatar(name);
             //Avatar avBis = new Avatar("Pong");
 
             Player p = new Player(avTest);
@@ -231,10 +241,9 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             //escapeAvatar(avTest,"S", obj);
             //escapeAvatar(avTest, "S", obj);*/
             p.op=new OrderProcessor(p);
-            Scanner scan = new Scanner(System.in);
-
+            String answer=scan.nextLine();
             while(true) {
-                String answer=scan.nextLine();
+                answer=scan.nextLine();
                 p.op.process(p.op.spliter(answer), p.av);
             }
 

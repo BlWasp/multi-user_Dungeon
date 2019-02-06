@@ -4,6 +4,7 @@ import Client.Avatar;
 import Client.IPlayer;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  * Interface RMI pour le serveur de chat
@@ -13,4 +14,5 @@ public interface IChatServer extends java.rmi.Remote {
     void updateZone(Zone z) throws RemoteException;
     int connection(Avatar av, Integer position, IPlayer player) throws RemoteException;
     public int move(Avatar avUsed, String goTo) throws RemoteException;
+    public List<Avatar> getNeighbour(Avatar av) throws  RemoteException;
 }

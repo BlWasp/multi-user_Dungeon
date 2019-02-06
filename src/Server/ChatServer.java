@@ -106,6 +106,7 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
         }
     }
 
+
     /**
      * Mets à jour la zone à gérer.
      * Survient lors de l'ajout ou la supression d'un serverchat dans la partie
@@ -140,9 +141,28 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
         lclient.put(av,player);
         return available;
     }
+
+    /**
+     * déconnecte un joueur
+     * @param p
+     * joueur a déconnecté
+     * @param av
+     * Avatar du joueur
+     */
     public void disconnectPlayer(IPlayer p, Avatar av){
         //Ajouter ici la sauvegarde
-        positionMap.remove(av.getPosition(), av);
+        av = getAvatar(av);
+        boolean res = positionMap.get(av.getPosition()).remove(av);
+        System.out.println(res);
+        System.out.println(av.getPosition());
+        /*for( Avatar sup : positionMap.get(av.getPosition())){
+            if(sup.getName()==av.getName()){
+                System.out.println("suppress !!!!");
+                res = positionMap.get(av.getPosition()).remove(sup);
+                System.out.println(res);
+                break;
+            }
+        }*/
         lclient.remove(p);
 
     }
@@ -244,6 +264,12 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
         }
         return dest;
 
+    }
+
+    @Override
+    public List<Avatar> getNeighbour(Avatar av) throws RemoteException {
+        av = getAvatar(av);
+        return positionMap.get(av.getPosition());
     }
 
     public Zone getZ() {
