@@ -159,7 +159,7 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
     }
 
     public static void main(String args[]) throws Exception {
-        // Démarre le rmiregistry
+        //Démarre le rmiregistry
         //LocateRegistry.createRegistry(1099);
         GameServerImpl obj = new GameServerImpl();
         IServerController mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
@@ -169,13 +169,13 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
         Thread thread = new Thread(gs);
         thread.start();
         //Naming.rebind("Dungeon", obj);
-       // System.out.println("Server.GameServerImpl launched");
-        Scanner scan = new Scanner(System.in);
-        String answer=scan.nextLine();
+        System.out.println("Server.GameServerImpl launched");
+        //Scanner scan = new Scanner(System.in);
+        //String answer=scan.nextLine();
         //if(answer=="Q"){
-        mainServer.gameServerDisconnection(gs.getZ());
-        System.out.println(answer);
-        exit();
+        //mainServer.gameServerDisconnection(gs.getZ());
+        //System.out.println(answer);
+        //exit();
         //}
     }
 

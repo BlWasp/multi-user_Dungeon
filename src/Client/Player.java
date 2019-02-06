@@ -132,10 +132,10 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     public static void main(String args[]) {
         try {
             Avatar avTest = new Avatar("Ping");
-            Avatar avBis = new Avatar("Pong");
+            //Avatar avBis = new Avatar("Pong");
 
             Player p = new Player(avTest);
-            Player p2 = new Player(avBis);
+            //Player p2 = new Player(avBis);
 
             // Récupération d'un proxy sur l'objet
             //IGameServer obj = (IGameServer) Naming.lookup("//localhost/Dungeon");
@@ -152,7 +152,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             else
                 System.out.println("Connection failed");
 
-            p2.mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
+            /*p2.mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
             p2.obj = p2.mainServer.findGameServer(0);
             if(p2.obj==null){
                 System.out.println("Aucun serveur trouvé");
@@ -163,7 +163,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 System.out.println("Connected");
             }
             else
-                System.out.println("Connection failed");
+                System.out.println("Connection failed");*/
             //connection au serveur de chat
             p.cs = p.mainServer.findChatServer(0);
             if(p.cs==null){
@@ -176,7 +176,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             }
             else
                 System.out.println("Connection failed");
-            p2.cs = p2.mainServer.findChatServer(0);
+            /*p2.cs = p2.mainServer.findChatServer(0);
             if(p2.cs==null){
                 System.out.println("Aucun serveur de chat trouvé");
                 return;
@@ -186,18 +186,18 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 System.out.println("Connected");
             }
             else
-                System.out.println("Connection failed");
+                System.out.println("Connection failed");*/
             //fin connection
 
-            p.attackAvatar(avBis,avTest,p.obj,1);
-            p.attackM(avBis,avBis.getPosition(),p.obj,1);
+            //p.attackAvatar(avBis,avTest,p.obj,1);
+            //p.attackM(avBis,avBis.getPosition(),p.obj,1);
 
-            p.escapeAvatar(p.av,"S", p.obj);
-            p2.moveAvatar(p2.av, "S",p2.obj);
+            //p.escapeAvatar(p.av,"S", p.obj);
+            //p2.moveAvatar(p2.av, "S",p2.obj);
             //avTest.setPosition(avTest.getPosition()+1);
-            p.escapeAvatar(p.av,"S", p.obj);
+            //p.escapeAvatar(p.av,"S", p.obj);
             //escapeAvatar(avTest,"S", obj);
-            p.escapeAvatar(p.av,"S", p.obj);
+            //p.escapeAvatar(p.av,"S", p.obj);
             //escapeAvatar(avTest,"S", obj);
             //escapeAvatar(avTest, "S", obj);
         } catch (Exception e) {
