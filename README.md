@@ -37,6 +37,8 @@ Installation
 ------------
 sudo apt-get install mysql-server
 
+sudo apt-get install mysql-client
+
 Lancement
 ---------
 sudo systemctl start mysql
