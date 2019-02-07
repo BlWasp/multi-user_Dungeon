@@ -29,3 +29,18 @@ To Do
     -éclatement des classes
     -attaque en continu
     
+    
+BDD
+===
+
+Installation
+------------
+sudo apt-get install mysql-server
+
+Lancement
+---------
+sudo systemctl start mysql
+sudo mysql
+> CREATE DATABASE projetMUD;
+> USE projetMUD;
+> SOURCE fichier.sql
