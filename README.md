@@ -49,4 +49,8 @@ sudo mysql
 
 > USE projetMUD;
 
-> SOURCE fichier.sql
+> SOURCE fichier.sql;
+
+> CREATE USER 'guillaume'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Yolo1234';
+
+> GRANT ALL ON projetMUD.* TO 'guillaume'@'localhost';
