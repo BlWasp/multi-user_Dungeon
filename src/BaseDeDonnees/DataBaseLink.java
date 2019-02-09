@@ -12,7 +12,7 @@ public class DataBaseLink {
 
             String url = "jdbc:mysql://localhost:3306/projetMUD";
             String user = "guillaume";
-            String passwd = "Yolo1234";
+            String passwd = "1234";
 
             conn = DriverManager.getConnection(url, user, passwd);
             System.out.println("Connexion effective !");
