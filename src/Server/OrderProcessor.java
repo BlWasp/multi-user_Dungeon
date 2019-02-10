@@ -94,7 +94,7 @@ public class OrderProcessor {
             case "M":
             case "m":
             case "Move":
-                return p.moveAvatar(av, order[1], gameserver, chatserver);
+                return p.moveAvatar(av, order[1], gameserver, chatserver,p);
             /*case "Attack":
                 if (order[1])
                 p.attackAvatar(order[2], Avatar ifAvatar, av, pos, gameserver, pow);
@@ -107,7 +107,7 @@ public class OrderProcessor {
             case "E":
             case "e":
             case "Escape":
-                p.escapeAvatar(av, order[1], gameserver, chatserver);
+                p.escapeAvatar(av, order[1], gameserver, chatserver,p);
                 break;
             case "N":
             case "n":

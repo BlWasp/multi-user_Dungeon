@@ -14,5 +14,6 @@ public interface IChatServer extends java.rmi.Remote {
     void updateZone(Zone z) throws RemoteException;
     int connection(Avatar av, Integer position, IPlayer player) throws RemoteException;
     public int move(Avatar avUsed, String goTo) throws RemoteException;
+    public int moveTo(Avatar avUsed, Integer position) throws RemoteException;
     public List<Avatar> getNeighbour(Avatar av) throws  RemoteException;
 }

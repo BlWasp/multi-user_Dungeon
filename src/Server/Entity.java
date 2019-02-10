@@ -41,8 +41,17 @@ public abstract class Entity implements Serializable, Cloneable {
 
         Entity ent = (Entity) obj;
         // field comparison
-        return Objects.equals(uid, ent.uid)
-                && Objects.equals(name, ent.name);
+        return Objects.equals(name, ent.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0,i = 0;
+        for(char a : name.toCharArray()){
+            i++;
+            hash = hash + ((int) a * 3)* i;
+        }
+        return hash;
     }
 
     @Override
@@ -112,5 +121,6 @@ public abstract class Entity implements Serializable, Cloneable {
         }
         return this.getLifePoint();
     }
+
 
 }

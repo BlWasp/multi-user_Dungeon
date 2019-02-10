@@ -8,7 +8,6 @@ import java.io.Serializable;
  * Il s'agit de la classe représentant un Avatar, donc le personnage en jeu
  */
 public class Avatar extends Entity {
-
     private static final long serialVersionUID = 1548468510L;
 
 

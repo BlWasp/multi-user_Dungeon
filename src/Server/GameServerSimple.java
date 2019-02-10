@@ -80,6 +80,7 @@ public class GameServerSimple implements Runnable{
             case "S" : dest = r.getSouth().dest; break;
             default : dest = -1; break;
         }
+        //si la destination n'est pas disponible
         if(dest==-1)
             return -1;
         //Si le serveur ne gère pas la case

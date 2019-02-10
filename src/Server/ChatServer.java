@@ -3,6 +3,7 @@ package Server;
 import Client.Avatar;
 import Client.IPlayer;
 import Client.Player;
+import com.sun.security.ntlm.Client;
 import javafx.util.Pair;
 
 import java.rmi.Naming;
@@ -84,9 +85,11 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
         List<Avatar> lav = positionMap.get(sender.getPosition());
         for (Avatar receiver : lav) {
             try{
-                lclient.get(receiver).receiveMessage(sender, text);
+
+                IPlayer rcv = lclient.get(receiver);
+                rcv.receiveMessage(sender, text);
             }
-            catch (RemoteException e){
+            catch (Exception e){
                 System.out.println("client injoignable");
                 if(!reachable(lclient.get(receiver))){
                     disconnectPlayer(lclient.get(receiver),receiver);
@@ -135,10 +138,14 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
         if(available==0)
             return available;
         if(lclient.containsKey(av)) return -1;
+        System.out.println("nouveau client : "+av.getName());
         List<Avatar> user = positionMap.get(position);
         user.add(av);
         listAvatar.add(av);
         lclient.put(av,player);
+        System.out.println(lclient);
+        System.out.println("-----");
+        System.out.println(listAvatar);
         return available;
     }
 
@@ -232,7 +239,9 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
 
     @Override
     public int move(Avatar avUsed, String goTo) throws RemoteException {
+        System.out.println("pav "+avUsed.getPosition());
         avUsed=getAvatar(avUsed);
+        System.out.println("pav "+avUsed.getPosition());
         if(avUsed==null) return -10;
         if(!avUsed.isInLife)return -9;
         int position = avUsed.getPosition();
@@ -251,19 +260,29 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
         if(dest==-1)
             return -1;
         //Si le serveur ne gère pas la case
-        if(dest<(Integer) z.getKey() || dest>(Integer) z.getValue())
+        if(dest<(Integer) z.getKey() || dest>(Integer) z.getValue()) {
+            System.out.println(dest+" non géré");
+            disconnectPlayer(lclient.get(avUsed),avUsed);
             return -2;
-        //permet d'attendre le prochain tour, pour synchroniser les tour de jeux
+        }
         positionMap.get(position).remove(avUsed);
         positionMap.get(dest).add(avUsed);
         avUsed.setPosition(dest);
-        try {
-            lclient.get(avUsed).updateAvatar(avUsed);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
         return dest;
 
+    }
+
+    @Override
+    public int moveTo(Avatar avUsed, Integer position) throws RemoteException {
+        if(position<(Integer) z.getKey() || position>(Integer) z.getValue()) {
+            System.out.println(position+" non géré");
+            disconnectPlayer(lclient.get(avUsed),avUsed);
+            return -1;
+        }
+        System.out.println(positionMap.get(getAvatar(avUsed).getPosition()).remove(avUsed));
+        avUsed.setPosition(position);
+        positionMap.get(position).add(avUsed);
+        return 0;
     }
 
     @Override

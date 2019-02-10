@@ -238,6 +238,7 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         }
         for (Map.Entry<Zone, IChatServer> pair : lchat.entrySet()) {
             if((Integer) pair.getKey().getKey()<=dest&&(Integer) pair.getKey().getValue()>=dest) {
+                System.out.println(pair);
                 return lchat.get(pair.getKey());
             }
         }
