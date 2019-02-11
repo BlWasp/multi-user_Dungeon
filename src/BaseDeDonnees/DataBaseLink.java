@@ -11,7 +11,7 @@ public class DataBaseLink {
             System.out.println("Driver O.K.");
 
             String url = "jdbc:mysql://localhost:3306/projetMUD";
-            String user = "guillaume";
+            String user = "userProjetMUD";
             String passwd = "1234";
 
             conn = DriverManager.getConnection(url, user, passwd);
