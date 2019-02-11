@@ -63,6 +63,19 @@ public class DataBaseLink {
         }
     }
 
+    public void updateDB(String datas, String table, String options) {
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+            String query = "UPDATE " + table + " SET " + datas + " WHERE " + options;
+            state.executeUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
     public static void main(String[] args) {
 
         DataBaseLink dbl = new DataBaseLink();
@@ -72,6 +85,8 @@ public class DataBaseLink {
         dbl.insertDB("(6,4)","Monstre");
         dbl.insertDB("(7,3)","Monstre");
 
+        dbl.searchDB("Vie","Monstre","Place=6");
+        dbl.updateDB("Vie=2","Monstre","Place=6");
         dbl.searchDB("Vie","Monstre","Place=6");
 
     }
