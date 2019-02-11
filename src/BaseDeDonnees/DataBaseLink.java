@@ -76,7 +76,7 @@ public class DataBaseLink {
     }
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         DataBaseLink dbl = new DataBaseLink();
         dbl.connectDB();
@@ -89,5 +89,5 @@ public class DataBaseLink {
         dbl.updateDB("Vie=2","Monstre","Place=6");
         dbl.searchDB("Vie","Monstre","Place=6");
 
-    }
+    }*/
 }

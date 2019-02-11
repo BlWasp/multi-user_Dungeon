@@ -1,5 +1,6 @@
 package Server;
 
+import BaseDeDonnees.DataBaseLink;
 import Client.Avatar;
 import Client.IPlayer;
 import javafx.util.Pair;
@@ -19,6 +20,7 @@ import static javafx.application.Platform.exit;
 public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
 
     private static GameServerSimple gs;
+    private DataBaseLink dbl = new DataBaseLink();
 
     protected GameServerImpl() throws RemoteException {
         super();
@@ -158,6 +160,27 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
         System.out.println(gs.getZ());
     }
 
+
+    public void connectDB(){
+        dbl.connectDB();
+    }
+
+    public void insertDB(String datas, String table) {
+        dbl.insertDB(datas,table);
+    }
+
+    public void updateDB(String data1, String data2, String table, String option1, String option2) {
+        String datas = data1 + "=" + data2;
+        String options = option1 + "=" + option2;
+        dbl.updateDB(datas,table,options);
+    }
+
+    public void searchDB(String datas, String table, String option1, String option2) {
+        String options = option1 + "=" + option2;
+        dbl.searchDB(datas,table,options);
+    }
+
+
     public static void main(String args[]) throws Exception {
         //Démarre le rmiregistry
         //LocateRegistry.createRegistry(1099);
@@ -170,6 +193,16 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
         thread.start();
         //Naming.rebind("Dungeon", obj);
         System.out.println("Server.GameServerImpl launched");
+
+        /*obj.connectDB();
+        obj.insertDB("(5,2)","Monstre");
+        obj.insertDB("(6,4)","Monstre");
+        obj.insertDB("(7,3)","Monstre");
+
+        obj.searchDB("Vie","Monstre","Place","6");
+        obj.updateDB("Vie","2","Monstre","Place","6");
+        obj.searchDB("Vie","Monstre","Place","6");*/
+
         //Scanner scan = new Scanner(System.in);
         //String answer=scan.nextLine();
         //if(answer=="Q"){
