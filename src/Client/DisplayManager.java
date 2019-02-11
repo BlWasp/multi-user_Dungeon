@@ -35,6 +35,16 @@ public class DisplayManager {
         }
     }
 
+    /**
+     * Affiche les informations relatives à la position
+     * -n° de la salle et portes
+     * nom et point de vie du monstre
+     * nbr d'utilisateur dans la salle
+     * @param gs
+     * serveur de jeu courant
+     * @param cs
+     * serveur de chat courant
+     */
     public void displayPosition(IGameServer gs, IChatServer cs){
         Pair<Room, Entity> result = null;
         try {
@@ -66,6 +76,27 @@ public class DisplayManager {
             return "0"+position;
         }
         return position.toString();
+    }
+
+    public void help(){
+        System.out.println("command list :");
+        System.out.println("-To speak with people in your room");
+        System.out.println("\t/ 'message'");
+        System.out.println("-To escape from a room/battle");
+        System.out.println("\t"+Colors.blue+"Escape 'dest'"+Colors.reset+" or "+Colors.blue+"E 'dest' "+Colors.reset+"or "+Colors.blue+"e 'dest'"+Colors.reset);
+        System.out.println("\t#where 'dest' can be N (North), E (East), S (South) or W (West)");
+        System.out.println("\t#Be careful if you run away, you will loose some life points");
+        System.out.println("-To print this help message");
+        System.out.println(Colors.blue+"\tHelp "+Colors.reset+"or"+Colors.blue+" H "+Colors.reset+"or"+Colors.blue+" h"+Colors.reset);
+        System.out.println("-To display game info");
+        System.out.println(Colors.blue+"\tInfo "+Colors.reset+"or"+Colors.blue+" I "+Colors.reset+"or"+Colors.blue+" i"+Colors.reset);
+        System.out.println("-To move on the board");
+        System.out.println(Colors.blue+"\tMove 'dest'"+Colors.reset+" or"+Colors.blue+" M 'dest' "+Colors.reset+"or"+Colors.blue+" m 'dest'"+Colors.reset);
+        System.out.println("\t#where 'dest' can be N (North), E (East), S (South) or W (West)");
+        System.out.println("-To display players in your room");
+        System.out.println(Colors.blue+"\tNeighbour"+Colors.reset+" or"+Colors.blue+" N "+Colors.reset+"or"+Colors.blue+" n"+Colors.reset);
+        System.out.println("-To quit the game");
+        System.out.println(Colors.blue+"\tExit"+Colors.reset);
     }
 
 

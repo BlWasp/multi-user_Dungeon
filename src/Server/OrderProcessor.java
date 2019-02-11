@@ -112,14 +112,19 @@ public class OrderProcessor {
             case "Escape":
                 p.escapeAvatar(av, order[1], gameserver, chatserver,p);
                 break;
+            case "h":
+            case "H":
+            case "Help":
+                p.getDm().help();
+                break;
             case "N":
             case "n":
             case "Neighbour":
                 p.getDm().displayNeighbour(p.getCs());
                 break;
-            case "R":
-            case "r":
-            case "Room":
+            case "I":
+            case "i":
+            case "Info":
                 p.getDm().displayPosition(p.getObj(), p.getCs());
                 break;
             case "Exit":
