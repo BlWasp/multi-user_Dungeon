@@ -24,13 +24,13 @@ public class Grid implements Serializable {
             //On initialise les bordures de la futur pièce en fonction de sa position
             Border n,w,s,e;
             //Si on est sur les cases du haut on place un mur au nord
-            n=(i<size) ? new Wall() : new Door(i-size, "h");
+            n=(i<size) ? new Wall("h") : new Door(i-size, "h");
             //Si on est sur les cases du bord droit on place un mur à l'est
-            e=(i%size==size-1) ? new Wall() : new Door(i+1, "v");
+            e=(i%size==size-1) ? new Wall("v") : new Door(i+1, "v");
             //pareil pour le bord inférieur
-            s=(i>=size*size-size) ? new Wall() : new Door(i+size, "h");
+            s=(i>=size*size-size) ? new Wall("h") : new Door(i+size, "h");
             //puis pour le bord gauche
-            w=(i%size==0) ? new Wall() : new Door(i-1, "v");
+            w=(i%size==0) ? new Wall("v") : new Door(i-1, "v");
 
             //On instantie la pièce
             Room current = new Room(i,n,w,s,e);

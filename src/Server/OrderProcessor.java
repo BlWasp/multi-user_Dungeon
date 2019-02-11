@@ -116,6 +116,12 @@ public class OrderProcessor {
             case "n":
             case "Neighbour":
                 p.getDm().displayNeighbour(p.getCs());
+                break;
+            case "R":
+            case "r":
+            case "Room":
+                p.getDm().displayPosition(p.getObj(), p.getCs());
+                break;
             case "Exit":
                // serverController.serverDisconnection();
                 return 0;

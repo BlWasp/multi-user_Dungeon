@@ -3,6 +3,7 @@ package Server;
 import Client.Avatar;
 import Client.IPlayer;
 import com.sun.security.ntlm.Client;
+import javafx.util.Pair;
 
 import java.awt.datatransfer.DataFlavor;
 import java.rmi.RemoteException;
@@ -41,7 +42,7 @@ public class GameServerSimple implements Runnable{
         this.z = z;
         for (int i = 0; i < size*size; i++) {
             positionAvatar.put(i, new ArrayList<Avatar>());
-            //positionMonster.put(i, new Monster());
+            positionMonster.put(i, new Monster("Galy",i));
         }
         round=0;
         gGrid.displayGrid();
@@ -69,8 +70,8 @@ public class GameServerSimple implements Runnable{
         if(!avUsed.isInLife)return -9;
         int position = avUsed.getPosition();
         Integer x,y;
-        x=position/8;
-        y=position%8;
+        x=position/size;
+        y=position%size;
         Room r = gGrid.getRoom(x,y);
         Integer dest;
         switch (goTo) {
@@ -261,5 +262,11 @@ public class GameServerSimple implements Runnable{
         round++;
         System.out.println(round);
         notifyAll();
+    }
+
+    public Pair<Room, Entity> getRoomInfo(Entity avatar){
+        avatar = getAvatar((Avatar) avatar);
+        Pair<Room,Entity> res = new Pair<>(gGrid.getRoom(avatar.getPosition()/gGrid.size,avatar.getPosition()%gGrid.size),positionMonster.get(avatar.getPosition()));
+        return res;
     }
 }

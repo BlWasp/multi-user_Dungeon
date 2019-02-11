@@ -4,15 +4,19 @@ package Server;
  * Classe pour créer un mur non traversable
  */
 public class Wall extends Border {
-
-    public Wall() {
+    private String alignment;
+    public Wall(String alignment) {
         crossable=false;
         dest=-1;
+        this.alignment = alignment;
 
     }
 
     @Override
     public String toString() {
-        return "x";
+        if(alignment.equals("v"))
+            return "▮";
+        else
+            return "▬";
     }
 }

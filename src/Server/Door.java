@@ -27,10 +27,10 @@ public class Door extends Border implements Serializable {
      */
     @Override
     public String toString() {
-        if(alignment=="v")
-            return "|";
+        if(alignment.equals("v"))
+            return "▯";
         else
-            return "-";
+            return "▭";
     }
 
 

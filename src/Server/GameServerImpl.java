@@ -181,6 +181,11 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
     }
 
 
+    @Override
+    public Pair<Room, Entity> getRoomInfo(Entity avatar) throws RemoteException{
+        return gs.getRoomInfo(avatar);
+    }
+
     public static void main(String args[]) throws Exception {
         //Démarre le rmiregistry
         //LocateRegistry.createRegistry(1099);

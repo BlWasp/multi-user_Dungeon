@@ -2,6 +2,7 @@ package Server;
 
 import Client.Avatar;
 import Client.IPlayer;
+import javafx.util.Pair;
 
 import java.rmi.RemoteException;
 
@@ -24,4 +25,6 @@ public interface IGameServer extends java.rmi.Remote{
 
     void displayGameInfo() throws RemoteException;
     void updateZone(Zone z) throws RemoteException;
+
+    Pair<Room, Entity> getRoomInfo(Entity avatar) throws RemoteException;
 }
