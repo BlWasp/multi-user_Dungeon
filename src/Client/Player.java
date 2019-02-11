@@ -52,14 +52,15 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
 
     public int moveAvatarCs(Avatar av, int position, IChatServer chatServer, Player p) throws RemoteException {
         Integer res = cs.moveTo(av, position);
-        if(res==-1){
+        if(res!=0){
             System.out.println("changement de serveur de chat");
-            cs = mainServer.findChatServer(av.getPosition());
+            cs = mainServer.findChatServer(res);
             if(cs==null){
                 System.out.println("aucun serveur trouvé");
                 return -1;
             }
             p.cs =cs;
+            p.op.setChatserver(cs);
             cs.connection(av, av.getPosition(), p);
             res = moveAvatarCs(av, position,cs,p);
         }

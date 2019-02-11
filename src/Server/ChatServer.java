@@ -277,7 +277,7 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServer{
         if(position<(Integer) z.getKey() || position>(Integer) z.getValue()) {
             System.out.println(position+" non géré");
             disconnectPlayer(lclient.get(avUsed),avUsed);
-            return -1;
+            return position;
         }
         System.out.println(positionMap.get(getAvatar(avUsed).getPosition()).remove(avUsed));
         avUsed.setPosition(position);

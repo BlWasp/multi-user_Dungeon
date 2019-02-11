@@ -10,10 +10,11 @@ import java.util.Arrays;
  * Classe d'un gestionnaire d'ordre
  */
 public class OrderProcessor {
-    private final Player p;
+    public final Player p;
     private IGameServer gameserver;
     private IChatServer chatserver;
     private IServerController serverController;
+
 
     public OrderProcessor(Player p) {
         this.p = p;
@@ -21,7 +22,9 @@ public class OrderProcessor {
         chatserver = p.getCs();
         serverController = p.getMainServer();
     }
-
+    public void setChatServer(IChatServer cs){
+        chatserver=cs;
+    }
     /**
      *
      * @return
