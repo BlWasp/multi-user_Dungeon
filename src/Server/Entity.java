@@ -8,7 +8,7 @@ import java.util.Objects;
 public abstract class Entity implements Serializable, Cloneable {
 
     protected final String name;
-    protected int lifePoint;
+    protected Integer lifePoint;
     protected Integer position;
     protected boolean isInLife;
     protected long uid;
@@ -76,7 +76,7 @@ public abstract class Entity implements Serializable, Cloneable {
      * Récupère le nombre de points de vie de l'entité
      * @return
      */
-    public int getLifePoint() {
+    public Integer getLifePoint() {
         return lifePoint;
     }
 

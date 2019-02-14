@@ -246,6 +246,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     @Override
     public void updateAvatar(Avatar avatar) throws RemoteException {
         if(!avatar.getPosition().equals(av.getPosition())){
+            dm.displayPosition(getObj(),getCs());
             System.out.println(avatar.getName()+": nouvelle position = "+avatar.getPosition());
 
         }

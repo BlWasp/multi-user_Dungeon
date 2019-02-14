@@ -11,6 +11,8 @@ import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 
+import static Tools.Text.instruction;
+
 public class DisplayManager {
     private List<Avatar> playerList; //liste des joueur sur la même case
     private Avatar myAvatar;
@@ -57,9 +59,9 @@ public class DisplayManager {
         Entity monster = result.getValue();
         updateList(cs);
         System.out.println("◼ ▬ "+currentRoom.getNorth()+" "+currentRoom.getNorth()+" "+currentRoom.getNorth() +" ▬ ◼");
-        System.out.println("▮           ▮"+"     Monster's name : "+monster.getName());
-        System.out.println(currentRoom.getWest()+"           "+currentRoom.getEast()+"     Monster's life point : "+monster.getLifePoint());
-        System.out.println(currentRoom.getWest()+"    "+parsePosition(currentRoom.getId())+"    "+currentRoom.getEast()+"     "+playerList.size()+" players in your room");
+        System.out.println("▮           ▮"+"     Monster's name : "+instruction(monster.getName()));
+        System.out.println(currentRoom.getWest()+"           "+currentRoom.getEast()+"     Monster's life point : "+instruction(monster.getLifePoint().toString()));
+        System.out.println(currentRoom.getWest()+"    "+instruction(parsePosition(currentRoom.getId()))+"    "+currentRoom.getEast()+"     "+instruction(playerList.size()+" ")+"players in your room");
         System.out.println(currentRoom.getWest()+"           "+currentRoom.getEast());
         System.out.println("▮           ▮");
         System.out.println("◼ ▬ "+currentRoom.getSouth()+" "+currentRoom.getSouth()+" "+currentRoom.getSouth() +" ▬ ◼");
