@@ -8,9 +8,12 @@ import java.util.Scanner;
 
 import Server.*;
 import Tools.Colors;
+import Tools.Way;
 
 import static Tools.Colors.*;
 import static Tools.Text.*;
+import static Tools.Way.allWay;
+import static Tools.Way.isAWay;
 
 /**
  * Classe représentant le client.
@@ -84,6 +87,12 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      * @throws RemoteException
      */
     public int moveAvatar(Avatar av, String way, IGameServer gameServer, IChatServer chatServer, Player p) throws RemoteException {
+        while(!isAWay(way)){
+            printE("Direction invalide");
+            printI("Entrez un direction valide : "+allWay());
+            Scanner scan = new Scanner(System.in);
+            way=scan.nextLine().toUpperCase();
+        }
         int res = gameServer.move(av, way);
         while(res==-1){
             System.out.println("Il y a pas moyen de passer par là");

@@ -23,12 +23,15 @@ Done
     -information de dégât côté client
 	-interface utilisateur
 	-chat fonctionnel
+	-ajout couleurs
+	-mise en forme texte
+	-menu d'aide
 
 To Do
 	-gestion combat continu
     -attaque des monstres automatique
     -éclatement des classes
-
+	-stockage donnée
     
 BDD
 ===

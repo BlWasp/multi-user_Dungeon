@@ -97,7 +97,7 @@ public class OrderProcessor {
             case "M":
             case "m":
             case "Move":
-                return p.moveAvatar(av, order[1], p.getObj(), p.getCs(),p);
+                return p.moveAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(),p);
             /*case "Attack":
                 if (order[1])
                 p.attackAvatar(order[2], Avatar ifAvatar, av, pos, gameserver, pow);
