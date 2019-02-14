@@ -7,6 +7,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 import Server.*;
+import Tools.Colors;
+
+import static Tools.Colors.*;
+import static Tools.Text.*;
 
 /**
  * Classe représentant le client.
@@ -177,41 +181,41 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
 
     public static void main(String args[]) {
         try {
+            welcome();
             Scanner scan = new Scanner(System.in);
-            System.out.println("Enter your avatar's name :");
+            printI("Enter your avatar's name :");
             String name=scan.next();
             Avatar avTest = new Avatar(name);
             //Avatar avBis = new Avatar("Pong");
 
             Player p = new Player(avTest);
             //Player p2 = new Player(avBis);
-
             // Récupération d'un proxy sur l'objet
             //IGameServer obj = (IGameServer) Naming.lookup("//localhost/Dungeon");
             p.mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
             p.obj = p.mainServer.findGameServer(0);
             if(p.obj==null){
-                System.out.println("Aucun serveur trouvé");
+                printE("Aucun serveur trouvé");
                 return;
             }
             if(p.obj.connection(p.av, 0,p)==1) {
                 avTest.setPosition(0);
-                System.out.println("Connected");
+                printS("Connected");
             }
             else
-                System.out.println("Connection failed");
+                printE("Connection failed");
 
             p.cs = p.mainServer.findChatServer(0);
             if(p.cs==null){
-                System.out.println("Aucun serveur de chat trouvé");
+                printE("Aucun serveur de chat trouvé");
                 return;
             }
             if(p.cs.connection(p.av, 0, p)==1) {
                 avTest.setPosition(0);
-                System.out.println("Connected");
+                printS("Connected");
             }
             else
-                System.out.println("Connection failed");
+                System.out.println(red("Connection failed"));
             p.op=new OrderProcessor(p);
             String answer=scan.nextLine();
             while(true) {
@@ -278,7 +282,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      */
     @Override
     public void receiveMessage(Avatar sender, String message) throws RemoteException{
-        System.out.println(sender.getName()+" : "+message);
+        System.out.println(italic(sender.getName())+purple(" : ")+message);
     }
 
     /**
