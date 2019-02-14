@@ -81,7 +81,7 @@ public class DisplayManager {
     public void help(){
         System.out.println("command list :");
         System.out.println("-To speak with people in your room");
-        System.out.println("\t/ 'message'");
+        System.out.println("\t"+Colors.blue+"/"+Colors.reset+" 'message'");
         System.out.println("-To escape from a room/battle");
         System.out.println("\t"+Colors.blue+"Escape 'dest'"+Colors.reset+" or "+Colors.blue+"E 'dest' "+Colors.reset+"or "+Colors.blue+"e 'dest'"+Colors.reset);
         System.out.println("\t#where 'dest' can be N (North), E (East), S (South) or W (West)");

@@ -73,9 +73,7 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(res!=-1){
-            System.out.println(res);
-        }
+        System.out.println(res);
         return res;
     }
 

@@ -103,6 +103,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 System.out.println("aucun serveur trouvé");
                 return -3;
             }
+            obj.connection(av, av.getPosition(), p);
             return moveAvatar(av, way, obj, chatServer,p);
         }
         moveAvatarCs(av,res,chatServer,p);

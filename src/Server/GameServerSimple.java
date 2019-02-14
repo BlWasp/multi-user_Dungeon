@@ -85,8 +85,10 @@ public class GameServerSimple implements Runnable{
         if(dest==-1)
             return -1;
         //Si le serveur ne gère pas la case
-        if(dest<(Integer) z.getKey() || dest>(Integer) z.getValue())
+        if(dest<(Integer) z.getKey() || dest>(Integer) z.getValue()) {
+            avUsed.setPosition(dest);
             return -2;
+        }
         //permet d'attendre le prochain tour, pour synchroniser les tour de jeux
         if(round==currentRound)
             wait();
@@ -260,7 +262,6 @@ public class GameServerSimple implements Runnable{
 
     public synchronized void addRound() {
         round++;
-        System.out.println(round);
         notifyAll();
     }
 

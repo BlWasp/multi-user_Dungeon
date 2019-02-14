@@ -21,14 +21,14 @@ Done
     -mise en place des tours
     -information de changement de position côté client
     -information de dégât côté client
+	-interface utilisateur
+	-chat fonctionnel
 
 To Do
-    -interface utilisateur
-    -chat fonctionnel
-    -meilleur gestion des monstres
+	-gestion combat continu
+    -attaque des monstres automatique
     -éclatement des classes
-    -attaque en continu
-    
+
     
 BDD
 ===
