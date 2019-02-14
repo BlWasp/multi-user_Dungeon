@@ -11,8 +11,7 @@ public enum Colors {
     purple("\u001B[35m"),
     cyan("\u001B[36m"),
     white("\u001B[37m"),
-    bold("\033[0;1m"),
-    italic("\033[3m");
+    bold("\033[0;1m");
 
     private String value;
 
@@ -54,15 +53,11 @@ public enum Colors {
     }
 
     public static String white(String text){
-        return red+text+reset;
+        return white+text+reset;
     }
 
     public static String bold(String text){
-        return red+text+reset;
-    }
-
-    public static String italic(String text){
-        return red+text+reset;
+        return bold+text+reset;
     }
 
     public String getValue() {

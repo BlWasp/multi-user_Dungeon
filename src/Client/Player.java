@@ -282,7 +282,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      */
     @Override
     public void receiveMessage(Avatar sender, String message) throws RemoteException{
-        System.out.println(italic(sender.getName())+purple(" : ")+message);
+        System.out.println(cyan(sender.getName())+purple(" : ")+message);
     }
 
     /**
