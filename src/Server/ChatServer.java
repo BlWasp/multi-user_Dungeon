@@ -307,7 +307,7 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServerManag
         // Démarre le rmiregistry
         //LocateRegistry.createRegistry(1099);
         ChatServer obj = new ChatServer();
-        IServerController mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
+        IServerControllerServerSide mainServer = (IServerControllerServerSide) Naming.lookup("//localhost/Dungeon");
         Pair<Grid,Zone> res = mainServer.chatServerConnection(obj);
         obj.setChatServer(res.getKey(),res.getKey().size,res.getValue());
         System.out.println(obj.getZ().getKey()+ " " + obj.getZ().getValue());

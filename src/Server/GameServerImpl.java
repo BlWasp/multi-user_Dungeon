@@ -188,7 +188,7 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
         //Démarre le rmiregistry
         //LocateRegistry.createRegistry(1099);
         GameServerImpl obj = new GameServerImpl();
-        IServerController mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
+        IServerControllerServerSide mainServer = (IServerControllerServerSide) Naming.lookup("//localhost/Dungeon");
         Pair<Grid,Zone> res = mainServer.gameServerConnection(obj);
         gs = new GameServerSimple(res.getKey(),res.getKey().size,res.getValue());
         System.out.println(gs.getZ().getKey()+ " " + gs.getZ().getValue());

@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Serveur permettant de centraliser le contrôle de tous les serveurs du jeu.
  */
-public class ServerController extends UnicastRemoteObject implements IServerController {
+public class ServerController extends UnicastRemoteObject implements IServerController, IServerControllerServerSide {
     private Grid board;
     private int size = 8;
     private int nbGameServ =0;
