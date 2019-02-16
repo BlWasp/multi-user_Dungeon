@@ -58,13 +58,15 @@ public class DisplayManager {
         Room currentRoom = result.getKey();
         Entity monster = result.getValue();
         updateList(cs);
-        System.out.println("◼ ▬ "+currentRoom.getNorth()+" "+currentRoom.getNorth()+" "+currentRoom.getNorth() +" ▬ ◼");
-        System.out.println("▮           ▮"+"     Monster's name : "+instruction(monster.getName()));
-        System.out.println(currentRoom.getWest()+"           "+currentRoom.getEast()+"     Monster's life point : "+instruction(monster.getLifePoint().toString()));
-        System.out.println(currentRoom.getWest()+"    "+instruction(parsePosition(currentRoom.getId()))+"    "+currentRoom.getEast()+"     "+instruction(playerList.size()+" ")+"players in your room");
-        System.out.println(currentRoom.getWest()+"           "+currentRoom.getEast());
-        System.out.println("▮           ▮");
-        System.out.println("◼ ▬ "+currentRoom.getSouth()+" "+currentRoom.getSouth()+" "+currentRoom.getSouth() +" ▬ ◼");
+        System.out.println("         N");
+        System.out.println("   ◼ ▬ "+currentRoom.getNorth()+" "+currentRoom.getNorth()+" "+currentRoom.getNorth() +" ▬ ◼");
+        System.out.println("   ▮           ▮"+"     Monster's name : "+instruction(monster.getName()));
+        System.out.println("   "+currentRoom.getWest()+"           "+currentRoom.getEast()+"     Monster's life point : "+instruction(monster.getLifePoint().toString()));
+        System.out.println(" W "+currentRoom.getWest()+"    "+instruction(parsePosition(currentRoom.getId()))+"    "+currentRoom.getEast()+" E   "+instruction(playerList.size()+" ")+"players in your room");
+        System.out.println("   "+currentRoom.getWest()+"           "+currentRoom.getEast());
+        System.out.println("   ▮           ▮");
+        System.out.println("   ◼ ▬ "+currentRoom.getSouth()+" "+currentRoom.getSouth()+" "+currentRoom.getSouth() +" ▬ ◼");
+        System.out.println("         S");
         //System.out.println(currentRoom.getNorth().toString()+" "+currentRoom.getEast().toString()+" "+monster.getName()+" "+monster.getLifePoint()+"□");
     }
 

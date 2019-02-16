@@ -42,7 +42,7 @@ public class GameServerSimple implements Runnable{
         this.z = z;
         for (int i = 0; i < size*size; i++) {
             positionAvatar.put(i, new ArrayList<Avatar>());
-            positionMonster.put(i, new Monster("Galy",i));
+            positionMonster.put(i, new Monster("Chuck",i));
         }
         round=0;
         gGrid.displayGrid();
