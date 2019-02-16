@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
  * Interface RMI pour le serveur de jeu.
  * Le code de chaque méthode est dans GameServerSimple.
  * La méthode main du serveur et l'appel des méthodes est dans GameServerImpl
+ * Méthodes dédiés aux clients
  */
 public interface IGameServer extends java.rmi.Remote{
     //permet la connection du joueur au server de jeu et de spécifier le personnage utilisé

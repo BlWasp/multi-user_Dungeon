@@ -5,7 +5,7 @@ import javafx.util.Pair;
 import java.rmi.RemoteException;
 
 /**
- * Interface RMI du serveur controller, permettant de centraliser le contôle de tous les serveurs
+ * Interface RMI du serveur controller, méthodes utilisables par les joueurs
  */
 public interface IServerController extends java.rmi.Remote{
     public IGameServer findGameServer(Integer position) throws RemoteException;

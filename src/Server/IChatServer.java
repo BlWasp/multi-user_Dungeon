@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * Interface RMI pour le serveur de chat
+ * Interface RMI pour le serveur de chat, dédié aux clients
  */
 public interface IChatServer extends java.rmi.Remote {
     public void speak(Avatar sender, String text) throws RemoteException;
