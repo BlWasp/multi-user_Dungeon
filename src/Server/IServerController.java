@@ -8,9 +8,9 @@ import java.rmi.RemoteException;
  * Interface RMI du serveur controller, permettant de centraliser le contôle de tous les serveurs
  */
 public interface IServerController extends java.rmi.Remote{
-    public Pair gameServerConnection(IGameServer serv) throws RemoteException;
+    public Pair gameServerConnection(IGameServerManagement serv) throws RemoteException;
 
-    Pair chatServerConnection(IChatServer serv) throws RemoteException;
+    Pair chatServerConnection(IChatServerManagement serv) throws RemoteException;
 
     void gameServerDisconnection(Zone z) throws RemoteException;
 

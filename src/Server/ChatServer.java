@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class ChatServer  extends UnicastRemoteObject implements IChatServer{
+public class ChatServer  extends UnicastRemoteObject implements IChatServerManagement{
     private int available;
     private Grid gGrid;
     private Zone z = new Zone(0,0);

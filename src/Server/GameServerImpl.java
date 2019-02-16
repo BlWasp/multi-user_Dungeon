@@ -17,7 +17,7 @@ import static javafx.application.Platform.exit;
  * Il implémente l'interface RMI possédant toutes ses méthodes.
  * Le code interne de chaque méthode est décrit dans la classe GameServerSimple
  */
-public class GameServerImpl extends UnicastRemoteObject implements IGameServer{
+public class GameServerImpl extends UnicastRemoteObject implements IGameServerManagement{
 
     private static GameServerSimple gs;
     private DataBaseLink dbl = new DataBaseLink();

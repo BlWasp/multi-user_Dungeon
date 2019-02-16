@@ -17,8 +17,8 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
     private int nbGameServ =0;
     private int nbChatServ =0;
     //La première valeur du tableau représente la première case géré l'autre la dernière
-    private Map<Zone,IGameServer> lgame = new TreeMap<>();
-    private Map<Zone,IChatServer> lchat = new TreeMap<>();
+    private Map<Zone,IGameServerManagement> lgame = new TreeMap<>();
+    private Map<Zone,IChatServerManagement> lchat = new TreeMap<>();
     protected ServerController() throws RemoteException {
         super();
         nbGameServ =0;
@@ -34,10 +34,10 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
      */
     public Zone distributeZone(){
         Integer last=0, i=0;
-        Map<Zone,IGameServer> tmp = new TreeMap<>(lgame);
+        Map<Zone,IGameServerManagement> tmp = new TreeMap<>(lgame);
         lgame.clear();
         Zone lastZ = new Zone(last,i);
-        for (Map.Entry<Zone, IGameServer> pair : tmp.entrySet()) {
+        for (Map.Entry<Zone, IGameServerManagement> pair : tmp.entrySet()) {
             i=i+(size*size)/ nbGameServ;
             //pour gérer nombre impair de serveur
             if(i==size*size-1) i++;
@@ -57,10 +57,10 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
      */
     public Zone distributeChatZone(){
         Integer last=0, i=0;
-        Map<Zone,IChatServer> tmp = new TreeMap<>(lchat);
+        Map<Zone,IChatServerManagement> tmp = new TreeMap<>(lchat);
         lchat.clear();
         Zone lastZ = new Zone(last,i);
-        for (Map.Entry<Zone, IChatServer> pair : tmp.entrySet()) {
+        for (Map.Entry<Zone, IChatServerManagement> pair : tmp.entrySet()) {
             i=i+(size*size)/ nbChatServ;
             //pour gérer nombre impair de serveur
             if(i==size*size-1) i++;
@@ -80,8 +80,8 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
      * serveur ajouté ou supprimé
      * @throws RemoteException
      */
-    public void updateAllServ(IGameServer serv) throws RemoteException {
-        for (Map.Entry<Zone, IGameServer> pair : lgame.entrySet()) {
+    public void updateAllServ(IGameServerManagement serv) throws RemoteException {
+        for (Map.Entry<Zone, IGameServerManagement> pair : lgame.entrySet()) {
             if(pair.getValue()!=serv)
                 pair.getValue().updateZone(pair.getKey());
         }
@@ -94,8 +94,8 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
      * serveur ajouté ou supprimé
      * @throws RemoteException
      */
-    public void updateAllChat(IChatServer serv) throws RemoteException {
-        for (Map.Entry<Zone, IChatServer> pair : lchat.entrySet()) {
+    public void updateAllChat(IChatServerManagement serv) throws RemoteException {
+        for (Map.Entry<Zone, IChatServerManagement> pair : lchat.entrySet()) {
             if(pair.getValue()!=serv)
                 pair.getValue().updateZone(pair.getKey());
         }
@@ -110,7 +110,7 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
      * @throws RemoteException
      */
     @Override
-    public Pair gameServerConnection(IGameServer serv) throws RemoteException{
+    public Pair gameServerConnection(IGameServerManagement serv) throws RemoteException{
         //ajouter la gestion dynamique de la répartition des cases!!!
         nbGameServ++;
         lgame.put(new Zone(9999,9999),serv);
@@ -129,7 +129,7 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
      * @throws RemoteException
      */
     @Override
-    public Pair chatServerConnection(IChatServer serv) throws RemoteException{
+    public Pair chatServerConnection(IChatServerManagement serv) throws RemoteException{
         nbChatServ++;
         lchat.put(new Zone(9999,9999),serv);
         Zone z = distributeChatZone();
@@ -180,7 +180,7 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         Zone z = new Zone(0,(size*size)-1);
         long i = 0;
         Zone res;
-        for (Map.Entry<Zone, IGameServer> pair : lgame.entrySet()) {
+        for (Map.Entry<Zone, IGameServerManagement> pair : lgame.entrySet()) {
             if((Integer) pair.getKey().getKey()<=position && (Integer) pair.getKey().getValue()>=position) {
                 return lgame.get(pair.getKey());
             }
@@ -201,7 +201,7 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
         Zone z = new Zone(0,(size*size)-1);
         long i = 0;
         Zone res;
-        for (Map.Entry<Zone, IChatServer> pair : lchat.entrySet()) {
+        for (Map.Entry<Zone, IChatServerManagement> pair : lchat.entrySet()) {
             if((Integer) pair.getKey().getKey()<=position && (Integer) pair.getKey().getValue()>=position) {
                 return lchat.get(pair.getKey());
             }
@@ -236,7 +236,7 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
             case "S" : dest = r.getSouth().dest; break;
             default : dest = -1; break;
         }
-        for (Map.Entry<Zone, IChatServer> pair : lchat.entrySet()) {
+        for (Map.Entry<Zone, IChatServerManagement> pair : lchat.entrySet()) {
             if((Integer) pair.getKey().getKey()<=dest&&(Integer) pair.getKey().getValue()>=dest) {
                 System.out.println(pair);
                 return lchat.get(pair.getKey());
@@ -273,7 +273,7 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
             case "S" : dest = r.getSouth().dest; break;
             default : dest = -1; break;
         }
-        for (Map.Entry<Zone, IGameServer> pair : lgame.entrySet()) {
+        for (Map.Entry<Zone, IGameServerManagement> pair : lgame.entrySet()) {
             if((Integer) pair.getKey().getKey()<=dest&&(Integer) pair.getKey().getValue()>=dest) {
                 return lgame.get(pair.getKey());
             }
