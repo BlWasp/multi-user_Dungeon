@@ -1,5 +1,6 @@
-package Server;
+package Server.Server_Interface;
 
+import Server.Zone;
 import javafx.util.Pair;
 
 import java.rmi.RemoteException;

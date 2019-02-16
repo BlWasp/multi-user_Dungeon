@@ -1,5 +1,6 @@
 package Server;
 
+import Server.Server_Interface.*;
 import javafx.util.Pair;
 
 import java.rmi.Naming;
@@ -17,8 +18,8 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
     private int nbGameServ =0;
     private int nbChatServ =0;
     //La première valeur du tableau représente la première case géré l'autre la dernière
-    private Map<Zone,IGameServerManagement> lgame = new TreeMap<>();
-    private Map<Zone,IChatServerManagement> lchat = new TreeMap<>();
+    private Map<Zone, IGameServerManagement> lgame = new TreeMap<>();
+    private Map<Zone, IChatServerManagement> lchat = new TreeMap<>();
     protected ServerController() throws RemoteException {
         super();
         nbGameServ =0;

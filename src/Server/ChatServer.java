@@ -2,8 +2,8 @@ package Server;
 
 import Client.Avatar;
 import Client.IPlayer;
-import Client.Player;
-import com.sun.security.ntlm.Client;
+import Server.Server_Interface.IChatServerManagement;
+import Server.Server_Interface.IServerControllerServerSide;
 import javafx.util.Pair;
 
 import java.rmi.Naming;
@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class ChatServer  extends UnicastRemoteObject implements IChatServerManagement{
+public class ChatServer  extends UnicastRemoteObject implements IChatServerManagement {
     private int available;
     private Grid gGrid;
     private Zone z = new Zone(0,0);

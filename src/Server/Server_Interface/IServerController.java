@@ -1,6 +1,4 @@
-package Server;
-
-import javafx.util.Pair;
+package Server.Server_Interface;
 
 import java.rmi.RemoteException;
 

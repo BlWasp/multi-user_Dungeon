@@ -1,8 +1,8 @@
 package Client;
 
 import Server.Entity;
-import Server.IChatServer;
-import Server.IGameServer;
+import Server.Server_Interface.IChatServer;
+import Server.Server_Interface.IGameServer;
 import Server.Room;
 import Tools.Colors;
 import javafx.util.Pair;

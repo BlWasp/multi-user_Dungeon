@@ -1,7 +1,10 @@
-package Server;
+package Server.Server_Interface;
 
 import Client.Avatar;
 import Client.IPlayer;
+import Server.Entity;
+import Server.Room;
+import Server.Zone;
 import javafx.util.Pair;
 
 import java.rmi.RemoteException;

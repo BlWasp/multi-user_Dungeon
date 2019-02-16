@@ -1,10 +1,13 @@
-package Server;
+package Client;
 
 import Client.Avatar;
 import Client.Player;
+import Server.ServerController;
+import Server.Server_Interface.IChatServer;
+import Server.Server_Interface.IGameServer;
+import Server.Server_Interface.IServerController;
 
 import java.rmi.RemoteException;
-import java.util.Arrays;
 
 /**
  * Classe d'un gestionnaire d'ordre

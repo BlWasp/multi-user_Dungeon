@@ -7,8 +7,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 import Server.*;
-import Tools.Colors;
-import Tools.Way;
+import Server.Server_Interface.IChatServer;
+import Server.Server_Interface.IGameServer;
+import Server.Server_Interface.IServerController;
 
 import static Tools.Colors.*;
 import static Tools.Text.*;

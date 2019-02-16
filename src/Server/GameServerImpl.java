@@ -3,21 +3,20 @@ package Server;
 import BaseDeDonnees.DataBaseLink;
 import Client.Avatar;
 import Client.IPlayer;
+import Server.Server_Interface.IGameServerManagement;
+import Server.Server_Interface.IServerControllerServerSide;
 import javafx.util.Pair;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Scanner;
-
-import static javafx.application.Platform.exit;
 
 /**
  * Serveur de jeu
  * Il implémente l'interface RMI possédant toutes ses méthodes.
  * Le code interne de chaque méthode est décrit dans la classe GameServerSimple
  */
-public class GameServerImpl extends UnicastRemoteObject implements IGameServerManagement{
+public class GameServerImpl extends UnicastRemoteObject implements IGameServerManagement {
 
     private static GameServerSimple gs;
     private DataBaseLink dbl = new DataBaseLink();

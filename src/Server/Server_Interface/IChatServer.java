@@ -1,4 +1,4 @@
-package Server;
+package Server.Server_Interface;
 
 import Client.Avatar;
 import Client.IPlayer;
