@@ -1,6 +1,6 @@
 package Server;
 
-import BaseDeDonnees.DataBaseLink;
+import DataBase.DataBaseLink;
 import Client.Avatar;
 import Client.IPlayer;
 import Server.Server_Interface.IGameServerManagement;
