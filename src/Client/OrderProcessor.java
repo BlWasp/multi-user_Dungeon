@@ -25,10 +25,8 @@ public class OrderProcessor {
         chatserver = p.getCs();
         serverController = p.getMainServer();
     }
-    public void setChatServer(IChatServer cs){
-        chatserver=cs;
-    }
-    /**
+
+    /** Getter d'un serveur de jeu
      *
      * @return
      */
@@ -36,15 +34,16 @@ public class OrderProcessor {
         return gameserver;
     }
 
-    /**
+    /** Setter d'un serveur de jeu
      *
      * @param gameserver
+     *              Serveur de jeu sur lequel on veut agir
      */
     public void setGameserver(IGameServer gameserver) {
         this.gameserver = gameserver;
     }
 
-    /**
+    /** Getter d'un serveur de chat
      *
      * @return
      */
@@ -52,15 +51,16 @@ public class OrderProcessor {
         return chatserver;
     }
 
-    /**
+    /** Setter d'un serveur de chat
      *
      * @param chatserver
+     *              Serveur de chat sur lequel on veut agir
      */
     public void setChatserver(IChatServer chatserver) {
         this.chatserver = chatserver;
     }
 
-    /**
+    /** Getter d'un controleur de serveur
      *
      * @return
      */
@@ -68,14 +68,21 @@ public class OrderProcessor {
         return serverController;
     }
 
-    /**
+    /** Setter d'un controleur de serveur
      *
      * @param serverController
+     *                  Controleur de serveur sur lequel on veut agir
      */
     public void setServerController(ServerController serverController) {
         this.serverController = serverController;
     }
 
+    /** Récupère tous les mots d'une phrase sous la forme d'un tableau de String
+     *
+     * @param s
+     *          Phrase à diviser en chacun des mots qu'elle contient
+     * @return
+     */
     public String[] spliter(String s) {
         return s.split(" ");
     }
@@ -89,9 +96,11 @@ public class OrderProcessor {
     }
 
     /**
-     * Gère l'ordre
+     * Gère l'ordre envoyé par le joueur
      * @param order
+     *          Ordre entré par le joueur
      * @param av
+     *          Avatar du joueur, concerné par l'ordre
      * @return
      * @throws RemoteException
      */
@@ -137,15 +146,6 @@ public class OrderProcessor {
                 System.out.println("Unknown order, please enter one of the following orders : Move, Attack, Escape, Exit or start your order with / to chat");
                 return -1;
         }
-
-        /**
-         * Appelle le serveur de chat
-         */
-        if(order[0].charAt(0) == '\"') {
-            // Vérifier s'il y a d'autres joueurs dans la pièce
-            // Si oui -> lancer le serveur de chat
-        }
-        return 1;
 
     }
 
