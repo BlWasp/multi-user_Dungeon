@@ -1,4 +1,4 @@
-package BaseDeDonnees;
+package DataBase;
 
 import java.sql.*;
 
