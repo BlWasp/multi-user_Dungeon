@@ -47,7 +47,7 @@ public class Grid implements Serializable {
     public void displayGrid(){
         for (int j = 0; j < size; j++) {
             for (int i = 0; i < size; i++) {
-                System.out.print("x" + board[j][i].getNorth().toString() + board[j][i].getNorth().toString() + board[j][i].getNorth().toString() + "x");
+                System.out.print("◼" + board[j][i].getNorth().toString() + board[j][i].getNorth().toString() + board[j][i].getNorth().toString() + "◼");
             }
             System.out.println();
             for (int i = 0; i < size; i++) {
@@ -60,7 +60,7 @@ public class Grid implements Serializable {
             if(j == size-1){
                 System.out.println();
                 for (int i = 0; i < size; i++) {
-                    System.out.print("x" + board[j][i].getSouth().toString() + board[j][i].getSouth().toString() + board[j][i].getSouth().toString()+ "x");
+                    System.out.print("◼" + board[j][i].getSouth().toString() + board[j][i].getSouth().toString() + board[j][i].getSouth().toString()+ "◼");
                 }
             }
             System.out.println();
