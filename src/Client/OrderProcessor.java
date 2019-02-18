@@ -146,7 +146,7 @@ public class OrderProcessor {
                 System.out.println("Unknown order, please enter one of the following orders : Move, Attack, Escape, Exit or start your order with / to chat");
                 return -1;
         }
-
+        return -1;
     }
 
 }
