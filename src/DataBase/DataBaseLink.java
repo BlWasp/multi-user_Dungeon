@@ -36,16 +36,15 @@ public class DataBaseLink {
      * @param option
      *          Valeur à positionner après le WHERE pour savoir quelle valeur prendre
      */
-    public void searchDB(String datas, String table, String option) {
+    public String searchDB(String datas, String table, String option) {
         try {
             Statement state = conn.createStatement();
 
             String query = "SELECT " + datas + " FROM " + table + " WHERE " + option;
             ResultSet result = state.executeQuery(query);
-            ResultSetMetaData resultMeta = result.getMetaData();
+            //ResultSetMetaData resultMeta = result.getMetaData();
 
-
-            System.out.println("\n**********************************");
+            /*System.out.println("\n**********************************");
 
             //On affiche le nom des colonnes
             for(int i = 1; i <= resultMeta.getColumnCount(); i++)
@@ -58,13 +57,19 @@ public class DataBaseLink {
                     System.out.print("\t" + result.getObject(i).toString() + "\t |");
 
                 System.out.println("\n---------------------------------");
+            }*/
+
+            /*result.close();
+            state.close();*/
+            if(result.next()){
+                return result.getObject(1).toString();
             }
 
-            result.close();
-            state.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return "Erreur lecture base de données";
     }
 
     /**
@@ -107,18 +112,18 @@ public class DataBaseLink {
     }
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         DataBaseLink dbl = new DataBaseLink();
         dbl.connectDB();
 
-        dbl.insertDB("(5,2)","Monstre");
+        dbl.insertDB("("+"\""+"Black"+"\""+","+"\""+"mdp"+"\""+")","Player");
         dbl.insertDB("(6,4)","Monstre");
         dbl.insertDB("(7,3)","Monstre");
 
-        dbl.searchDB("Vie","Monstre","Place=6");
+        dbl.searchDB("UsernamePl","Player","UsernamePl="+"\""+"Black"+"\"");
         dbl.updateDB("Vie=2","Monstre","Place=6");
         dbl.searchDB("Vie","Monstre","Place=6");
 
-    }
+    }*/
 }
