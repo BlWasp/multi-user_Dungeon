@@ -110,10 +110,12 @@ public class OrderProcessor {
             case "m":
             case "Move":
                 return p.moveAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(),p);
-            /*case "Attack":
-                if (order[1])
-                p.attackAvatar(order[2], Avatar ifAvatar, av, pos, gameserver, pow);
-                break;*/
+            case "Attack":
+                //if (order[1]==)
+                p.attackAvatar(order[2], av, av.getPosition(), p.getObj(), 1);
+                break;
+                //if (order[1]==)
+                p.attackM(av, av.getPosition(), p.getObj(), 1)
             case "/":
                 order[0]=" ";
                 String message = catArray(order);
@@ -146,7 +148,7 @@ public class OrderProcessor {
                 System.out.println("Unknown order, please enter one of the following orders : Move, Attack, Escape, Exit or start your order with / to chat");
                 return -1;
         }
-
+        return 1;
     }
 
 }
