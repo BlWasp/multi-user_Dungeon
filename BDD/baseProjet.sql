@@ -8,12 +8,24 @@
 #------------------------------------------------------------
 
 CREATE TABLE Player(
-        Username Varchar (50) NOT NULL ,
-        Position Integer NOT NULL ,
-        Life     Integer NOT NULL ,
+        UsernamePl Varchar (50) NOT NULL ,
         Mdp      Varchar (50) NOT NULL
 	,CONSTRAINT Player_AK UNIQUE (Mdp)
-	,CONSTRAINT Player_PK PRIMARY KEY (Username)
+	,CONSTRAINT Player_PK PRIMARY KEY (UsernamePl)
+);
+
+
+#------------------------------------------------------------
+# Table: Avatar
+#------------------------------------------------------------
+
+CREATE TABLE Avatar(
+		UsernameAv Varchar (50) NOT NULL ,
+        UsernamePl Varchar (50) NOT NULL ,
+		Position Integer NOT NULL ,
+        Life     Integer NOT NULL
+    ,CONSTRAINT Avatar_PK PRIMARY KEY (UsernameAv)
+    ,CONSTRAINT Avatar_Player_FK FOREIGN KEY (UsernamePl) REFERENCES Player(UsernamePl)
 );
 
 
@@ -23,6 +35,6 @@ CREATE TABLE Player(
 
 CREATE TABLE Monstre(
         Place Integer NOT NULL ,
-        Vie  Integer NOT NULL
+        Life  Integer NOT NULL
 	,CONSTRAINT Monstre_PK PRIMARY KEY (Place)
 );

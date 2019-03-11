@@ -2,9 +2,15 @@ package DataBase;
 
 import java.sql.*;
 
+/**
+ * Classe permettant la connexion et les interactions avec la BD
+ */
 public class DataBaseLink {
     Connection conn;
 
+    /**
+     * Méthode permettant de se connecter au serveur MySQL
+     */
     public void connectDB() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -21,6 +27,15 @@ public class DataBaseLink {
         }
     }
 
+    /**
+     * Permet de faire une recherche dans la BD
+     * @param datas
+     *          La donnée recherchée
+     * @param table
+     *          La table dans laquelle cherchée
+     * @param option
+     *          Valeur à positionner après le WHERE pour savoir quelle valeur prendre
+     */
     public void searchDB(String datas, String table, String option) {
         try {
             Statement state = conn.createStatement();
@@ -52,6 +67,13 @@ public class DataBaseLink {
         }
     }
 
+    /**
+     * Permet d'insérer une nouvelle donnée dans la BD
+     * @param datas
+     *          Donnée que l'on veut insérer
+     * @param table
+     *          Table où l'on veut insérer
+     */
     public void insertDB(String datas, String table) {
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
@@ -63,6 +85,15 @@ public class DataBaseLink {
         }
     }
 
+    /**
+     * Permet de mettre à jour une donnée présente dans la BD
+     * @param datas
+     *          Donnée à mettre à jour
+     * @param table
+     *          Table où se trouve la donnée
+     * @param options
+     *          Valeur à mettre après le WHERE pour savoir où modifier dans la BD
+     */
     public void updateDB(String datas, String table, String options) {
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -76,7 +107,7 @@ public class DataBaseLink {
     }
 
 
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
 
         DataBaseLink dbl = new DataBaseLink();
         dbl.connectDB();
@@ -89,5 +120,5 @@ public class DataBaseLink {
         dbl.updateDB("Vie=2","Monstre","Place=6");
         dbl.searchDB("Vie","Monstre","Place=6");
 
-    }*/
+    }
 }

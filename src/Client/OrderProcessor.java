@@ -105,12 +105,12 @@ public class OrderProcessor {
      * @throws RemoteException
      */
     public int process (String[] order, Avatar av) throws RemoteException, InterruptedException {
+        order[0]=order[0].toUpperCase();
         switch (order[0]) {
             case "M":
-            case "m":
-            case "Move":
+            case "MOVE":
                 return p.moveAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(),p);
-            case "Attack":
+            case "ATTACK":
                 //if (order[1]==)
                 p.attackAvatar(order[2], av, av.getPosition(), p.getObj(), 1);
                 break;
@@ -122,26 +122,22 @@ public class OrderProcessor {
                 chatserver.speak(av, message);
                 break;
             case "E":
-            case "e":
-            case "Escape":
+            case "ESCAPE":
                 p.escapeAvatar(av, order[1], p.getObj(), p.getCs(),p);
                 break;
-            case "h":
             case "H":
-            case "Help":
+            case "HELP":
                 p.getDm().help();
                 break;
             case "N":
-            case "n":
-            case "Neighbour":
+            case "NEIGHBOUR":
                 p.getDm().displayNeighbour(p.getCs());
                 break;
             case "I":
-            case "i":
-            case "Info":
+            case "INFO":
                 p.getDm().displayPosition(p.getObj(), p.getCs());
                 break;
-            case "Exit":
+            case "EXIT":
                // serverController.serverDisconnection();
                 return 0;
             default:

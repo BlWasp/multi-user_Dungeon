@@ -283,6 +283,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             else
                 System.out.println(red("Connection failed"));
             p.op=new OrderProcessor(p);
+            p.getDm().displayPosition(p.getObj(),p.getCs());
             String answer=scan.nextLine();
             while(true) {
                 answer=scan.nextLine();

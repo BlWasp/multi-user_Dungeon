@@ -1,8 +1,6 @@
 package Tools;
 
-import static Tools.Colors.green;
-import static Tools.Colors.red;
-import static Tools.Colors.yellow;
+import static Tools.Colors.*;
 
 public class Text {
     public static void welcome(){
@@ -43,6 +41,16 @@ public class Text {
         return green(text);
     }
 
+
+    /**
+     * mets en forme un texte de type basique
+     * @param text
+     * @return
+     */
+    public static String basic(String text){
+        return cyan(text);
+    }
+
     /**
      * permet d'afficher un texte au format instruction
      * @param text
@@ -67,5 +75,11 @@ public class Text {
         System.out.println(success(text));
     }
 
-
+    /**
+     * Affiche un texte au format basique
+     * @param text
+     */
+    public static void prinB(String text){
+        System.out.println(basic(text));
+    }
 }
