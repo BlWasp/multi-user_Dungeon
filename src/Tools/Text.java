@@ -14,6 +14,17 @@ public class Text {
         System.out.println("\t\t████████▀  ████████▀   ▀█   █▀    ████████▀    ██████████  ▀██████▀   ▀█   █▀\n");
     }
 
+
+    public static void bye(){
+        System.out.println("\t\t   ▄██████▄   ▄██████▄   ▄██████▄  ████████▄       ▀█████████▄  ▄██   ▄      ▄████████      ");
+        System.out.println("\t\t  ███    ███ ███    ███ ███    ███ ███   ▀███        ███    ███ ███   ██▄   ███    ███      ");
+        System.out.println("\t\t  ███    █▀  ███    ███ ███    ███ ███    ███        ███    ███ ███▄▄▄███   ███    █▀       ");
+        System.out.println("\t\t ▄███        ███    ███ ███    ███ ███    ███       ▄███▄▄▄██▀  ▀▀▀▀▀▀███  ▄███▄▄▄          ");
+        System.out.println("\t\t▀▀███ ████▄  ███    ███ ███    ███ ███    ███      ▀▀███▀▀▀██▄  ▄██   ███ ▀▀███▀▀▀          ");
+        System.out.println("\t\t  ███    ███ ███    ███ ███    ███ ███    ███        ███    ██▄ ███   ███   ███    █▄       ");
+        System.out.println("\t\t  ███    ███ ███    ███ ███    ███ ███   ▄███        ███    ███ ███   ███   ███    ███      ");
+        System.out.println("\t\t  ████████▀   ▀██████▀   ▀██████▀  ████████▀       ▄█████████▀   ▀█████▀    ██████████");
+    }
     /**
      * renvoi le texte sous le format graphique choisi pour les instructions
      * @param text
