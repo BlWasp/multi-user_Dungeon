@@ -373,4 +373,15 @@ public class GameServerSimple implements Runnable{
         Pair<Room,Entity> res = new Pair<>(gGrid.getRoom(avatar.getPosition()/gGrid.size,avatar.getPosition()%gGrid.size),positionMonster.get(avatar.getPosition()));
         return res;
     }
+
+    public void disconnection(Avatar av, IPlayer player) throws RemoteException{
+        Avatar avUsed=getAvatar(av);
+        int position = avUsed.getPosition();
+        positionAvatar.get(position).remove(av);
+        lclient.remove(player);
+        if(lclient.containsKey(player)) System.out.println("toujours présent");
+        else System.out.println("suppression effective");
+        if(positionAvatar.get(position).contains(av)) System.out.println("avatar no supprimé");
+        else System.out.println(("suppression avatar effective"));
+    }
 }

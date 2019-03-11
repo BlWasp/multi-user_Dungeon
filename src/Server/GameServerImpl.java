@@ -145,6 +145,11 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
         gs.displayGameInfo();
     }
 
+    @Override
+    public void disconnection(Avatar av, IPlayer player) throws RemoteException{
+        gs.disconnection(av, player);
+    }
+
     /**
      * Permet de mettre la zone souhaitée à jour suite à des changements
      * @param z
