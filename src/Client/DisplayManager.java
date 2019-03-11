@@ -30,11 +30,16 @@ public class DisplayManager {
         }
     }
 
+    public void clearScreen(){
+        for(int i = 0 ; i < 20; i++)
+            System.out.println("\n");
+    }
+
     public void displayNeighbour(IChatServer cs){
         updateList(cs);
         System.out.println("Player in the same room :");
         for( Avatar av : playerList){
-            System.out.println(av.getName()+" "+av);
+            System.out.println(av.getName());
         }
     }
 

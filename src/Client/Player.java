@@ -68,6 +68,13 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         return uid;
     }
 
+    public void disconnection(Avatar av, Player p) throws RemoteException {
+        obj.disconnection(av, p);
+        cs.disconnection(av, p);
+        getDm().clearScreen();
+        printI("Player disconnected");
+    }
+
     public int moveAvatarCs(Avatar av, int position, IChatServer chatServer, Player p) throws RemoteException {
         Integer res = cs.moveTo(av, position);
         if(res!=0){
@@ -241,9 +248,10 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             p.op=new OrderProcessor(p);
             p.getDm().displayPosition(p.getObj(),p.getCs());
             String answer=scan.nextLine();
-            while(true) {
+            int play = 0;
+            while(play == 0) {
                 answer=scan.nextLine();
-                p.op.process(p.op.spliter(answer), p.av);
+                play = p.op.process(p.op.spliter(answer), p.av);
             }
 
         } catch (Exception e) {
