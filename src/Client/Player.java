@@ -71,7 +71,8 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     public void disconnection(Avatar av, Player p) throws RemoteException {
         obj.disconnection(av, p);
         cs.disconnection(av, p);
-        System.out.println("Player disconnected");
+        getDm().clearScreen();
+        printI("Player disconnected");
     }
 
     public int moveAvatarCs(Avatar av, int position, IChatServer chatServer, Player p) throws RemoteException {

@@ -125,7 +125,7 @@ public class GameServerSimple implements Runnable{
     public int connection(Avatar avUsed, Integer position, IPlayer player) {
         if(available==0)
             return available;
-        if(lclient.containsKey(avUsed)) return -1;
+        if(lclient.containsKey(avUsed))return -1;
         try {
             //Si ce joueur existe déjà dans la BD
             /*System.out.println(searchDB("UsernamePl", "Player", "UsernamePl",
@@ -139,11 +139,13 @@ public class GameServerSimple implements Runnable{
                             "\""+avUsed.getName()+"\"")));
                     avUsed.setLifePoint(Integer.parseInt(searchDB("Life","Avatar","UsernameAv",
                             "\""+avUsed.getName()+"\"")));
+                    System.out.println("already exist");
                 } else{ //Si l'avatar n'existe pas encore
                     insertDB("("+"\""+avUsed.getName()+"\""+","+"\""+player.getUid()+"\""+
                                     ","+"\""+position.toString()+"\""+","+"\""+avUsed.getLifePoint().toString()+"\""+")",
                             "Avatar");
                     avUsed.setPosition(position);
+                    System.out.println("create avatar");
                 }
             } else { //Si le joueur n'existe pas encore
                 insertDB("("+"\""+player.getUid()+"\""+","+"\""+"mdpTest"+"\""+")",
@@ -152,6 +154,7 @@ public class GameServerSimple implements Runnable{
                                 ","+"\""+avUsed.getLifePoint().toString()+"\""+")",
                         "Avatar");
                 avUsed.setPosition(position);
+                System.out.println("player don't exist");
             }
         } catch(RemoteException e) {
             e.printStackTrace();
@@ -378,10 +381,7 @@ public class GameServerSimple implements Runnable{
         Avatar avUsed=getAvatar(av);
         int position = avUsed.getPosition();
         positionAvatar.get(position).remove(av);
-        lclient.remove(player);
-        if(lclient.containsKey(player)) System.out.println("toujours présent");
-        else System.out.println("suppression effective");
-        if(positionAvatar.get(position).contains(av)) System.out.println("avatar no supprimé");
-        else System.out.println(("suppression avatar effective"));
+        System.out.println(positionAvatar.toString());
+        lclient.remove(av);
     }
 }
