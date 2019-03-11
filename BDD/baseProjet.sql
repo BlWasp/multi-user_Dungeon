@@ -10,7 +10,6 @@
 CREATE TABLE Player(
         UsernamePl Varchar (50) NOT NULL ,
         Mdp      Varchar (50) NOT NULL
-	,CONSTRAINT Player_AK UNIQUE (Mdp)
 	,CONSTRAINT Player_PK PRIMARY KEY (UsernamePl)
 );
 
