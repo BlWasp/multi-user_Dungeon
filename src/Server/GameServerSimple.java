@@ -9,6 +9,9 @@ import java.awt.datatransfer.DataFlavor;
 import java.rmi.RemoteException;
 import java.util.*;
 
+import static Tools.Text.printE;
+import static Tools.Text.printS;
+
 /**
  * Classe implémentant le code interne des différentes méthodes de GameServerImpl
  * L'utilité de certaines méthodes et leurs paramètres sont décrit dans GameServerImpl
@@ -89,7 +92,11 @@ public class GameServerSimple implements Runnable{
             avUsed.setPosition(dest);
             return -2;
         }
-        //permet d'attendre le prochain tour, pour synchroniser les tour de jeux
+        Monster monster = positionMonster.get(position);
+        //S'il y a un monstre dans la salle
+        if(monster.isInLife)
+            return -3;
+        //permet d'attendre le prochain tour, pour synchroniser les tours de jeux
         if(round==currentRound)
             wait();
         positionAvatar.get(position).remove(avUsed);
@@ -126,11 +133,20 @@ public class GameServerSimple implements Runnable{
         if (avUsed==null) return -10;
         try {
             int res = move(avUsed, goTo);
+            if (res >= 0 || res == -3) {
+                printS(avUsed.getName()+": fuit");
+                makeDamage(avUsed,2);
+                printS("Votre vie est maintenant de : " + avUsed.getLifePoint());
+            } else if (res == -1) {
+                printE("Impossible de fuir dans un mur !");
+            } else if (res == -2) {
+                printE("Case non gérée par le serveur, fuite impossible");
+            }
+            return res;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        makeDamage(avUsed,2);
-        return 1;
+        return -1;
     }
 
 
