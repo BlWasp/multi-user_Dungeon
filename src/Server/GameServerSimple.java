@@ -269,11 +269,12 @@ public class GameServerSimple implements Runnable{
     public synchronized int attackAvatar(Avatar ifAvatar, Avatar attacker, int lifeLosed) throws InterruptedException {
         Integer currentRound = round;
         double nbAleatoire = Math.random();
+        int nbRandom = (int) (nbAleatoire*100);
         Avatar avVic = getAvatar(ifAvatar);
         Avatar avAtt = getAvatar(attacker);
         if (round == currentRound)
             wait();
-        if (nbAleatoire == 0) { //Le joueur touche le joueur
+        if ((nbRandom % 2)==0) { //Le joueur touche le joueur
             makeDamage(avVic, lifeLosed);
             return ifAvatar.getLifePoint();
         } else { //L'autre joueur a contré, l'attaquant se prend l'attaque
@@ -286,9 +287,10 @@ public class GameServerSimple implements Runnable{
     public synchronized int attackM(Avatar attacker, Integer position, int lifeLosed) throws InterruptedException {
         Integer currentRound = round;
         double nbAleatoire = Math.random();
+        int nbRandom = (int) (nbAleatoire*100);
         if (round == currentRound)
             wait();
-        if (nbAleatoire == 0) { //Le joueur touche le monstre
+        if ((nbRandom % 2)==0) { //Le joueur touche le monstre
             positionMonster.get(position).loseLife(lifeLosed);
             updateRequest.add(positionMonster.get(position));
             //updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());

@@ -35,6 +35,10 @@ public class DisplayManager {
             System.out.println("\n");
     }
 
+    public List<Avatar> getPlayerList() {
+        return playerList;
+    }
+
     public void displayNeighbour(IChatServer cs){
         updateList(cs);
         System.out.println("Player in the same room :");
