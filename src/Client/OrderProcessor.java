@@ -138,13 +138,13 @@ public class OrderProcessor {
                 p.getDm().displayPosition(p.getObj(), p.getCs());
                 break;
             case "EXIT":
-               // serverController.serverDisconnection();
-                return 0;
+                p.disconnection(av, p);
+                return 1;
             default:
                 System.out.println("Unknown order, please enter one of the following orders : Move, Attack, Escape, Exit or start your order with / to chat");
-                return -1;
+                return 0;
         }
-        return 1;
+        return 0;
     }
 
 }

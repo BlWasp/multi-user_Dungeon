@@ -22,7 +22,7 @@ import static Tools.Way.isAWay;
  * Permet de faire effectuer des actions à l'avatar sur le serveur
  */
 public class Player extends UnicastRemoteObject implements IPlayer, Serializable {
-    private String uid = "Rmi31";
+    private String uid;
     private IServerController mainServer;
     private IGameServer obj;
     private IChatServer cs;
@@ -37,9 +37,10 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      *          Son avatar
      * @throws RemoteException
      */
-    public Player(Avatar av) throws RemoteException {
+    public Player(Avatar av, String uid) throws RemoteException {
         super();
         this.av=av;
+        this.uid = uid;
         dm = new DisplayManager(av);
     }
 
@@ -57,6 +58,21 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
 
     public IChatServer getCs() {
         return cs;
+    }
+
+    /**
+     * Renvoie l'UID du joueur. Est exploité lors de la connexion au serveur
+     * @return
+     * @throws RemoteException
+     */
+    public String getUid() throws RemoteException {
+        return uid;
+    }
+
+    public void disconnection(Avatar av, Player p) throws RemoteException {
+        obj.disconnection(av, p);
+        cs.disconnection(av, p);
+        System.out.println("Player disconnected");
     }
 
     public int moveAvatarCs(Avatar av, int position, IChatServer chatServer, Player p) throws RemoteException {
@@ -249,12 +265,14 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         try {
             welcome();
             Scanner scan = new Scanner(System.in);
+            printI("Enter your player name :");
+            String username=scan.next();
             printI("Enter your avatar's name :");
             String name=scan.next();
             Avatar avTest = new Avatar(name);
             //Avatar avBis = new Avatar("Pong");
 
-            Player p = new Player(avTest);
+            Player p = new Player(avTest,username);
             //Player p2 = new Player(avBis);
             // Récupération d'un proxy sur l'objet
             //IGameServer obj = (IGameServer) Naming.lookup("//localhost/Dungeon");
@@ -285,9 +303,10 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             p.op=new OrderProcessor(p);
             p.getDm().displayPosition(p.getObj(),p.getCs());
             String answer=scan.nextLine();
-            while(true) {
+            int play = 0;
+            while(play == 0) {
                 answer=scan.nextLine();
-                p.op.process(p.op.spliter(answer), p.av);
+                play = p.op.process(p.op.spliter(answer), p.av);
             }
 
         } catch (Exception e) {

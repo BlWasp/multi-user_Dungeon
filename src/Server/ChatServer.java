@@ -291,6 +291,18 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServerManag
         return positionMap.get(av.getPosition());
     }
 
+    @Override
+    public void disconnection(Avatar av, IPlayer player) throws RemoteException{
+        Avatar avUsed=getAvatar(av);
+        int position = avUsed.getPosition();
+        positionMap.get(position).remove(av);
+        lclient.remove(player);
+        if(lclient.containsKey(player)) System.out.println("toujours présent");
+        else System.out.println("suppression effective");
+        if(positionMap.get(position).contains(av)) System.out.println("avatar no supprimé");
+        else System.out.println(("suppression avatar effective"));
+    }
+
     public Zone getZ() {
         return z;
     }

@@ -15,4 +15,5 @@ public interface IChatServer extends java.rmi.Remote {
     public int move(Avatar avUsed, String goTo) throws RemoteException;
     public int moveTo(Avatar avUsed, Integer position) throws RemoteException;
     public List<Avatar> getNeighbour(Avatar av) throws  RemoteException;
+    public void disconnection(Avatar av, IPlayer player) throws RemoteException;
 }

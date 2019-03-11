@@ -28,7 +28,7 @@ public interface IGameServer extends java.rmi.Remote{
     int attackMonster(Avatar target, Integer position, int lifeLosed) throws RemoteException;
 
     void displayGameInfo() throws RemoteException;
-    void updateZone(Zone z) throws RemoteException;
+    public void disconnection(Avatar av, IPlayer player) throws  RemoteException;
 
     Pair<Room, Entity> getRoomInfo(Entity avatar) throws RemoteException;
 }

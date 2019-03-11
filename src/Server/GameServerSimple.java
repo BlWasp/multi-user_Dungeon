@@ -2,6 +2,7 @@ package Server;
 
 import Client.Avatar;
 import Client.IPlayer;
+import DataBase.DataBaseLink;
 import com.sun.security.ntlm.Client;
 import javafx.util.Pair;
 
@@ -25,6 +26,8 @@ public class GameServerSimple implements Runnable{
     private Map<Integer, List<Avatar>> positionAvatar;
     private Map<Integer, Monster> positionMonster;
     private Map<Avatar, IPlayer> lclient = new LinkedHashMap<>();
+    private DataBaseLink dbl = new DataBaseLink();
+
     protected GameServerSimple(){
         available=1;
         gGrid = new Grid(size);
@@ -43,9 +46,11 @@ public class GameServerSimple implements Runnable{
         positionMonster = new LinkedHashMap<>();
         available=1;
         this.z = z;
+        connectDB();
         for (int i = 0; i < size*size; i++) {
             positionAvatar.put(i, new ArrayList<Avatar>());
             positionMonster.put(i, new Monster("Chuck",i));
+            insertDB("("+String.valueOf(i)+","+positionMonster.get(i).getLifePoint().toString()+")","Monstre");
         }
         round=0;
         gGrid.displayGrid();
@@ -55,11 +60,105 @@ public class GameServerSimple implements Runnable{
         available=state;
     }
 
+
+    /**
+     * Connexion au serveur MySQL
+     */
+    public void connectDB(){
+        dbl.connectDB();
+    }
+
+    /**
+     * Insertion de nouvelles données dans la BD
+     * @param datas
+     *          La donnée à insérer
+     * @param table
+     *          La table où insérer
+     */
+    public void insertDB(String datas, String table) {
+        dbl.insertDB(datas,table);
+    }
+
+    /**
+     * Mise à jour d'une donnée dans la BD
+     * @param data1
+     *          La donnée que l'on veut modifier
+     * @param data2
+     *          La nouvelle valeur de la donnée
+     * @param table
+     *          La table où se trouve la donnée
+     * @param option1
+     *          Donnée qui sert d'indice dans la table pour savoir où modifier la donnée (après le WHERE)
+     * @param option2
+     *          Valeur de l'indice voulu
+     */
+    public void updateDB(String data1, String data2, String table, String option1, String option2) {
+        String datas = data1 + "=" + data2;
+        String options = option1 + "=" + option2;
+        dbl.updateDB(datas,table,options);
+    }
+
+    /**
+     * Recherche dans la BD
+     * @param datas
+     *          Donnée dont on veut la valeur
+     * @param table
+     *          Table où elle se trouve
+     * @param option1
+     *
+     * @param option2
+     */
+    public String searchDB(String datas, String table, String option1, String option2) {
+        String options = option1 + "=" + option2;
+        return dbl.searchDB(datas,table,options);
+    }
+
+
+    /**
+     * Gère la connexion d'un joueur au serveur. Vérifie si le joueur est nouveau dans la BD ou déjà existant.
+     * Et le cas échéant, il vérifie si l'avatar demandé existe déjà ou pas
+     * @param avUsed
+     *          Avatar demandé
+     * @param position
+     *          Position de l'avatar
+     * @param player
+     *          Interface du joueur qui se connecte
+     * @return
+     */
     public int connection(Avatar avUsed, Integer position, IPlayer player) {
         if(available==0)
             return available;
         if(lclient.containsKey(avUsed)) return -1;
-        avUsed.setPosition(position);
+        try {
+            //Si ce joueur existe déjà dans la BD
+            /*System.out.println(searchDB("UsernamePl", "Player", "UsernamePl",
+                    "\""+"Black"+"\""));*/
+            if (player.getUid().compareTo(searchDB("UsernamePl", "Player", "UsernamePl",
+                    "\""+player.getUid()+"\"")) == 0) {
+                //Si l'avatar existe déjà dans la BD
+                if (avUsed.getName().compareTo(searchDB("UsernameAv", "Avatar", "UsernamePl",
+                        "\""+player.getUid()+"\"")) == 0) {
+                    avUsed.setPosition(Integer.parseInt(searchDB("Position","Avatar","UsernameAv",
+                            "\""+avUsed.getName()+"\"")));
+                    avUsed.setLifePoint(Integer.parseInt(searchDB("Life","Avatar","UsernameAv",
+                            "\""+avUsed.getName()+"\"")));
+                } else{ //Si l'avatar n'existe pas encore
+                    insertDB("("+"\""+avUsed.getName()+"\""+","+"\""+player.getUid()+"\""+
+                                    ","+"\""+position.toString()+"\""+","+"\""+avUsed.getLifePoint().toString()+"\""+")",
+                            "Avatar");
+                    avUsed.setPosition(position);
+                }
+            } else { //Si le joueur n'existe pas encore
+                insertDB("("+"\""+player.getUid()+"\""+","+"\""+"mdpTest"+"\""+")",
+                        "Player");
+                insertDB("("+"\""+avUsed.getName()+"\""+","+"\""+player.getUid()+"\""+","+"\""+position.toString()+"\""+
+                                ","+"\""+avUsed.getLifePoint().toString()+"\""+")",
+                        "Avatar");
+                avUsed.setPosition(position);
+            }
+        } catch(RemoteException e) {
+            e.printStackTrace();
+        }
         positionAvatar.get(position).add(avUsed);
         lclient.put(avUsed,player);
         return available;
@@ -102,6 +201,7 @@ public class GameServerSimple implements Runnable{
         positionAvatar.get(position).remove(avUsed);
         positionAvatar.get(dest).add(avUsed);
         avUsed.setPosition(dest);
+        updateDB("Position",dest.toString(),"Avatar","UsernameAv", "\""+avUsed.getName()+"\"");
         try {
             lclient.get(avUsed).updateAvatar(avUsed);
         } catch (RemoteException e) {
@@ -122,6 +222,7 @@ public class GameServerSimple implements Runnable{
         av.loseLife(damage);
         try {
             lclient.get(av).updateAvatar(av);
+            updateDB("Life",av.getLifePoint().toString(),"Avatar","UsernameAv", "\""+av.getName()+"\"");
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -175,6 +276,7 @@ public class GameServerSimple implements Runnable{
             wait();
         if (nbAleatoire == 0) { //Le joueur touche le monstre
             positionMonster.get(position).loseLife(lifeLosed);
+            updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());
             return positionMonster.get(position).getLifePoint();
         } else { //Le monstre a contré
             Avatar avAtt = getAvatar(attacker);
@@ -191,6 +293,7 @@ public class GameServerSimple implements Runnable{
             return target.getLifePoint();
         } else { //Le monstre ne touche pas
             positionMonster.get(position).loseLife(lifeLosed);
+            updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());
             return positionMonster.get(position).getLifePoint();
         }
     }
@@ -285,5 +388,16 @@ public class GameServerSimple implements Runnable{
         avatar = getAvatar((Avatar) avatar);
         Pair<Room,Entity> res = new Pair<>(gGrid.getRoom(avatar.getPosition()/gGrid.size,avatar.getPosition()%gGrid.size),positionMonster.get(avatar.getPosition()));
         return res;
+    }
+
+    public void disconnection(Avatar av, IPlayer player) throws RemoteException{
+        Avatar avUsed=getAvatar(av);
+        int position = avUsed.getPosition();
+        positionAvatar.get(position).remove(av);
+        lclient.remove(player);
+        if(lclient.containsKey(player)) System.out.println("toujours présent");
+        else System.out.println("suppression effective");
+        if(positionAvatar.get(position).contains(av)) System.out.println("avatar no supprimé");
+        else System.out.println(("suppression avatar effective"));
     }
 }
