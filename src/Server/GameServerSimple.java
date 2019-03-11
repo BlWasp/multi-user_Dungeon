@@ -20,6 +20,7 @@ public class GameServerSimple implements Runnable{
     private Grid gGrid;
     private Zone z = new Zone(0,0);
     int size = 8;
+    private Set<Entity> updateRequest;
     private Map<Integer, List<Avatar>> positionAvatar;
     private Map<Integer, Monster> positionMonster;
     private Map<Avatar, IPlayer> lclient = new LinkedHashMap<>();
@@ -41,13 +42,20 @@ public class GameServerSimple implements Runnable{
         this.size = size;
         positionAvatar = new LinkedHashMap<>();
         positionMonster = new LinkedHashMap<>();
+        updateRequest = new HashSet<Entity>();
         available=1;
         this.z = z;
         connectDB();
         for (int i = 0; i < size*size; i++) {
             positionAvatar.put(i, new ArrayList<Avatar>());
             positionMonster.put(i, new Monster("Chuck",i));
-            insertDB("("+String.valueOf(i)+","+positionMonster.get(i).getLifePoint().toString()+")","Monstre");
+            if (!searchDB("Place","Monstre","Place", String.valueOf(i)).
+                    matches("Erreur lecture base de données")) {
+                continue;
+            } else{
+                insertDB("("+String.valueOf(i)+","+positionMonster.get(i).getLifePoint().toString()+")",
+                        "Monstre");
+            }
         }
         round=0;
         gGrid.displayGrid();
@@ -188,13 +196,14 @@ public class GameServerSimple implements Runnable{
             avUsed.setPosition(dest);
             return -2;
         }
-        //permet d'attendre le prochain tour, pour synchroniser les tour de jeux
+        //permet d'attendre le prochain tour, pour synchroniser les tours de jeux
         if(round==currentRound)
             wait();
         positionAvatar.get(position).remove(avUsed);
         positionAvatar.get(dest).add(avUsed);
         avUsed.setPosition(dest);
-        updateDB("Position",dest.toString(),"Avatar","UsernameAv", "\""+avUsed.getName()+"\"");
+        updateRequest.add(avUsed);
+        //updateDB("Position",dest.toString(),"Avatar","UsernameAv", "\""+avUsed.getName()+"\"");
         try {
             lclient.get(avUsed).updateAvatar(avUsed);
         } catch (RemoteException e) {
@@ -215,7 +224,8 @@ public class GameServerSimple implements Runnable{
         av.loseLife(damage);
         try {
             lclient.get(av).updateAvatar(av);
-            updateDB("Life",av.getLifePoint().toString(),"Avatar","UsernameAv", "\""+av.getName()+"\"");
+            updateRequest.add(av);
+            //updateDB("Life",av.getLifePoint().toString(),"Avatar","UsernameAv", "\""+av.getName()+"\"");
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -260,7 +270,8 @@ public class GameServerSimple implements Runnable{
             wait();
         if (nbAleatoire == 0) { //Le joueur touche le monstre
             positionMonster.get(position).loseLife(lifeLosed);
-            updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());
+            updateRequest.add(positionMonster.get(position));
+            //updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());
             return positionMonster.get(position).getLifePoint();
         } else { //Le monstre a contré
             Avatar avAtt = getAvatar(attacker);
@@ -277,7 +288,8 @@ public class GameServerSimple implements Runnable{
             return target.getLifePoint();
         } else { //Le monstre ne touche pas
             positionMonster.get(position).loseLife(lifeLosed);
-            updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());
+            updateRequest.add(positionMonster.get(position));
+            //updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());
             return positionMonster.get(position).getLifePoint();
         }
     }
@@ -355,11 +367,25 @@ public class GameServerSimple implements Runnable{
         while(available==1){
             try {
                 Thread.sleep(2000);
+                int i = (Integer)z.getKey();
+                while(i != (Integer)z.getValue()) {
+                    for(Entity ent : updateRequest) {
+                        if(ent.getClass()==Avatar.class) {
+                            updateDB("Life",ent.getLifePoint().toString(),"Avatar",
+                                    "UsernameAv", "\""+ent.getName()+"\"");
+                            updateDB("Position",ent.getPosition().toString(),"Avatar",
+                                    "UsernameAv", "\""+ent.getName()+"\"");
+                        } else{
+                            updateDB("Life",ent.getLifePoint().toString(),"Monstre",
+                                    "Place", ent.getName());
+                        }
+                    }
+                    i++;
+                }
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
             addRound();
-
         }
     }
 
