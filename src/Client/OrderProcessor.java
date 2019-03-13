@@ -145,7 +145,7 @@ public class OrderProcessor {
                 break;
             case "I":
             case "INFO":
-                p.getDm().displayPosition(p.getObj(), p.getCs());
+                p.getDm().displayPosition(p);
                 break;
             case "EXIT":
                 p.disconnection(av, p);

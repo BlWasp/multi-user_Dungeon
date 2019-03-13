@@ -283,7 +283,18 @@ public class GameServerSimple implements Runnable{
         }
     }
 
-    //Lorsqu'un joueur attaque le monstre de la case
+    /**
+     * Permet au joueur d'attaquer le monstre de la salle
+     * @param attacker
+     * avatar attaquant
+     * @param position
+     * position de l'avatar
+     * @param lifeLosed
+     * @return
+     * 0 si le monstre subit des dégats
+     * 1 si le monstre contre l'attaque
+     * @throws InterruptedException
+     */
     public synchronized int attackM(Avatar attacker, Integer position, int lifeLosed) throws InterruptedException {
         Integer currentRound = round;
         double nbAleatoire = Math.random();
@@ -294,11 +305,11 @@ public class GameServerSimple implements Runnable{
             positionMonster.get(position).loseLife(lifeLosed);
             updateRequest.add(positionMonster.get(position));
             //updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());
-            return positionMonster.get(position).getLifePoint();
+            return 0;
         } else { //Le monstre a contré
             Avatar avAtt = getAvatar(attacker);
             makeDamage(avAtt,lifeLosed);
-            return  attacker.getLifePoint();
+            return  1;
         }
     }
 

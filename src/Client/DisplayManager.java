@@ -52,12 +52,12 @@ public class DisplayManager {
      * -n° de la salle et portes
      * nom et point de vie du monstre
      * nbr d'utilisateur dans la salle
-     * @param gs
-     * serveur de jeu courant
-     * @param cs
-     * serveur de chat courant
+     * @param currentPlayer
+     * joueur courant
      */
-    public void displayPosition(IGameServer gs, IChatServer cs){
+    public void displayPosition(Player currentPlayer){
+        IGameServer gs = currentPlayer.getObj();
+        IChatServer cs = currentPlayer.getCs();
         Pair<Room, Entity> result = null;
         try {
             result = gs.getRoomInfo(myAvatar);
@@ -72,7 +72,7 @@ public class DisplayManager {
         System.out.println("   ▮           ▮"+"     Monster's name : "+instruction(monster.getName()));
         System.out.println("   "+currentRoom.getWest()+"           "+currentRoom.getEast()+"     Monster's life point : "+instruction(monster.getLifePoint().toString()));
         System.out.println(" W "+currentRoom.getWest()+"    "+instruction(parsePosition(currentRoom.getId()))+"    "+currentRoom.getEast()+" E   "+instruction(playerList.size()+" ")+"players in your room");
-        System.out.println("   "+currentRoom.getWest()+"           "+currentRoom.getEast()+"     My Life Points : "+instruction(myAvatar.getLifePoint().toString()));
+        System.out.println("   "+currentRoom.getWest()+"           "+currentRoom.getEast()+"     My Life Points : "+instruction(currentPlayer.getAv().getLifePoint().toString()));
         System.out.println("   ▮           ▮");
         System.out.println("   ◼ ▬ "+currentRoom.getSouth()+" "+currentRoom.getSouth()+" "+currentRoom.getSouth() +" ▬ ◼");
         System.out.println("         S");

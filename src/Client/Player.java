@@ -30,6 +30,9 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     private OrderProcessor op;
     private DisplayManager dm;
 
+    public Avatar getAv() {
+        return av;
+    }
 
     /**
      * Constructeur d'un Player (client)
@@ -258,8 +261,11 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      * @throws RemoteException
      */
     public void attackM (Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
-        gameServer.attackM(attacker, position, power);
-        System.out.println("Petite attaque sur le monstre en mode ninja !");
+        int res = gameServer.attackM(attacker, position, power);
+        if(res==0)
+            printS("Petite attaque sur le monstre en mode ninja !");
+        else if(res==1)
+            printE("Sans surprise le monstre esquive cette attaque faiblarde et vous frappe.");
     }
 
 
@@ -304,7 +310,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             else
                 System.out.println(red("Connection failed"));
             p.op=new OrderProcessor(p);
-            p.getDm().displayPosition(p.getObj(),p.getCs());
+            p.getDm().displayPosition(p);
             String answer=scan.nextLine();
             int play = 0;
             while(play == 0) {
@@ -326,7 +332,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     @Override
     public void updateAvatar(Avatar avatar) throws RemoteException {
         if(!avatar.getPosition().equals(av.getPosition())){
-            dm.displayPosition(getObj(),getCs());
+            dm.displayPosition(this);
             System.out.println(avatar.getName()+": nouvelle position = "+avatar.getPosition());
 
         }
