@@ -35,6 +35,10 @@ public class DisplayManager {
             System.out.println("\n");
     }
 
+    public List<Avatar> getPlayerList() {
+        return playerList;
+    }
+
     public void displayNeighbour(IChatServer cs){
         updateList(cs);
         System.out.println("Player in the same room :");
@@ -68,7 +72,7 @@ public class DisplayManager {
         System.out.println("   ▮           ▮"+"     Monster's name : "+instruction(monster.getName()));
         System.out.println("   "+currentRoom.getWest()+"           "+currentRoom.getEast()+"     Monster's life point : "+instruction(monster.getLifePoint().toString()));
         System.out.println(" W "+currentRoom.getWest()+"    "+instruction(parsePosition(currentRoom.getId()))+"    "+currentRoom.getEast()+" E   "+instruction(playerList.size()+" ")+"players in your room");
-        System.out.println("   "+currentRoom.getWest()+"           "+currentRoom.getEast());
+        System.out.println("   "+currentRoom.getWest()+"           "+currentRoom.getEast()+"     My Life Points : "+instruction(myAvatar.getLifePoint().toString()));
         System.out.println("   ▮           ▮");
         System.out.println("   ◼ ▬ "+currentRoom.getSouth()+" "+currentRoom.getSouth()+" "+currentRoom.getSouth() +" ▬ ◼");
         System.out.println("         S");

@@ -7,6 +7,7 @@ import Server.Server_Interface.IChatServer;
 import Server.Server_Interface.IGameServer;
 import Server.Server_Interface.IServerController;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.rmi.RemoteException;
 
 /**
@@ -110,10 +111,21 @@ public class OrderProcessor {
             case "M":
             case "MOVE":
                 return p.moveAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(),p);
-            /*case "Attack":
-                if (order[1])
-                p.attackAvatar(order[2], Avatar ifAvatar, av, pos, gameserver, pow);
-                break;*/
+            case "A":
+            case "ATTACK":
+                if (order.length==1) {
+                    p.attackM(av, av.getPosition(), p.getObj(), 1);
+                    break;
+                } else {
+                    for (Avatar avt : p.getDm().getPlayerList()) {
+                        if (avt.getName().equals(order[1])) {
+                            p.attackAvatar(avt, av, av.getPosition(), p.getObj(), 1);
+                            return 0;
+                        }
+                    }
+                    System.out.println("Cible introuvable");
+                    break;
+                }
             case "/":
                 order[0]=" ";
                 String message = catArray(order);

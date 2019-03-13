@@ -10,6 +10,7 @@ import Server.*;
 import Server.Server_Interface.IChatServer;
 import Server.Server_Interface.IGameServer;
 import Server.Server_Interface.IServerController;
+import javafx.util.Pair;
 
 import static Tools.Colors.*;
 import static Tools.Text.*;
@@ -72,7 +73,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         obj.disconnection(av, p);
         cs.disconnection(av, p);
         getDm().clearScreen();
-        printI("Player disconnected");
+        bye();
     }
 
     public int moveAvatarCs(Avatar av, int position, IChatServer chatServer, Player p) throws RemoteException {
@@ -107,17 +108,17 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     public int moveAvatar(Avatar av, String way, IGameServer gameServer, IChatServer chatServer, Player p) throws RemoteException {
         while(!isAWay(way)){
             printE("Direction invalide");
-            printI("Entrez un direction valide : "+allWay());
+            printI("Entrez une direction valide : "+allWay());
             Scanner scan = new Scanner(System.in);
             way=scan.nextLine().toUpperCase();
         }
         int res = gameServer.move(av, way);
-        while(res==-1){
-            System.out.println("Il y a pas moyen de passer par là");
-            System.out.println("Dites-nous vers où vous voulez aller.");
+        while (res == -3) {
+            System.out.println("Déplacement impossible, il y a un monstre dans la salle.");
+            System.out.println("Pour quitter cette salle il vous faut occire ce monstre ou bien fuir comme un pleutre.");
             //demander où aller
             Scanner scan = new Scanner(System.in);
-            String answer=scan.nextLine();
+            String answer = scan.nextLine();
             try {
                 res = op.process(op.spliter(answer), av);
             } catch (InterruptedException e) {
@@ -127,18 +128,33 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             System.out.println(res);
             return -1;
         }
-        if(res==-2){
+        while (res == -1) {
+            System.out.println("Il y a pas moyen de passer par là");
+            System.out.println("Dites-nous vers où vous voulez aller.");
+            //demander où aller
+            Scanner scan = new Scanner(System.in);
+            String answer = scan.nextLine();
+            try {
+                res = op.process(op.spliter(answer), av);
+            } catch (InterruptedException e) {
+                System.out.println("orderProcessor InterruptesException");
+                e.printStackTrace();
+            }
+            //System.out.println(res);
+            return -1;
+        }
+        if (res == -2) {
             System.out.println("Case non géré par le serveur");
-            obj = mainServer.findGameServer(av.getPosition(),way);
-            if(obj==null){
+            obj = mainServer.findGameServer(av.getPosition(), way);
+            if (obj == null) {
                 System.out.println("aucun serveur trouvé");
-                return -3;
+                return -2;
             }
             obj.connection(av, av.getPosition(), p);
-            return moveAvatar(av, way, obj, chatServer,p);
+            return moveAvatar(av, way, obj, chatServer, p);
         }
-        moveAvatarCs(av,res,chatServer,p);
-       // System.out.println("Vous êtes arrivé sur la case n°" + av.getPosition());
+        //moveAvatarCs(av, res, chatServer, p);
+        // System.out.println("Vous êtes arrivé sur la case n°" + av.getPosition());
         return 0;
     }
 
@@ -158,14 +174,54 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     //Permet au joueur de s'échapper pendant un combat
     //Pareil que moveAvatar mais affecte un malus de -2 pt à l'avatar
     public int escapeAvatar(Avatar av, String way, IGameServer gameServer, IChatServer cs, Player p) throws RemoteException {
-        int res = 0;
-        res = moveAvatar(av,way,gameServer, cs,p);
-        if(res>-1)
-            System.out.println(av.getName()+": fuit");
-        if(res>=0) gameServer.escape(av,way);
+
+        while(!isAWay(way)){
+            printE("Direction invalide");
+            printI("Entrez une direction valide : "+allWay());
+            Scanner scan = new Scanner(System.in);
+            way=scan.nextLine().toUpperCase();
+        }
+        int res = gameServer.escape(av, way);
+        while(res==-1){
+            System.out.println("Il y a pas moyen de passer par là");
+            System.out.println("Dites-nous vers où vous voulez aller.");
+            //demander où aller
+            Scanner scan = new Scanner(System.in);
+            String answer=scan.nextLine();
+            try {
+                res = op.process(op.spliter(answer), av);
+            } catch (InterruptedException e) {
+                System.out.println("orderProcessor InterruptesException");
+                e.printStackTrace();
+            }
+            //System.out.println(res);
+            return -1;
+        }
+        if(res==-2){
+            System.out.println("Case non géré par le serveur");
+            obj = mainServer.findGameServer(av.getPosition(),way);
+            if(obj==null){
+                System.out.println("Aucun serveur trouvé");
+                return -2;
+            }
+            obj.connection(av, av.getPosition(), p);
+            return escapeAvatar(av, way, obj, cs,p);
+        }
+        //moveAvatarCs(av,res,cs,p);
+        // System.out.println("Vous êtes arrivé sur la case n°" + av.getPosition());
+        return 0;
+
+
+
+        //int res = 0;
+        /*res = moveAvatar(av,way,gameServer, cs,p);
+        if(res>-1)*/
+            //System.out.println(av.getName()+": fuit");
+        /*res = gameServer.escape(av,way);
+        System.out.println(res);*/
         //System.out.println("Votre vie est maintenant de : " + av.getLifePoint());
 
-        return av.getLifePoint();
+        //return av.getLifePoint();
     }
 
 
@@ -183,9 +239,10 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      */
     //target est la cible qui est attaquée
     //ifAvatar est utilisé lorsqu'un joueur en attaque un autre. Il spécifie ici lequel il attaque, sinon à null
-    private void attackAvatar (Avatar ifAvatar, Avatar attacker, IGameServer gameServer, int power) throws RemoteException {
-        gameServer.attackAvatar(ifAvatar,attacker,power);
-        System.out.println("Petite attaque de derrière les fagots !");
+    public void attackAvatar(Avatar ifAvatar, Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
+        int res = gameServer.attackAvatar(ifAvatar,attacker,power);
+        if(res==-2) System.out.println("Vous êtes mort. Prenez une pause et revenez en vie.");
+        else System.out.println("Petite attaque de derrière les fagots !");
     }
 
     /**
@@ -200,7 +257,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      *              C'est la puissance de l'attaque
      * @throws RemoteException
      */
-    private void attackM (Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
+    public void attackM (Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
         gameServer.attackM(attacker, position, power);
         System.out.println("Petite attaque sur le monstre en mode ninja !");
     }

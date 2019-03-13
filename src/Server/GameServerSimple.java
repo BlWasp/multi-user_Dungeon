@@ -10,6 +10,9 @@ import java.awt.datatransfer.DataFlavor;
 import java.rmi.RemoteException;
 import java.util.*;
 
+import static Tools.Text.printE;
+import static Tools.Text.printS;
+
 /**
  * Classe implémentant le code interne des différentes méthodes de GameServerImpl
  * L'utilité de certaines méthodes et leurs paramètres sont décrit dans GameServerImpl
@@ -22,7 +25,7 @@ public class GameServerSimple implements Runnable{
     int size = 8;
     private Set<Entity> updateRequest;
     private Map<Integer, List<Avatar>> positionAvatar;
-    private Map<Integer, Monster> positionMonster;
+    Map<Integer, Monster> positionMonster;
     private Map<Avatar, IPlayer> lclient = new LinkedHashMap<>();
     private DataBaseLink dbl = new DataBaseLink();
 
@@ -176,8 +179,6 @@ public class GameServerSimple implements Runnable{
     public synchronized int move(Avatar avUsed, String goTo) throws InterruptedException {
         Integer currentRound = round;
         avUsed=getAvatar(avUsed);
-        if(avUsed==null) return -10;
-        if(!avUsed.isInLife)return -9;
         int position = avUsed.getPosition();
         Integer x,y;
         x=position/size;
@@ -240,10 +241,20 @@ public class GameServerSimple implements Runnable{
         if (avUsed==null) return -10;
         try {
             int res = move(avUsed, goTo);
+            if (res >= 0 || res == -3) {
+                printS(avUsed.getName()+": fuit");
+                makeDamage(avUsed,2);
+                printS("Votre vie est maintenant de : " + avUsed.getLifePoint());
+                return res;
+            } else if (res == -1) {
+                printE("Impossible de fuir dans un mur !");
+            } else if (res == -2) {
+                printE("Case non gérée par le serveur, fuite impossible");
+            }
+            return res;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        makeDamage(avUsed,2);
         return 1;
     }
 
@@ -252,11 +263,12 @@ public class GameServerSimple implements Runnable{
     public synchronized int attackAvatar(Avatar ifAvatar, Avatar attacker, int lifeLosed) throws InterruptedException {
         Integer currentRound = round;
         double nbAleatoire = Math.random();
+        int nbRandom = (int) (nbAleatoire*100);
         Avatar avVic = getAvatar(ifAvatar);
         Avatar avAtt = getAvatar(attacker);
         if (round == currentRound)
             wait();
-        if (nbAleatoire == 0) { //Le joueur touche le joueur
+        if ((nbRandom % 2)==0) { //Le joueur touche le joueur
             makeDamage(avVic, lifeLosed);
             return ifAvatar.getLifePoint();
         } else { //L'autre joueur a contré, l'attaquant se prend l'attaque
@@ -269,9 +281,10 @@ public class GameServerSimple implements Runnable{
     public synchronized int attackM(Avatar attacker, Integer position, int lifeLosed) throws InterruptedException {
         Integer currentRound = round;
         double nbAleatoire = Math.random();
+        int nbRandom = (int) (nbAleatoire*100);
         if (round == currentRound)
             wait();
-        if (nbAleatoire == 0) { //Le joueur touche le monstre
+        if ((nbRandom % 2)==0) { //Le joueur touche le monstre
             positionMonster.get(position).loseLife(lifeLosed);
             updateRequest.add(positionMonster.get(position));
             //updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());
@@ -389,6 +402,7 @@ public class GameServerSimple implements Runnable{
                 ex.printStackTrace();
             }
             addRound();
+
         }
     }
 
