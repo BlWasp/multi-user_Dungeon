@@ -31,9 +31,10 @@ public class Monster extends Entity {
      *              Quantité de vie voulue
      */
     //Constructeur pour monstres "spéciaux"
-    public Monster (String name, Integer pos, Integer life) {
+    public Monster (String name, Integer pos, Integer maxLifePoint) {
         super(name);
-        lifePoint = life;
+        this.maxLifePoint = maxLifePoint;
+        lifePoint = this.maxLifePoint;
         position = pos;
     }
 
@@ -44,6 +45,10 @@ public class Monster extends Entity {
      */
     public void setPosition (Integer position) {
         this.position = position;
+    }
+
+    public void revive(){
+        lifePoint = maxLifePoint;
     }
 
 }

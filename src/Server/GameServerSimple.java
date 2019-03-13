@@ -58,7 +58,9 @@ public class GameServerSimple implements Runnable{
                         "Place", String.valueOf(i)));
                 positionMonster.put(i, new Monster("Chuck",i,monsterLife));
             } else{
-                positionMonster.put(i, new Monster("Chuck",i));
+                int line = i/size;
+                int column = i%size;
+                positionMonster.put(i, new Monster("Chuck",i,line*10+column*5));
                 insertDB("("+String.valueOf(i)+","+positionMonster.get(i).getLifePoint().toString()+")",
                         "Monstre");
             }
