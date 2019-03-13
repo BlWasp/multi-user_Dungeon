@@ -48,14 +48,17 @@ public class GameServerSimple implements Runnable{
         updateRequest = new HashSet<Entity>();
         available=1;
         this.z = z;
+        Integer monsterLife;
         connectDB();
         for (int i = 0; i < size*size; i++) {
             positionAvatar.put(i, new ArrayList<Avatar>());
-            positionMonster.put(i, new Monster("Chuck",i));
             if (!searchDB("Place","Monstre","Place", String.valueOf(i)).
                     matches("Erreur lecture base de données")) {
-                continue;
+                monsterLife = Integer.parseInt(searchDB("Life","Monstre",
+                        "Place", String.valueOf(i)));
+                positionMonster.put(i, new Monster("Chuck",i,monsterLife));
             } else{
+                positionMonster.put(i, new Monster("Chuck",i));
                 insertDB("("+String.valueOf(i)+","+positionMonster.get(i).getLifePoint().toString()+")",
                         "Monstre");
             }
@@ -143,14 +146,17 @@ public class GameServerSimple implements Runnable{
                     "\""+"Black"+"\""));*/
             if (player.getUid().compareTo(searchDB("UsernamePl", "Player", "UsernamePl",
                     "\""+player.getUid()+"\"")) == 0) {
+
                 //Si l'avatar existe déjà dans la BD
                 if (avUsed.getName().compareTo(searchDB("UsernameAv", "Avatar", "UsernamePl",
                         "\""+player.getUid()+"\"")) == 0) {
-                    avUsed.setPosition(Integer.parseInt(searchDB("Position","Avatar","UsernameAv",
-                            "\""+avUsed.getName()+"\"")));
+                    position = Integer.parseInt(searchDB("Position","Avatar","UsernameAv",
+                            "\""+avUsed.getName()+"\""));
+                    avUsed.setPosition(position);
                     avUsed.setLifePoint(Integer.parseInt(searchDB("Life","Avatar","UsernameAv",
                             "\""+avUsed.getName()+"\"")));
                     System.out.println("already exist");
+
                 } else{ //Si l'avatar n'existe pas encore
                     insertDB("("+"\""+avUsed.getName()+"\""+","+"\""+player.getUid()+"\""+
                                     ","+"\""+position.toString()+"\""+","+"\""+avUsed.getLifePoint().toString()+"\""+")",
@@ -158,6 +164,7 @@ public class GameServerSimple implements Runnable{
                     avUsed.setPosition(position);
                     System.out.println("create avatar");
                 }
+
             } else { //Si le joueur n'existe pas encore
                 insertDB("("+"\""+player.getUid()+"\""+","+"\""+"mdpTest"+"\""+")",
                         "Player");
@@ -383,21 +390,18 @@ public class GameServerSimple implements Runnable{
         while(available==1){
             try {
                 Thread.sleep(2000);
-                int i = (Integer)z.getKey();
-                while(i != (Integer)z.getValue()) {
-                    for(Entity ent : updateRequest) {
-                        if(ent.getClass()==Avatar.class) {
-                            updateDB("Life",ent.getLifePoint().toString(),"Avatar",
-                                    "UsernameAv", "\""+ent.getName()+"\"");
-                            updateDB("Position",ent.getPosition().toString(),"Avatar",
-                                    "UsernameAv", "\""+ent.getName()+"\"");
-                        } else{
-                            updateDB("Life",ent.getLifePoint().toString(),"Monstre",
-                                    "Place", ent.getPosition().toString());
-                        }
+                for(Entity ent : updateRequest) {
+                    if(ent.getClass()==Avatar.class) {
+                        updateDB("Life",ent.getLifePoint().toString(),"Avatar",
+                                "UsernameAv", "\""+ent.getName()+"\"");
+                        updateDB("Position",ent.getPosition().toString(),"Avatar",
+                                "UsernameAv", "\""+ent.getName()+"\"");
+                    } else{
+                        updateDB("Life",ent.getLifePoint().toString(),"Monstre",
+                                "Place", ent.getPosition().toString());
                     }
-                    i++;
                 }
+                updateRequest.clear();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
@@ -428,6 +432,7 @@ public class GameServerSimple implements Runnable{
         updateDB("Position",av.getPosition().toString(),"Avatar","UsernameAv",
                 "\""+av.getName()+"\"");
     }
+
 
     public void playerAvatar(String username) throws RemoteException{
         dbl.searchAvatarDB("\""+username+"\"");
