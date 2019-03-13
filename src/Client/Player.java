@@ -275,6 +275,12 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             printE("Vous êtes mort vous ne pouvez plus combattre.");
     }
 
+    public void heal(Avatar av, IGameServer gameServer) throws RemoteException, InterruptedException {
+        int res = gameServer.heal(av);
+        if(res==-1) printE("Pas le temps de se soigner le monstre n'est pas mort! Noob!");
+        else printS("Ca fait du bien");
+    }
+
 
     public static void main(String args[]) {
         try {

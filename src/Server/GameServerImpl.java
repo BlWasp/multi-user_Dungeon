@@ -183,6 +183,11 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
     }
 
     @Override
+    public int heal(Avatar av) throws RemoteException, InterruptedException {
+        return gs.heal(av);
+    }
+
+    @Override
     public Pair<Room, Entity> getRoomInfo(Entity avatar) throws RemoteException{
         return gs.getRoomInfo(avatar);
     }

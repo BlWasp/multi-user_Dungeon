@@ -321,6 +321,7 @@ public class GameServerSimple implements Runnable{
                     av.levelUp();
                     try {
                         lclient.get(av).updateAvatar(av);
+                        updateRequest.add(av);
                     }
                     catch (Exception e){
                         System.out.println("client injoignable");
@@ -476,5 +477,21 @@ public class GameServerSimple implements Runnable{
 
     public void playerAvatar(String username) throws RemoteException{
         dbl.searchAvatarDB("\""+username+"\"");
+    }
+
+    public int heal(Avatar av) throws InterruptedException {
+        Avatar avUsed = getAvatar(av);
+        if(positionMonster.get(avUsed.getPosition()).isInLife()){
+            return -1;
+        }
+        avUsed.heal(1);
+        Thread.sleep(4000);
+        try {
+            lclient.get(avUsed).updateAvatar(avUsed);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        updateRequest.add(avUsed);
+        return 0;
     }
 }

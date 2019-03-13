@@ -51,4 +51,11 @@ public class Avatar extends Entity {
         restoreLife();
     }
 
+    public int heal(int value){
+        if(lifePoint==maxLifePoint) return -1;
+        lifePoint=lifePoint+value;
+        if(lifePoint>maxLifePoint) lifePoint=maxLifePoint;
+        return 0;
+    }
+
 }
