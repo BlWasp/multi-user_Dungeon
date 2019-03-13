@@ -18,7 +18,8 @@ public class Avatar extends Entity {
      */
     public Avatar(String name) {
         super(name);
-        lifePoint=10;
+        maxLifePoint=10;
+        lifePoint=maxLifePoint;
     }
 
     /**
@@ -30,7 +31,8 @@ public class Avatar extends Entity {
      */
     public Avatar (String name, Integer pos){
         super(name);
-        lifePoint=10;
+        maxLifePoint=10;
+        lifePoint=maxLifePoint;
         position = pos;
     }
 
@@ -41,6 +43,12 @@ public class Avatar extends Entity {
      */
     public void setPosition(Integer position) {
         this.position = position;
+    }
+
+    public void levelUp(){
+        System.out.println("max : "+maxLifePoint);
+        maxLifePoint=maxLifePoint+5;
+        restoreLife();
     }
 
 }

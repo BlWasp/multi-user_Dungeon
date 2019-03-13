@@ -268,6 +268,10 @@ public class GameServerSimple implements Runnable{
     //Permet à un joueur d'attaquer un autre joueur
     public synchronized int attackAvatar(Avatar ifAvatar, Avatar attacker, int lifeLosed) throws InterruptedException {
         Integer currentRound = round;
+        if(!ifAvatar.isInLife())
+            return -1;
+        if(!attacker.isInLife())
+            return -2;
         double nbAleatoire = Math.random();
         int nbRandom = (int) (nbAleatoire*100);
         Avatar avVic = getAvatar(ifAvatar);
@@ -297,6 +301,10 @@ public class GameServerSimple implements Runnable{
      */
     public synchronized int attackM(Avatar attacker, Integer position, int lifeLosed) throws InterruptedException {
         Integer currentRound = round;
+        if(!positionMonster.get(position).isInLife())
+            return -1;
+        if(!attacker.isInLife())
+            return -2;
         double nbAleatoire = Math.random();
         int nbRandom = (int) (nbAleatoire*100);
         if (round == currentRound)
@@ -305,14 +313,34 @@ public class GameServerSimple implements Runnable{
             positionMonster.get(position).loseLife(lifeLosed);
             updateRequest.add(positionMonster.get(position));
             //updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());
+            if(!positionMonster.get(position).isInLife()) { //le monstre se fait tuer
+
+                for (Avatar av : positionAvatar.get(position)) {
+                    av.levelUp();
+                    try {
+                        lclient.get(av).updateAvatar(av);
+                    }
+                    catch (Exception e){
+                        System.out.println("client injoignable");
+                    }
+                }
+                return 2;
+            }
             return 0;
         } else { //Le monstre a contré
             Avatar avAtt = getAvatar(attacker);
-            makeDamage(avAtt,lifeLosed);
+            makeDamage(avAtt, lifeLosed);
             return  1;
         }
     }
 
+    /**
+     *Permet au monstre d'attaquer
+     * @param target
+     * @param position
+     * @param lifeLosed
+     * @return
+     */
     public int attackMonster(Avatar target, Integer position, int lifeLosed) {
         Avatar tmpAv = getAvatar(target);
         double nbAleatoire = Math.random();

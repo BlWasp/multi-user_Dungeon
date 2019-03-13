@@ -9,6 +9,7 @@ public abstract class Entity implements Serializable, Cloneable {
 
     protected final String name;
     protected Integer lifePoint;
+    protected Integer maxLifePoint;
     protected Integer position;
     protected boolean isInLife;
     protected long uid;
@@ -20,6 +21,7 @@ public abstract class Entity implements Serializable, Cloneable {
         uid=Long.MIN_VALUE + ((long) Math.random() * (Long.MAX_VALUE - Long.MIN_VALUE));
         name="Boo";
         isInLife=true;
+        maxLifePoint=10;
     }
 
     /**
@@ -121,6 +123,11 @@ public abstract class Entity implements Serializable, Cloneable {
         }
         return this.getLifePoint();
     }
+
+    public void restoreLife(){
+        lifePoint=maxLifePoint;
+    }
+
 
 
 }

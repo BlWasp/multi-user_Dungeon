@@ -245,6 +245,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     public void attackAvatar(Avatar ifAvatar, Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
         int res = gameServer.attackAvatar(ifAvatar,attacker,power);
         if(res==-2) System.out.println("Vous êtes mort. Prenez une pause et revenez en vie.");
+        if(res==-1) System.out.println("Laissez son corps tranquille! Il est mort ça ne vous suffit pas?");
         else System.out.println("Petite attaque de derrière les fagots !");
     }
 
@@ -266,6 +267,12 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             printS("Petite attaque sur le monstre en mode ninja !");
         else if(res==1)
             printE("Sans surprise le monstre esquive cette attaque faiblarde et vous frappe.");
+        else if(res==2)
+            printS("Le monstre est mort. Ça lui apprendra à bloquer le passage!");
+        else if(res==-1)
+            printE("Il est déjà mort, merci de respecter sa dépouille...");
+        else if(res==-2)
+            printE("Vous êtes mort vous ne pouvez plus combattre.");
     }
 
 
@@ -331,15 +338,16 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      */
     @Override
     public void updateAvatar(Avatar avatar) throws RemoteException {
-        if(!avatar.getPosition().equals(av.getPosition())){
+      /*  if(!avatar.getPosition().equals(av.getPosition())){
             dm.displayPosition(this);
             System.out.println(avatar.getName()+": nouvelle position = "+avatar.getPosition());
 
         }
         if (avatar.getLifePoint()!=av.getLifePoint()){
             System.out.println(avatar.getName()+": point de vie = "+avatar.getLifePoint());
-        }
+        }*/
         this.av=avatar;
+        dm.displayPosition(this);
     }
 
     /**
