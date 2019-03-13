@@ -231,7 +231,6 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      *              C'est l'avatar qui est attaqué
      * @param attacker
      *              C'est l'avatar attaquant
-     * @param position
      * @param gameServer
      *              C'est le serveur où se trouve les avatars
      * @param power
@@ -241,8 +240,9 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     //target est la cible qui est attaquée
     //ifAvatar est utilisé lorsqu'un joueur en attaque un autre. Il spécifie ici lequel il attaque, sinon à null
     public void attackAvatar(Avatar ifAvatar, Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
-        gameServer.attackAvatar(ifAvatar,attacker,power);
-        System.out.println("Petite attaque de derrière les fagots !");
+        int res = gameServer.attackAvatar(ifAvatar,attacker,power);
+        if(res==-2) System.out.println("Vous êtes mort. Prenez une pause et revenez en vie.");
+        else System.out.println("Petite attaque de derrière les fagots !");
     }
 
     /**

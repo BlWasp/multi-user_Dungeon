@@ -25,7 +25,7 @@ public class GameServerSimple implements Runnable{
     int size = 8;
     private Set<Entity> updateRequest;
     private Map<Integer, List<Avatar>> positionAvatar;
-    private Map<Integer, Monster> positionMonster;
+    Map<Integer, Monster> positionMonster;
     private Map<Avatar, IPlayer> lclient = new LinkedHashMap<>();
     private DataBaseLink dbl = new DataBaseLink();
 
@@ -179,8 +179,6 @@ public class GameServerSimple implements Runnable{
     public synchronized int move(Avatar avUsed, String goTo) throws InterruptedException {
         Integer currentRound = round;
         avUsed=getAvatar(avUsed);
-        if(avUsed==null) return -10;
-        if(!avUsed.isInLife)return -9;
         int position = avUsed.getPosition();
         Integer x,y;
         x=position/size;
@@ -202,10 +200,6 @@ public class GameServerSimple implements Runnable{
             avUsed.setPosition(dest);
             return -2;
         }
-        Monster monster = positionMonster.get(position);
-        //S'il y a un monstre dans la salle
-        if(monster.isInLife)
-            return -3;
         //permet d'attendre le prochain tour, pour synchroniser les tours de jeux
         if(round==currentRound)
             wait();
@@ -251,6 +245,7 @@ public class GameServerSimple implements Runnable{
                 printS(avUsed.getName()+": fuit");
                 makeDamage(avUsed,2);
                 printS("Votre vie est maintenant de : " + avUsed.getLifePoint());
+                return res;
             } else if (res == -1) {
                 printE("Impossible de fuir dans un mur !");
             } else if (res == -2) {
@@ -260,7 +255,6 @@ public class GameServerSimple implements Runnable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        makeDamage(avUsed,2);
         return 1;
     }
 

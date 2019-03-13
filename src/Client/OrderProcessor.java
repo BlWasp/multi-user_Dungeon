@@ -111,6 +111,7 @@ public class OrderProcessor {
             case "M":
             case "MOVE":
                 return p.moveAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(),p);
+            case "A":
             case "ATTACK":
                 if (order.length==1) {
                     p.attackM(av, av.getPosition(), p.getObj(), 1);
