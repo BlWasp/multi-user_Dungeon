@@ -42,9 +42,31 @@ public class DataBaseLink {
 
             String query = "SELECT " + datas + " FROM " + table + " WHERE " + option;
             ResultSet result = state.executeQuery(query);
-            //ResultSetMetaData resultMeta = result.getMetaData();
+            if(result.next()){
+                return result.getObject(1).toString();
+            }
 
-            /*System.out.println("\n**********************************");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "Erreur lecture base de données";
+    }
+
+    /**
+     * Affiche tous les avatars que possède un player
+     * @param playerName
+     *          Nom du player dont on veut les avatars
+     */
+    public void searchAvatarDB(String playerName) {
+        try {
+            Statement state = conn.createStatement();
+
+            String query = "SELECT UsernameAv" + " FROM Avatar" + " WHERE UsernamePl=" + playerName;
+            ResultSet result = state.executeQuery(query);
+            ResultSetMetaData resultMeta = result.getMetaData();
+
+            System.out.println("\n**********************************");
 
             //On affiche le nom des colonnes
             for(int i = 1; i <= resultMeta.getColumnCount(); i++)
@@ -57,19 +79,14 @@ public class DataBaseLink {
                     System.out.print("\t" + result.getObject(i).toString() + "\t |");
 
                 System.out.println("\n---------------------------------");
-            }*/
-
-            /*result.close();
-            state.close();*/
-            if(result.next()){
-                return result.getObject(1).toString();
             }
+
+            result.close();
+            state.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return "Erreur lecture base de données";
     }
 
     /**
