@@ -162,7 +162,15 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
         System.out.println(gs.getZ());
     }
 
-
+    /**
+     * Récupère les avatars d'un player
+     * @param username
+     *          Nom du player
+     * @throws RemoteException
+     */
+    public void playerAvatar(String username) throws RemoteException {
+        gs.playerAvatar(username);
+    }
 
     @Override
     public Pair<Room, Entity> getRoomInfo(Entity avatar) throws RemoteException{

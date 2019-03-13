@@ -380,7 +380,7 @@ public class GameServerSimple implements Runnable{
                                     "UsernameAv", "\""+ent.getName()+"\"");
                         } else{
                             updateDB("Life",ent.getLifePoint().toString(),"Monstre",
-                                    "Place", ent.getName());
+                                    "Place", ent.getPosition().toString());
                         }
                     }
                     i++;
@@ -409,5 +409,13 @@ public class GameServerSimple implements Runnable{
         positionAvatar.get(position).remove(av);
         System.out.println(positionAvatar.toString());
         lclient.remove(av);
+        updateDB("Life",av.getLifePoint().toString(),"Avatar","UsernameAv",
+                "\""+av.getName()+"\"");
+        updateDB("Position",av.getPosition().toString(),"Avatar","UsernameAv",
+                "\""+av.getName()+"\"");
+    }
+
+    public void playerAvatar(String username) throws RemoteException{
+        dbl.searchAvatarDB("\""+username+"\"");
     }
 }

@@ -30,5 +30,8 @@ public interface IGameServer extends java.rmi.Remote{
     void displayGameInfo() throws RemoteException;
     public void disconnection(Avatar av, IPlayer player) throws  RemoteException;
 
+    //Récupère les avatars d'un joueur
+    void playerAvatar(String username) throws RemoteException;
+
     Pair<Room, Entity> getRoomInfo(Entity avatar) throws RemoteException;
 }

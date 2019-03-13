@@ -233,6 +233,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             }
             else
                 printE("Connection failed");
+            p.obj.playerAvatar(username);
 
             p.cs = p.mainServer.findChatServer(0);
             if(p.cs==null){
