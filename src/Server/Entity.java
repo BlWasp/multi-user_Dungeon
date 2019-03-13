@@ -98,7 +98,7 @@ public abstract class Entity implements Serializable, Cloneable {
     }
 
     public boolean isInLife() {
-        return isInLife;
+        return lifePoint>0;
     }
 
     /**

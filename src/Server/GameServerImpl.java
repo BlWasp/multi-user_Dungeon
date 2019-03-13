@@ -69,12 +69,12 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
         int res = 0;
         avUsed=gs.getAvatar(avUsed);
         if(avUsed==null) return -10;
-        if(!avUsed.isInLife)return -9;
+        if(!avUsed.isInLife())return -9;
         int position = avUsed.getPosition();
         Monster monster = gs.positionMonster.get(position);
         //S'il y a un monstre dans la salle
         if(monster.isInLife)
-            return -3;
+          //  return -3;
         try {
             res = gs.move(avUsed, goTo);
         } catch (InterruptedException e) {
@@ -120,7 +120,7 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
      */
     @Override //Attaque d'un joueur sur un monstre
     public int attackM(Avatar attacker, Integer position, int lifeLosed) throws RemoteException {
-        if(!attacker.isInLife) return -2;
+        if(!attacker.isInLife()) return -2;
         try {
             return gs.attackM(attacker, position, lifeLosed);
         } catch (InterruptedException e) {

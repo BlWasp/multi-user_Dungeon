@@ -382,7 +382,6 @@ public class GameServerSimple implements Runnable{
     public void run() {
         while(available==1){
             try {
-                Thread.sleep(2000);
                 int i = (Integer)z.getKey();
                 while(i != (Integer)z.getValue()) {
                     for(Entity ent : updateRequest) {
@@ -398,6 +397,7 @@ public class GameServerSimple implements Runnable{
                     }
                     i++;
                 }
+                Thread.sleep(2000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
