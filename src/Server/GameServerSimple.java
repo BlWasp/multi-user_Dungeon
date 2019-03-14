@@ -52,9 +52,9 @@ public class GameServerSimple implements Runnable{
         connectDB();
         for (int i = 0; i < size*size; i++) {
             positionAvatar.put(i, new ArrayList<Avatar>());
-            if (!searchDB("Place","Monstre","Place", String.valueOf(i)).
+            if (!searchDB("Place","Monster","Place", String.valueOf(i)).
                     matches("Erreur lecture base de données")) {
-                monsterLife = Integer.parseInt(searchDB("Life","Monstre",
+                monsterLife = Integer.parseInt(searchDB("Life","Monster",
                         "Place", String.valueOf(i)));
                 positionMonster.put(i, new Monster("Chuck",i,monsterLife));
             } else{
@@ -62,7 +62,7 @@ public class GameServerSimple implements Runnable{
                 int column = i%size;
                 positionMonster.put(i, new Monster("Chuck",i,line*10+column*5));
                 insertDB("("+String.valueOf(i)+","+positionMonster.get(i).getLifePoint().toString()+")",
-                        "Monstre");
+                        "Monster");
             }
         }
         round=0;
@@ -314,7 +314,8 @@ public class GameServerSimple implements Runnable{
         if ((nbRandom % 2)==0) { //Le joueur touche le monstre
             positionMonster.get(position).loseLife(lifeLosed);
             updateRequest.add(positionMonster.get(position));
-            //updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());
+
+            //updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monster","Place", position.toString());
             if(!positionMonster.get(position).isInLife()) { //le monstre se fait tuer
 
                 for (Avatar av : positionAvatar.get(position)) {
@@ -353,7 +354,7 @@ public class GameServerSimple implements Runnable{
         } else { //Le monstre ne touche pas
             positionMonster.get(position).loseLife(lifeLosed);
             updateRequest.add(positionMonster.get(position));
-            //updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monstre","Place", position.toString());
+            //updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monster","Place", position.toString());
             return positionMonster.get(position).getLifePoint();
         }
     }
@@ -438,7 +439,7 @@ public class GameServerSimple implements Runnable{
                         updateDB("Position",ent.getPosition().toString(),"Avatar",
                                 "UsernameAv", "\""+ent.getName()+"\"");
                     } else{
-                        updateDB("Life",ent.getLifePoint().toString(),"Monstre",
+                        updateDB("Life",ent.getLifePoint().toString(),"Monster",
                                 "Place", ent.getPosition().toString());
                     }
                 }

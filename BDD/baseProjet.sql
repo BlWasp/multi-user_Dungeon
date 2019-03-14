@@ -22,7 +22,8 @@ CREATE TABLE Avatar(
 		UsernameAv Varchar (50) NOT NULL ,
         UsernamePl Varchar (50) NOT NULL ,
 		Position Integer NOT NULL ,
-        Life     Integer NOT NULL
+        Life     Integer NOT NULL ,
+        MaxLifePoint Integer NOT NULL
     ,CONSTRAINT Avatar_PK PRIMARY KEY (UsernameAv)
     ,CONSTRAINT Avatar_Player_FK FOREIGN KEY (UsernamePl) REFERENCES Player(UsernamePl)
 );
@@ -32,8 +33,9 @@ CREATE TABLE Avatar(
 # Table: Monstre
 #------------------------------------------------------------
 
-CREATE TABLE Monstre(
+CREATE TABLE Monster(
         Place Integer NOT NULL ,
-        Life  Integer NOT NULL
-	,CONSTRAINT Monstre_PK PRIMARY KEY (Place)
+        Life  Integer NOT NULL ,
+        MaxLifePoint Integer NOT NULL
+	,CONSTRAINT Monster_PK PRIMARY KEY (Place)
 );
