@@ -156,7 +156,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             obj.connection(av, av.getPosition(), p);
             return moveAvatar(av, way, obj, chatServer, p);
         }
-        //moveAvatarCs(av, res, chatServer, p);
+        moveAvatarCs(av, res, chatServer, p);
         // System.out.println("Vous êtes arrivé sur la case n°" + av.getPosition());
         return 0;
     }
@@ -303,8 +303,10 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 printE("Aucun serveur trouvé");
                 return;
             }
-            if(p.obj.connection(p.av, 0,p)==1) {
-                avTest.setPosition(0);
+            int position = p.obj.connection(p.av, 0,p);
+            if(position!=-1) {
+                p.getAv().setPosition(position);
+                avTest.setPosition(position);
                 printS("Connected");
             }
             else
@@ -316,7 +318,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 printE("Aucun serveur de chat trouvé");
                 return;
             }
-            if(p.cs.connection(p.av, 0, p)==1) {
+            if(p.cs.connection(p.av, p.getAv().getPosition(), p)==1) {
                 avTest.setPosition(0);
                 printS("Connected");
             }

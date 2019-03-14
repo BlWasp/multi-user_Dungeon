@@ -280,6 +280,8 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServerManag
             return position;
         }
         System.out.println(positionMap.get(getAvatar(avUsed).getPosition()).remove(avUsed));
+        System.out.println("from "+avUsed.position+" to "+position);
+        positionMap.get(avUsed.position).remove(avUsed);
         avUsed.setPosition(position);
         positionMap.get(position).add(avUsed);
         return 0;

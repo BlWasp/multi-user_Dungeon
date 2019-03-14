@@ -140,7 +140,7 @@ public class GameServerSimple implements Runnable{
      */
     public int connection(Avatar avUsed, Integer position, IPlayer player) {
         if(available==0)
-            return available;
+            return -1;
         if(lclient.containsKey(avUsed))return -1;
         try {
             //Si ce joueur existe déjà dans la BD
@@ -180,7 +180,7 @@ public class GameServerSimple implements Runnable{
         }
         positionAvatar.get(position).add(avUsed);
         lclient.put(avUsed,player);
-        return available;
+        return position;
     }
 
 
