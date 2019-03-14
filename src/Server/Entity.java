@@ -83,12 +83,28 @@ public abstract class Entity implements Serializable, Cloneable {
     }
 
     /**
+     * Récupère le nombre maximal de point de vie de l'entité
+     * @return
+     */
+    public Integer getMaxLifePoint() {
+        return maxLifePoint;
+    }
+
+    /**
      * Permet de modifier le nombre de points de vie de l'entité
      * @param lifePoint
      *          Nouvelle valeur de la vie de l'entité
      */
     public void setLifePoint(int lifePoint) {
         this.lifePoint = lifePoint;
+    }
+
+    /**
+     * Modifie la valeur de MaxLifePoint
+     * @param maxLifePoint
+     */
+    public void setMaxLifePoint(Integer maxLifePoint) {
+        this.maxLifePoint = maxLifePoint;
     }
 
     /**

@@ -27,7 +27,7 @@ public class Monster extends Entity {
      *              Nom du monstre
      * @param pos
      *              Case dans laquelle il sera
-     * @param life
+     * @param maxLifePoint
      *              Quantité de vie voulue
      */
     //Constructeur pour monstres "spéciaux"
