@@ -24,6 +24,17 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
         super();
     }
 
+    /**
+     * Permet de récuperer la liste des avatars pour un joueur donné
+     * @param username
+     * nom du joueur à rechercher
+     * @return
+     * @throws RemoteException
+     */
+    @Override
+    public String preConnection(String username) throws RemoteException {
+        return gs.preConnection(username);
+    }
 
     /**
      * Connection d'un joueur sur le serveur
@@ -205,14 +216,6 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
         thread.start();
         //Naming.rebind("Dungeon", obj);
         System.out.println("Server.GameServerImpl launched");
-
-        //Scanner scan = new Scanner(System.in);
-        //String answer=scan.nextLine();
-        //if(answer=="Q"){
-        //mainServer.gameServerDisconnection(gs.getZ());
-        //System.out.println(answer);
-        //exit();
-        //}
     }
 
 }

@@ -10,6 +10,7 @@ import Server.*;
 import Server.Server_Interface.IChatServer;
 import Server.Server_Interface.IGameServer;
 import Server.Server_Interface.IServerController;
+import Tools.Colors;
 import javafx.util.Pair;
 
 import static Tools.Colors.*;
@@ -286,27 +287,27 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         try {
             welcome();
             Scanner scan = new Scanner(System.in);
-            printI("Enter your player name :");
+            System.out.print((Colors.bold("\n\n\n\n\t\t\t\t\tEntrez votre nom d'utilisateur :")));
             String username=scan.next();
-            printI("Enter your avatar's name :");
-            String name=scan.next();
-            Avatar avTest = new Avatar(name);
-            //Avatar avBis = new Avatar("Pong");
-
+            // on crée temporairement un avatar pour le player
+            Avatar avTest = new Avatar(" ");
+            // on crée temporairement un player pour récupérer le serveur de jeu
             Player p = new Player(avTest,username);
-            //Player p2 = new Player(avBis);
-            // Récupération d'un proxy sur l'objet
-            //IGameServer obj = (IGameServer) Naming.lookup("//localhost/Dungeon");
             p.mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
-            p.obj = p.mainServer.findGameServer(0);
-            if(p.obj==null){
+            IGameServer obj = p.mainServer.findGameServer(0);
+            if(obj==null){
                 printE("Aucun serveur trouvé");
                 return;
             }
+            //On choisit quel avatar on va jouer
+            p = new Player(avTest = new Avatar(p.dm.selectAvatar(obj.preConnection(username))),username);
+            p.obj=obj;
+            p.mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
+            System.out.println(p.av);
             int position = p.obj.connection(p.av, 0,p);
             if(position!=-1) {
                 p.getAv().setPosition(position);
-                avTest.setPosition(position);
+               // avTest.setPosition(position);
                 printS("Connected");
             }
             else
@@ -319,7 +320,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 return;
             }
             if(p.cs.connection(p.av, p.getAv().getPosition(), p)==1) {
-                avTest.setPosition(0);
+                //avTest.setPosition(0);
                 printS("Connected");
             }
             else

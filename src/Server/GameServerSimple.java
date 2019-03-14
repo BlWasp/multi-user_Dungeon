@@ -117,7 +117,7 @@ public class GameServerSimple implements Runnable{
     /**
      * Recherche dans la BD
      * @param datas
-     *          Donnée dont on veut la valeur
+     *          Donnée dont on veut la valeur - colonne a récupérer
      * @param table
      *          Table où elle se trouve
      * @param option1
@@ -129,6 +129,19 @@ public class GameServerSimple implements Runnable{
         return dbl.searchDB(datas,table,options);
     }
 
+    public String multiSearchDB(String datas, String table, String option1, String option2) {
+        String options = option1 + "=" + option2;
+        return dbl.multiSearchDB(datas,table,options);
+    }
+
+    public String preConnection(String username) throws RemoteException {
+        if (username.compareTo(searchDB("UsernamePl", "Player", "UsernamePl",
+                "\"" + username + "\"")) == 0) {
+            return multiSearchDB("UsernameAv","Avatar","UsernamePl",
+                    "\""+username+"\"");
+        }
+        return "";
+    }
 
     /**
      * Gère la connexion d'un joueur au serveur. Vérifie si le joueur est nouveau dans la BD ou déjà existant.

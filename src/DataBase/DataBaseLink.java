@@ -54,6 +54,34 @@ public class DataBaseLink {
     }
 
     /**
+     * permet de renvoyer plusieurs élément d'une recherche
+     * @param datas
+     * colonne visée
+     * @param table
+     * nom de la table sql
+     * @param option
+     * @return
+     */
+    public String multiSearchDB(String datas, String table, String option) {
+        String res="";
+        try {
+            Statement state = conn.createStatement();
+
+            String query = "SELECT " + datas + " FROM " + table + " WHERE " + option;
+            ResultSet result = state.executeQuery(query);
+            while(result.next()){
+                res = result.getObject(1).toString()+ " " + res;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(res=="") return "Erreur lecture base de données";
+        return res;
+    }
+
+
+    /**
      * Affiche tous les avatars que possède un player
      * @param playerName
      *          Nom du player dont on veut les avatars

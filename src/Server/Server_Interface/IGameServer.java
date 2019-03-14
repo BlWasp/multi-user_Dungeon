@@ -16,6 +16,8 @@ import java.rmi.RemoteException;
  * Méthodes dédiés aux clients
  */
 public interface IGameServer extends java.rmi.Remote{
+    //permet de lister les avatars disponibles pour un joueur
+    String preConnection(String username) throws RemoteException;
     //permet la connection du joueur au server de jeu et de spécifier le personnage utilisé
     int connection(Avatar avUsed, Integer position, IPlayer player) throws RemoteException;
     //permet au joueur de s'échaper d'une case

@@ -5,13 +5,16 @@ import Server.Server_Interface.IChatServer;
 import Server.Server_Interface.IGameServer;
 import Server.Room;
 import Tools.Colors;
+import Tools.Text;
 import javafx.util.Pair;
 
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 import static Tools.Text.instruction;
+import static Tools.Text.printI;
 
 public class DisplayManager {
     private List<Avatar> playerList; //liste des joueur sur la même case
@@ -90,6 +93,31 @@ public class DisplayManager {
             return "0"+position;
         }
         return position.toString();
+    }
+
+    public String selectAvatar(String avatarList){
+        System.out.println(avatarList);
+        String avatars[] = avatarList.split(" ");
+        if(avatars[0]!=" ") {
+            printI("\n\n\t\tSélectionner un avatar dans la liste par son numéro ou son nom.");
+            printI("Si vous le désirez vous pouvez créer un nouvel avatar en entrant un nouveau nom.\n\n");
+            for (int i = 0; i < avatars.length; i++) {
+                System.out.println(Colors.cyan("\t" + i + " : " + avatars[i]));
+            }
+            System.out.print("\n\nVotre choix : ");
+        }
+        else {
+            printI("Aucun avatar ne correspondent à ce joueur.");
+            printI("Créez en un en entrant son nom");
+            System.out.print(Colors.bold("Nom de votre nouvel avatar : "));
+        }
+        Scanner scan = new Scanner(System.in);
+        String answer=scan.nextLine();
+        //vérifie si c'est un nombre qui a été rentré
+        if(answer.matches("^\\p{Digit}+$") && avatars[0] != " "){
+            return avatars[Integer.parseInt(answer)];
+        }
+        return answer;
     }
 
     public void help(){
