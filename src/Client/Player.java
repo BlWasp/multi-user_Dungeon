@@ -30,6 +30,9 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     private OrderProcessor op;
     private DisplayManager dm;
 
+    public Avatar getAv() {
+        return av;
+    }
 
     /**
      * Constructeur d'un Player (client)
@@ -242,6 +245,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     public void attackAvatar(Avatar ifAvatar, Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
         int res = gameServer.attackAvatar(ifAvatar,attacker,power);
         if(res==-2) System.out.println("Vous êtes mort. Prenez une pause et revenez en vie.");
+        if(res==-1) System.out.println("Laissez son corps tranquille! Il est mort ça ne vous suffit pas?");
         else System.out.println("Petite attaque de derrière les fagots !");
     }
 
@@ -258,8 +262,23 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      * @throws RemoteException
      */
     public void attackM (Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
-        gameServer.attackM(attacker, position, power);
-        System.out.println("Petite attaque sur le monstre en mode ninja !");
+        int res = gameServer.attackM(attacker, position, power);
+        if(res==0)
+            printS("Petite attaque sur le monstre en mode ninja !");
+        else if(res==1)
+            printE("Sans surprise le monstre esquive cette attaque faiblarde et vous frappe.");
+        else if(res==2)
+            printS("Le monstre est mort. Ça lui apprendra à bloquer le passage!");
+        else if(res==-1)
+            printE("Il est déjà mort, merci de respecter sa dépouille...");
+        else if(res==-2)
+            printE("Vous êtes mort vous ne pouvez plus combattre.");
+    }
+
+    public void heal(Avatar av, IGameServer gameServer) throws RemoteException, InterruptedException {
+        int res = gameServer.heal(av);
+        if(res==-1) printE("Pas le temps de se soigner le monstre n'est pas mort! Noob!");
+        else printS("Ca fait du bien");
     }
 
 
@@ -304,7 +323,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             else
                 System.out.println(red("Connection failed"));
             p.op=new OrderProcessor(p);
-            p.getDm().displayPosition(p.getObj(),p.getCs());
+            p.getDm().displayPosition(p);
             String answer=scan.nextLine();
             int play = 0;
             while(play == 0) {
@@ -325,15 +344,16 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      */
     @Override
     public void updateAvatar(Avatar avatar) throws RemoteException {
-        if(!avatar.getPosition().equals(av.getPosition())){
-            dm.displayPosition(getObj(),getCs());
+      /*  if(!avatar.getPosition().equals(av.getPosition())){
+            dm.displayPosition(this);
             System.out.println(avatar.getName()+": nouvelle position = "+avatar.getPosition());
 
         }
         if (avatar.getLifePoint()!=av.getLifePoint()){
             System.out.println(avatar.getName()+": point de vie = "+avatar.getLifePoint());
-        }
+        }*/
         this.av=avatar;
+        dm.displayPosition(this);
     }
 
     /**

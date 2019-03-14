@@ -133,9 +133,12 @@ public class OrderProcessor {
                 break;
             case "E":
             case "ESCAPE":
-                p.escapeAvatar(av, order[1], p.getObj(), p.getCs(),p);
+                p.escapeAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(),p);
                 break;
             case "H":
+            case "HEAL":
+                p.heal(av,p.getObj());
+                break;
             case "HELP":
                 p.getDm().help();
                 break;
@@ -145,7 +148,7 @@ public class OrderProcessor {
                 break;
             case "I":
             case "INFO":
-                p.getDm().displayPosition(p.getObj(), p.getCs());
+                p.getDm().displayPosition(p);
                 break;
             case "EXIT":
                 p.disconnection(av, p);
