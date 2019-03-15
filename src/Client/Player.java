@@ -35,6 +35,13 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         return av;
     }
 
+    public int setAv(Avatar av) {
+        if(av==null || av.getPosition()==null) return -1;
+        this.av = av;
+        dm.setMyAvatar(av);
+        return 0;
+    }
+
     /**
      * Constructeur d'un Player (client)
      * @param av
@@ -219,21 +226,9 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             obj.connection(av, av.getPosition(), p);
             return escapeAvatar(av, way, obj, cs,p);
         }
-        //moveAvatarCs(av,res,cs,p);
+        moveAvatarCs(av,res,cs,p);
         // System.out.println("Vous êtes arrivé sur la case n°" + av.getPosition());
         return 0;
-
-
-
-        //int res = 0;
-        /*res = moveAvatar(av,way,gameServer, cs,p);
-        if(res>-1)*/
-            //System.out.println(av.getName()+": fuit");
-        /*res = gameServer.escape(av,way);
-        System.out.println(res);*/
-        //System.out.println("Votre vie est maintenant de : " + av.getLifePoint());
-
-        //return av.getLifePoint();
     }
 
 
@@ -311,9 +306,8 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             p = new Player(avTest = new Avatar(p.dm.selectAvatar(obj.preConnection(username))),username);
             p.obj=obj;
             p.mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
-            int position = p.obj.connection(p.av, 0,p);
-            if(position!=-1) {
-                p.getAv().setPosition(position);
+            p.setAv(p.obj.connection(p.av, 0,p));
+            if(p.av!=null) {
                // avTest.setPosition(position);
                 printS("Connected");
             }

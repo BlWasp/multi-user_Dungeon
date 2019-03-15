@@ -154,10 +154,10 @@ public class GameServerSimple implements Runnable{
      *          Interface du joueur qui se connecte
      * @return
      */
-    public int connection(Avatar avUsed, Integer position, IPlayer player) {
+    public Avatar connection(Avatar avUsed, Integer position, IPlayer player) {
         if(available==0)
-            return -1;
-        if(lclient.containsKey(avUsed))return -1;
+            return null;
+        if(lclient.containsKey(avUsed))return null;
         try {
             //Si ce joueur existe déjà dans la BD
             if (player.getUid().compareTo(searchDB("UsernamePl", "Player", "UsernamePl",
@@ -196,7 +196,7 @@ public class GameServerSimple implements Runnable{
         }
         positionAvatar.get(position).add(avUsed);
         lclient.put(avUsed,player);
-        return position;
+        return avUsed;
     }
 
 

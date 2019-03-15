@@ -20,6 +20,10 @@ public class DisplayManager {
     private List<Avatar> playerList; //liste des joueur sur la même case
     private Avatar myAvatar;
 
+    public void setMyAvatar(Avatar myAvatar) {
+        this.myAvatar = myAvatar;
+    }
+
     public DisplayManager(Avatar myAvatar) {
         this.playerList = new LinkedList<>();
         this.myAvatar = myAvatar;
@@ -125,11 +129,21 @@ public class DisplayManager {
         System.out.println("-To speak with people in your room");
         System.out.println("\t"+ Colors.blue+"/"+Colors.reset+" 'message'");
         System.out.println("-To escape from a room/battle");
+        System.out.println("-To speak with people in your room");
+        System.out.println("\t"+ Colors.blue+"/"+Colors.reset+" 'message'");
+        System.out.println("-To attack the monster in the room");
+        System.out.println("\t"+ Colors.blue+"a or attack"+Colors.reset);
+        System.out.println("-To attack people in your room");
+        System.out.println("\t"+ Colors.blue+"a or attack name"+Colors.reset);
+        System.out.println("-To attack another player.");
+        System.out.println("-To escape from a room/battle");
         System.out.println("\t"+Colors.blue+"Escape 'dest'"+Colors.reset+" or "+Colors.blue+"E 'dest' "+Colors.reset+"or "+Colors.blue+"e 'dest'"+Colors.reset);
         System.out.println("\t#where 'dest' can be N (North), E (East), S (South) or W (West)");
         System.out.println("\t#Be careful if you run away, you will loose some life points");
+        System.out.println("-To heal yourself");
+        System.out.println(Colors.blue+"\tHeal "+Colors.reset+"or"+Colors.blue+" H "+Colors.reset+"or"+Colors.blue+" h"+Colors.reset);
         System.out.println("-To print this help message");
-        System.out.println(Colors.blue+"\tHelp "+Colors.reset+"or"+Colors.blue+" H "+Colors.reset+"or"+Colors.blue+" h"+Colors.reset);
+        System.out.println(Colors.blue+"\tHelp "+Colors.reset);
         System.out.println("-To display game info");
         System.out.println(Colors.blue+"\tInfo "+Colors.reset+"or"+Colors.blue+" I "+Colors.reset+"or"+Colors.blue+" i"+Colors.reset);
         System.out.println("-To move on the board");

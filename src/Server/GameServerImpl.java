@@ -48,7 +48,7 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
      * @throws RemoteException
      */
     @Override
-    public int connection(Avatar avUsed, Integer position, IPlayer player) throws RemoteException{
+    public Avatar connection(Avatar avUsed, Integer position, IPlayer player) throws RemoteException{
         return gs.connection(avUsed, position, player);
     }
 
