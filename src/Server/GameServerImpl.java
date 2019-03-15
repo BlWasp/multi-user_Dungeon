@@ -84,8 +84,8 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
         int position = avUsed.getPosition();
         Monster monster = gs.positionMonster.get(position);
         //S'il y a un monstre dans la salle
-        if(monster.isInLife)
-          //  return -3;
+        if(monster.isInLife())
+            return -3;
         try {
             res = gs.move(avUsed, goTo);
         } catch (InterruptedException e) {

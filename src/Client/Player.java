@@ -117,6 +117,10 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             way=scan.nextLine().toUpperCase();
         }
         int res = gameServer.move(av, way);
+        if(res==-9) {
+            System.out.println("vous êtes actuellement décédé. Cela vous empêche de vous mouvoir");
+            return -9;
+        }
         while (res == -3) {
             System.out.println("Déplacement impossible, il y a un monstre dans la salle.");
             System.out.println("Pour quitter cette salle il vous faut occire ce monstre ou bien fuir comme un pleutre.");
@@ -303,7 +307,6 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             p = new Player(avTest = new Avatar(p.dm.selectAvatar(obj.preConnection(username))),username);
             p.obj=obj;
             p.mainServer = (IServerController) Naming.lookup("//localhost/Dungeon");
-            System.out.println(p.av);
             int position = p.obj.connection(p.av, 0,p);
             if(position!=-1) {
                 p.getAv().setPosition(position);
