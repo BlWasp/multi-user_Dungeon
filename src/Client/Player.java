@@ -190,6 +190,10 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             way=scan.nextLine().toUpperCase();
         }
         int res = gameServer.escape(av, way);
+        if(res==-9){
+            printE("Fuir? Mais vous êtes mort! Attendez qu'un noble chevalier vienne vous sauver.");
+            return -9;
+        }
         while(res==-1){
             System.out.println("Il y a pas moyen de passer par là");
             System.out.println("Dites-nous vers où vous voulez aller.");

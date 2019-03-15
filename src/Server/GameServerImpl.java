@@ -63,6 +63,10 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
      */
     @Override
     public int escape(Avatar avUsed, String goTo) throws RemoteException{
+        int res = 0;
+        avUsed=gs.getAvatar(avUsed);
+        if(avUsed==null) return -10;
+        if(!avUsed.isInLife())return -9;
         return gs.escape(avUsed, gs.getPosition(avUsed), goTo);
     }
 
