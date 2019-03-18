@@ -8,6 +8,7 @@ import Tools.Colors;
 import Tools.Text;
 import javafx.util.Pair;
 
+import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
@@ -123,7 +124,11 @@ public class DisplayManager {
     public void help(){
         System.out.println("command list :");
         System.out.println("-To speak with people in your room");
-        System.out.println("\t"+ Colors.blue+"/"+Colors.reset+" 'message'");
+        System.out.println("\t"+Colors.blue+"/"+Colors.blue+" 'message'");
+        System.out.println("-To attack the monster in your room");
+        System.out.println("\t"+Colors.blue+"Attack"+Colors.reset+" or "+Colors.blue+"A"+Colors.reset+" or "+Colors.blue+"a"+Colors.reset);
+        System.out.println("-To attack an other player in your room");
+        System.out.println("\t"+Colors.blue+"Attack 'avatar's name'"+Colors.reset+" or "+Colors.blue+"A 'avatar's name'"+Colors.reset+" or "+Colors.blue+"a 'avatar's name'"+Colors.reset);
         System.out.println("-To escape from a room/battle");
         System.out.println("\t"+Colors.blue+"Escape 'dest'"+Colors.reset+" or "+Colors.blue+"E 'dest' "+Colors.reset+"or "+Colors.blue+"e 'dest'"+Colors.reset);
         System.out.println("\t#where 'dest' can be N (North), E (East), S (South) or W (West)");
@@ -140,7 +145,5 @@ public class DisplayManager {
         System.out.println("-To quit the game");
         System.out.println(Colors.blue+"\tExit"+Colors.reset);
     }
-
-
 
 }
