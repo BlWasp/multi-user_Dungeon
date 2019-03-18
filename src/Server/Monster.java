@@ -1,5 +1,7 @@
 package Server;
 
+import java.util.Objects;
+
 /**
  * Classe permettant de créer un monstre
  */
@@ -47,8 +49,20 @@ public class Monster extends Entity {
         this.position = position;
     }
 
-    public void revive(){
-        lifePoint = maxLifePoint;
-    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        // null check
+        if (obj == null)
+            return false;
+        // type check and cast
+        if (getClass() != obj.getClass())
+            return false;
+
+        Entity ent = (Entity) obj;
+        // field comparison
+        return Objects.equals(position, ent.position);
+    }
 }

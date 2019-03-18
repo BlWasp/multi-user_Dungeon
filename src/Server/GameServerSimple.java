@@ -5,6 +5,7 @@ import Client.IPlayer;
 import DataBase.DataBaseLink;
 import com.sun.security.ntlm.Client;
 import javafx.util.Pair;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.awt.datatransfer.DataFlavor;
 import java.rmi.RemoteException;
@@ -58,9 +59,14 @@ public class GameServerSimple implements Runnable{
             //Les monstres sont déjà enregistrés dans la BD
             if (!searchDB("Place","Monster","Place", String.valueOf(i)).
                     matches("Erreur lecture base de données")) {
-                monsterLife = Integer.parseInt(searchDB("Life","Monster",
+                monsterLife = Integer.parseInt(searchDB("MaxLifePoint","Monster",
                         "Place", String.valueOf(i)));
                 positionMonster.put(i, new Monster("Chuck",i,monsterLife));
+                if (Integer.parseInt(searchDB("Life","Monster",
+                        "Place", String.valueOf(i)))==0) {
+                    //System.out.println(i);
+                    needRes.add(i);
+                }
 
             } else{ //Aucun monstre n'est enregistré dans la BD
                 int line = i/size;
@@ -483,8 +489,8 @@ public class GameServerSimple implements Runnable{
 
     public synchronized void addRound() {
         round++;
-        if (round%5==0) {
-            for (Integer pos : needRes) {
+        if (round%20==0) {
+            for (int pos : needRes) {
                 positionMonster.get(pos).restoreLife();
                 updateRequest.add(positionMonster.get(pos));
             }
