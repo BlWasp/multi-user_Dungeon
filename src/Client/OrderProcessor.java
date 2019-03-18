@@ -140,7 +140,11 @@ public class OrderProcessor {
                 break;
             case "E":
             case "ESCAPE":
-                p.escapeAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(),p);
+                if (order.length==1) {
+                    System.out.println("Veuillez préciser une direction valide.");
+                } else {
+                    p.escapeAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(),p);
+                }
                 break;
             case "H":
             case "HEAL":
