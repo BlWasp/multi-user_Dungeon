@@ -128,19 +128,11 @@ public class DisplayManager {
     public void help(){
         System.out.println("command list :");
         System.out.println("-To speak with people in your room");
-        System.out.println("\t"+Colors.blue+"/"+Colors.blue+" 'message'");
+        System.out.println("\t"+Colors.blue+"/"+Colors.blue+" 'message'"+Colors.reset);
         System.out.println("-To attack the monster in your room");
         System.out.println("\t"+Colors.blue+"Attack"+Colors.reset+" or "+Colors.blue+"A"+Colors.reset+" or "+Colors.blue+"a"+Colors.reset);
         System.out.println("-To attack an other player in your room");
         System.out.println("\t"+Colors.blue+"Attack 'avatar's name'"+Colors.reset+" or "+Colors.blue+"A 'avatar's name'"+Colors.reset+" or "+Colors.blue+"a 'avatar's name'"+Colors.reset);
-        System.out.println("-To escape from a room/battle");
-        System.out.println("-To speak with people in your room");
-        System.out.println("\t"+ Colors.blue+"/"+Colors.reset+" 'message'");
-        System.out.println("-To attack the monster in the room");
-        System.out.println("\t"+ Colors.blue+"a or attack"+Colors.reset);
-        System.out.println("-To attack people in your room");
-        System.out.println("\t"+ Colors.blue+"a or attack name"+Colors.reset);
-        System.out.println("-To attack another player.");
         System.out.println("-To escape from a room/battle");
         System.out.println("\t"+Colors.blue+"Escape 'dest'"+Colors.reset+" or "+Colors.blue+"E 'dest' "+Colors.reset+"or "+Colors.blue+"e 'dest'"+Colors.reset);
         System.out.println("\t#where 'dest' can be N (North), E (East), S (South) or W (West)");
