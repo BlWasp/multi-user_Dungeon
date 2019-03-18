@@ -6,8 +6,10 @@ import Server.ServerController;
 import Server.Server_Interface.IChatServer;
 import Server.Server_Interface.IGameServer;
 import Server.Server_Interface.IServerController;
+import Tools.Colors;
 
 import javax.swing.plaf.synth.SynthOptionPaneUI;
+import java.awt.*;
 import java.rmi.RemoteException;
 
 /**
@@ -110,7 +112,12 @@ public class OrderProcessor {
         switch (order[0]) {
             case "M":
             case "MOVE":
-                return p.moveAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(),p);
+                if (order.length==1) {
+                    System.out.println("Veuillez préciser une direction valide.");
+                    break;
+                } else {
+                    return p.moveAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(), p);
+                }
             case "A":
             case "ATTACK":
                 if (order.length==1) {
@@ -154,7 +161,7 @@ public class OrderProcessor {
                 p.disconnection(av, p);
                 return 1;
             default:
-                System.out.println("Unknown order, please enter one of the following orders : Move, Attack, Escape, Exit or start your order with / to chat");
+                System.out.println("Commande inconnue, tapez "+ Colors.blue+"'help'"+ Colors.reset+" pour obtenir la liste des commandes disponibles.");
                 return 0;
         }
         return 0;

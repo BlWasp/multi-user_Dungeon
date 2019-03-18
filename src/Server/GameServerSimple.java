@@ -159,22 +159,28 @@ public class GameServerSimple implements Runnable{
             return null;
         if(lclient.containsKey(avUsed))return null;
         try {
+            int found = 0;
             //Si ce joueur existe déjà dans la BD
             if (player.getUid().compareTo(searchDB("UsernamePl", "Player", "UsernamePl",
                     "\""+player.getUid()+"\"")) == 0) {
                 //Si l'avatar existe déjà dans la BD
-                if (avUsed.getName().compareTo(searchDB("UsernameAv", "Avatar", "UsernamePl",
-                        "\""+player.getUid()+"\"")) == 0) {
-                    position = Integer.parseInt(searchDB("Position","Avatar","UsernameAv",
-                            "\""+avUsed.getName()+"\""));
-                    avUsed.setPosition(position);
-                    avUsed.setLifePoint(Integer.parseInt(searchDB("Life","Avatar","UsernameAv",
-                            "\""+avUsed.getName()+"\"")));
-                    avUsed.setMaxLifePoint(Integer.parseInt(searchDB("MaxLifePoint","Avatar","UsernameAv",
-                            "\""+avUsed.getName()+"\"")));
-                    System.out.println("already exist");
+                String avatars[] = multiSearchDB("UsernameAv", "Avatar", "UsernamePl",
+                        "\""+player.getUid()+"\"").split(" ");
+                for (int i=0; i<avatars.length;i++) {
+                    if (avUsed.getName().compareTo(avatars[i]) == 0) {
+                        position = Integer.parseInt(searchDB("Position","Avatar","UsernameAv",
+                                "\""+avUsed.getName()+"\""));
+                        avUsed.setPosition(position);
+                        avUsed.setLifePoint(Integer.parseInt(searchDB("Life","Avatar","UsernameAv",
+                                "\""+avUsed.getName()+"\"")));
+                        avUsed.setMaxLifePoint(Integer.parseInt(searchDB("MaxLifePoint","Avatar","UsernameAv",
+                                "\""+avUsed.getName()+"\"")));
 
-                } else{ //Si l'avatar n'existe pas encore
+                        found = 1;
+                        System.out.println("already exist");
+                    }
+                }
+                if (found == 0) { //Si l'avatar n'existe pas encore
                     insertDB("("+"\""+avUsed.getName()+"\""+","+"\""+player.getUid()+"\""+
                                     ","+"\""+position.toString()+"\""+","+"\""+avUsed.getLifePoint().toString()+"\""+","
                                     +"\""+avUsed.getMaxLifePoint().toString()+"\""+")","Avatar");
