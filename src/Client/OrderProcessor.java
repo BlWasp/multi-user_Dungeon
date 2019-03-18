@@ -114,10 +114,10 @@ public class OrderProcessor {
             case "MOVE":
                 if (order.length==1) {
                     System.out.println("Veuillez préciser une direction valide.");
-                    break;
                 } else {
-                    return p.moveAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(), p);
+                    p.moveAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(), p);
                 }
+                break;
             case "A":
             case "ATTACK":
                 if (order.length==1) {

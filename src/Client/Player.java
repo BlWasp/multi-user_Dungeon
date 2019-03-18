@@ -128,11 +128,11 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             System.out.println("vous êtes actuellement décédé. Cela vous empêche de vous mouvoir");
             return -9;
         }
-        while (res == -3) {
+        if (res == -3) {
             System.out.println("Déplacement impossible, il y a un monstre dans la salle.");
             System.out.println("Pour quitter cette salle il vous faut occire ce monstre ou bien fuir comme un pleutre.");
             //demander où aller
-            Scanner scan = new Scanner(System.in);
+           /* Scanner scan = new Scanner(System.in);
             String answer = scan.nextLine();
             try {
                 res = op.process(op.spliter(answer), av);
@@ -140,7 +140,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
                 System.out.println("orderProcessor InterruptesException");
                 e.printStackTrace();
             }
-            System.out.println(res);
+            System.out.println(res);*/
             return -1;
         }
         while (res == -1) {
@@ -356,7 +356,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         if (avatar.getLifePoint()!=av.getLifePoint()){
             System.out.println(avatar.getName()+": point de vie = "+avatar.getLifePoint());
         }*/
-        this.av=avatar;
+        this.setAv(avatar);
         dm.displayPosition(this);
     }
 
