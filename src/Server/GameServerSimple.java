@@ -489,9 +489,10 @@ public class GameServerSimple implements Runnable{
 
     public synchronized void addRound() {
         round++;
-        if (round%20==0) {
+        if (round%5==0) {
             for (int pos : needRes) {
                 positionMonster.get(pos).restoreLife();
+                positionMonster.get(pos).isInLife = true;
                 updateRequest.add(positionMonster.get(pos));
             }
             needRes.clear();
