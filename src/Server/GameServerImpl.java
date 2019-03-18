@@ -128,16 +128,15 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
      *              Avatar attaquant
      * @param position
      *              Position actuelle de l'avatar du joueur
-     * @param lifeLosed
      *              Puissance de l'attaque
      * @return
      * @throws RemoteException
      */
     @Override //Attaque d'un joueur sur un monstre
-    public int attackM(Avatar attacker, Integer position, int lifeLosed) throws RemoteException {
+    public int attackM(Avatar attacker, Integer position) throws RemoteException {
         if(!attacker.isInLife()) return -2;
         try {
-            return gs.attackM(attacker, position, lifeLosed);
+            return gs.attackM(attacker, position);
         } catch (InterruptedException e) {
             e.printStackTrace();
             return -1;

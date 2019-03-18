@@ -121,7 +121,7 @@ public class OrderProcessor {
             case "A":
             case "ATTACK":
                 if (order.length==1) {
-                    p.attackM(av, av.getPosition(), p.getObj(), 1);
+                    p.attackM(av, av.getPosition(), p.getObj());
                     break;
                 } else {
                     for (Avatar avt : p.getDm().getPlayerList()) {

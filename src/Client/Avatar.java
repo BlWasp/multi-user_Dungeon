@@ -46,12 +46,20 @@ public class Avatar extends Entity {
     }
 
     public void levelUp(){
+        if(isInLife==false){
+            isInLife=true;
+            lifePoint=1;
+        }
         System.out.println("max : "+maxLifePoint);
         maxLifePoint=maxLifePoint+5;
         restoreLife();
     }
 
     public int heal(int value){
+        if(isInLife==false){
+            isInLife=true;
+            lifePoint=1;
+        }
         if(lifePoint==maxLifePoint) return -1;
         lifePoint=lifePoint+value;
         if(lifePoint>maxLifePoint) lifePoint=maxLifePoint;

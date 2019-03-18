@@ -14,4 +14,5 @@ public interface IPlayer extends Remote {
     public void underAttack(Avatar attacked, Entity attacker) throws RemoteException;
     public void receiveMessage(Avatar sender, String message) throws  RemoteException;
     public int ping() throws RemoteException;
+    public void fightMessage(Integer id, Integer damage) throws RemoteException;
 }
