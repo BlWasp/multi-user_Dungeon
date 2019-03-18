@@ -5,6 +5,7 @@ import Client.IPlayer;
 import DataBase.DataBaseLink;
 import com.sun.security.ntlm.Client;
 import javafx.util.Pair;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.awt.datatransfer.DataFlavor;
 import java.rmi.RemoteException;
@@ -24,6 +25,7 @@ public class GameServerSimple implements Runnable{
     private Zone z = new Zone(0,0);
     int size = 8;
     private Set<Entity> updateRequest;
+    private Set<Integer> needRes;
     private Map<Integer, List<Avatar>> positionAvatar;
     Map<Integer, Monster> positionMonster;
     private Map<Avatar, IPlayer> lclient = new LinkedHashMap<>();
@@ -46,6 +48,7 @@ public class GameServerSimple implements Runnable{
         positionAvatar = new LinkedHashMap<>();
         positionMonster = new LinkedHashMap<>();
         updateRequest = new HashSet<Entity>();
+        needRes = new HashSet<Integer>();
         available=1;
         this.z = z;
         Integer monsterLife;
@@ -56,9 +59,14 @@ public class GameServerSimple implements Runnable{
             //Les monstres sont déjà enregistrés dans la BD
             if (!searchDB("Place","Monster","Place", String.valueOf(i)).
                     matches("Erreur lecture base de données")) {
-                monsterLife = Integer.parseInt(searchDB("Life","Monster",
+                monsterLife = Integer.parseInt(searchDB("MaxLifePoint","Monster",
                         "Place", String.valueOf(i)));
                 positionMonster.put(i, new Monster("Chuck",i,monsterLife));
+                if (Integer.parseInt(searchDB("Life","Monster",
+                        "Place", String.valueOf(i)))==0) {
+                    //System.out.println(i);
+                    needRes.add(i);
+                }
 
             } else{ //Aucun monstre n'est enregistré dans la BD
                 int line = i/size;
@@ -490,6 +498,9 @@ public class GameServerSimple implements Runnable{
                     } else{
                         updateDB("Life",ent.getLifePoint().toString(),"Monster",
                                 "Place", ent.getPosition().toString());
+                        if (!ent.isInLife()) {
+                            needRes.add(ent.getPosition());
+                        }
                     }
                 }
                 updateRequest.clear();
@@ -503,6 +514,14 @@ public class GameServerSimple implements Runnable{
 
     public synchronized void addRound() {
         round++;
+        if (round%5==0) {
+            for (int pos : needRes) {
+                positionMonster.get(pos).restoreLife();
+                positionMonster.get(pos).isInLife = true;
+                updateRequest.add(positionMonster.get(pos));
+            }
+            needRes.clear();
+        }
         notifyAll();
     }
 
