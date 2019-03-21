@@ -125,6 +125,9 @@ public class DisplayManager {
         return answer;
     }
 
+    /**
+     * Permet d'afficher la liste des commandes et leurs fonctions
+     */
     public void help(){
         System.out.println("command list :");
         System.out.println("-To speak with people in your room");

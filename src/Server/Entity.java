@@ -46,6 +46,10 @@ public abstract class Entity implements Serializable, Cloneable {
         return Objects.equals(name, ent.name);
     }
 
+    /**
+     * Redéfinition de la fonction hashCode
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 0,i = 0;
@@ -140,8 +144,12 @@ public abstract class Entity implements Serializable, Cloneable {
         return this.getLifePoint();
     }
 
+    /**
+     * Permet à une entité de restorer sa vie et se réanimer si nécessaire
+     */
     public void restoreLife(){
         lifePoint=maxLifePoint;
+        this.isInLife = true;
     }
 
 

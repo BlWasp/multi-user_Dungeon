@@ -54,11 +54,11 @@ public class DataBaseLink {
     }
 
     /**
-     * permet de renvoyer plusieurs élément d'une recherche
+     * Permet de renvoyer plusieurs élément d'une recherche
      * @param datas
-     * colonne visée
+     *          Colonne visée
      * @param table
-     * nom de la table sql
+     *          Nom de la table sql
      * @param option
      * @return
      */

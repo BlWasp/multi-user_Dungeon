@@ -197,6 +197,14 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
         gs.playerAvatar(username);
     }
 
+    /**
+     * Permet de heal un avatar
+     * @param av
+     *          L'avatar qu'il faut heal
+     * @return
+     * @throws RemoteException
+     * @throws InterruptedException
+     */
     @Override
     public int heal(Avatar av) throws RemoteException, InterruptedException {
         return gs.heal(av);

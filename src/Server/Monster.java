@@ -49,7 +49,12 @@ public class Monster extends Entity {
         this.position = position;
     }
 
-
+    /**
+     * Redéfinition de equals pour Monster.
+     * La vérification se fait en fonction de la position
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

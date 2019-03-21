@@ -79,7 +79,14 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServerManag
         gGrid.displayGrid();
     }
 
-
+    /**
+     * Permet de parler sur le serveur de chat
+     * @param sender
+     *          Avatar à l'origine du message
+     * @param text
+     *          Texte envoyé par l'avatar
+     * @throws RemoteException
+     */
     @Override
     public void speak(Avatar sender, String text) throws RemoteException {
         List<Avatar> lav = positionMap.get(sender.getPosition());
@@ -287,12 +294,27 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServerManag
         return 0;
     }
 
+    /**
+     * Récupère les autres avatars présents sur la même case
+     * @param av
+     *          Avatar souhaitant connaître ses voisins
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public List<Avatar> getNeighbour(Avatar av) throws RemoteException {
         av = getAvatar(av);
         return positionMap.get(av.getPosition());
     }
 
+    /**
+     * Permet de se déconnecter du serveur de chat
+     * @param av
+     *          Avatar se déconnectant
+     * @param player
+     *          Joueur de l'avatar
+     * @throws RemoteException
+     */
     @Override
     public void disconnection(Avatar av, IPlayer player) throws RemoteException{
         Avatar avUsed=getAvatar(av);

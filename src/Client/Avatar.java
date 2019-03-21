@@ -51,6 +51,12 @@ public class Avatar extends Entity {
         restoreLife();
     }
 
+    /**
+     * Permet à l'avatar de restorer sa vie
+     * @param value
+     *          Quantité de vie qu'il récupère
+     * @return
+     */
     public int heal(int value){
         if(lifePoint==maxLifePoint) return -1;
         lifePoint=lifePoint+value;

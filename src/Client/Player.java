@@ -55,18 +55,34 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         dm = new DisplayManager(av);
     }
 
+    /**
+     * Retourne le DisplayManager du client
+     * @return
+     */
     public DisplayManager getDm() {
         return dm;
     }
 
+    /**
+     * Retourne le serveur controller du client
+     * @return
+     */
     public IServerController getMainServer() {
         return mainServer;
     }
 
+    /**
+     * Retourne le serveur de jeu du client
+     * @return
+     */
     public IGameServer getObj() {
         return obj;
     }
 
+    /**
+     * Retourne le serveur de chat du client
+     * @return
+     */
     public IChatServer getCs() {
         return cs;
     }
@@ -80,6 +96,14 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         return uid;
     }
 
+    /**
+     * Permet au joueur de se déconnecter
+     * @param av
+     *          Avatar du joueur
+     * @param p
+     *          Le joueur
+     * @throws RemoteException
+     */
     public void disconnection(Avatar av, Player p) throws RemoteException {
         obj.disconnection(av, p);
         cs.disconnection(av, p);
@@ -87,6 +111,18 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         bye();
     }
 
+    /**
+     * Permet de faire changer le joueur de serveur de chat lorsqu'il se déplace
+     * @param av
+     *          L'avatar du joueur
+     * @param position
+     *          La destination du déplacement
+     * @param chatServer
+     * @param p
+     *          Le joueur
+     * @return
+     * @throws RemoteException
+     */
     public int moveAvatarCs(Avatar av, int position, IChatServer chatServer, Player p) throws RemoteException {
         Integer res = cs.moveTo(av, position);
         if(res!=0){
@@ -279,6 +315,15 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
             printE("Vous êtes mort vous ne pouvez plus combattre.");
     }
 
+    /**
+     * Permet au joueur de redonner de la vie à son avatar
+     * @param av
+     *          L'avatar du joueur
+     * @param gameServer
+     *          Le serveur de jeu auquel le joueur est connecté
+     * @throws RemoteException
+     * @throws InterruptedException
+     */
     public void heal(Avatar av, IGameServer gameServer) throws RemoteException, InterruptedException {
         int res = gameServer.heal(av);
         if(res==-1) printE("Pas le temps de se soigner le monstre n'est pas mort! Noob!");
@@ -360,12 +405,6 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         dm.displayPosition(this);
     }
 
-    /**
-     *
-     * @param attacked
-     * @param attacker
-     * @throws RemoteException
-     */
     /**
      * Permet de savoir si l'on est attaqué ou soigné
      * @param attacked

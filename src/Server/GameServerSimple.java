@@ -42,6 +42,15 @@ public class GameServerSimple implements Runnable{
         round=0;
     }
 
+    /**
+     * Constructeur de GameServerSimple.
+     * @param grid
+     *          La grille de jeu
+     * @param size
+     *          La taille de la grille
+     * @param z
+     *          La zone gérée par le serveur
+     */
     public GameServerSimple(Grid grid, int size, Zone z){
         gGrid=grid;
         this.size = size;
@@ -137,11 +146,29 @@ public class GameServerSimple implements Runnable{
         return dbl.searchDB(datas,table,options);
     }
 
+    /**
+     * Fait une recherche multiple dans la BD et renvoie un string des résultats
+     * @param datas
+     *          Données que l'on veut récupérer
+     * @param table
+     *          Table où l'on recherche
+     * @param option1
+     *
+     * @param option2
+     * @return
+     */
     public String multiSearchDB(String datas, String table, String option1, String option2) {
         String options = option1 + "=" + option2;
         return dbl.multiSearchDB(datas,table,options);
     }
 
+    /**
+     * Lorsqu'un joueur se connecte, une préconnection a lieu pour récupérer tous ces avatars et lui afficher
+     * @param username
+     *          Le joueur
+     * @return
+     * @throws RemoteException
+     */
     public String preConnection(String username) throws RemoteException {
         if (username.compareTo(searchDB("UsernamePl", "Player", "UsernamePl",
                 "\"" + username + "\"")) == 0) {
@@ -213,7 +240,15 @@ public class GameServerSimple implements Runnable{
         return avUsed;
     }
 
-
+    /**
+     * Permet de se déplacer sur les cases du serveur
+     * @param avUsed
+     *          L'avatar qui souhaite bouger
+     * @param goTo
+     *          La direction du déplacement
+     * @return
+     * @throws InterruptedException
+     */
     public synchronized int move(Avatar avUsed, String goTo) throws InterruptedException {
         Integer currentRound = round;
         avUsed=getAvatar(avUsed);
@@ -273,6 +308,16 @@ public class GameServerSimple implements Runnable{
         }
     }
 
+    /**
+     * Permet à un avatar de s'échapper d'un combat.
+     * Cela fait appel à move, mais inflige une pénalité de 2 points de vie
+     * @param avUsed
+     *          L'avatar qui souhaite s'échapper
+     * @param position
+     * @param goTo
+     *          La direction du déplacement
+     * @return
+     */
     public int escape(Avatar avUsed, int position, String goTo) {
         //On récupère l'avatar de la liste pour être sûr de manipuler le bon objet
         avUsed=getAvatar(avUsed);
@@ -296,7 +341,18 @@ public class GameServerSimple implements Runnable{
         return 1;
     }
 
-
+    /**
+     * Permet à un joueur d'attaquer un autre joueur.
+     * Lors de l'attaque, il a une chance sur 2 de toucher ou d'être touché
+     * @param ifAvatar
+     *          L'avatar qui est attaqué
+     * @param attacker
+     *          L'avatar attaquant
+     * @param lifeLosed
+     *          La puissance de l'attaque
+     * @return
+     * @throws InterruptedException
+     */
     //Permet à un joueur d'attaquer un autre joueur
     public synchronized int attackAvatar(Avatar ifAvatar, Avatar attacker, int lifeLosed) throws InterruptedException {
         Integer currentRound = round;
@@ -369,7 +425,7 @@ public class GameServerSimple implements Runnable{
     }
 
     /**
-     *Permet au monstre d'attaquer
+     * Permet au monstre d'attaquer
      * @param target
      * @param position
      * @param lifeLosed
@@ -405,6 +461,10 @@ public class GameServerSimple implements Runnable{
         return 0;
     }
 
+    /**
+     * Récupère la zone gérée par le serveur
+     * @return
+     */
     public Zone getZ() {
         return z;
     }
@@ -457,6 +517,10 @@ public class GameServerSimple implements Runnable{
 
     }
 
+    /**
+     * Fonction lancée par le thread.
+     * Elle gère aussi les mises à jour de la BD : à chaque round, toutes les entités ayant étaient modifiées sont mises à jour.
+     */
     @Override
     public void run() {
         while(available==1){
@@ -487,12 +551,15 @@ public class GameServerSimple implements Runnable{
         }
     }
 
+    /**
+     * Ajoute un nouveau round à la fin du précédent
+     * Aussi, tous les 100 rounds, tous les monstres ayant été tués sont réanimés
+     */
     public synchronized void addRound() {
         round++;
-        if (round%5==0) {
+        if (round%100==0) {
             for (int pos : needRes) {
                 positionMonster.get(pos).restoreLife();
-                positionMonster.get(pos).isInLife = true;
                 updateRequest.add(positionMonster.get(pos));
             }
             needRes.clear();
@@ -506,6 +573,15 @@ public class GameServerSimple implements Runnable{
         return res;
     }
 
+    /**
+     * Gère la déconnection d'un joueur.
+     * Lors d'une déconnection, les valeurs stockées dans la BD pour ce joueur (et son avatar) sont mises à jour une dernière fois
+     * @param av
+     *          L'avatar du joueur
+     * @param player
+     *          Le joueur se déconnectant
+     * @throws RemoteException
+     */
     public void disconnection(Avatar av, IPlayer player) throws RemoteException{
         Avatar avUsed=getAvatar(av);
         int position = avUsed.getPosition();
@@ -520,11 +596,23 @@ public class GameServerSimple implements Runnable{
                 "\""+av.getName()+"\"");
     }
 
-
+    /**
+     * Récupère les avatars d'un joueur
+     * @param username
+     *          Le joueur
+     * @throws RemoteException
+     */
     public void playerAvatar(String username) throws RemoteException{
         dbl.searchAvatarDB("\""+username+"\"");
     }
 
+    /**
+     * Permet au joueur de redonner de la vie à son avatar
+     * @param av
+     *          L'avatar visé
+     * @return
+     * @throws InterruptedException
+     */
     public int heal(Avatar av) throws InterruptedException {
         Avatar avUsed = getAvatar(av);
         if(positionMonster.get(avUsed.getPosition()).isInLife()){
