@@ -244,6 +244,14 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServerManag
 
     }
 
+    /**
+     * Peu utilisé permet de déplacer le joueur en fonction de la direction voulu
+     * @param avUsed
+     * @param goTo
+     * direction
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public int move(Avatar avUsed, String goTo) throws RemoteException {
         System.out.println("pav "+avUsed.getPosition());
@@ -279,6 +287,14 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServerManag
 
     }
 
+    /**
+     * Méthode privilégié pour les déplacement. Déplace automatiquement l'avatar à la position voulu
+     * @param avUsed
+     * @param position
+     * position visée
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public int moveTo(Avatar avUsed, Integer position) throws RemoteException {
         if(position<(Integer) z.getKey() || position>(Integer) z.getValue()) {

@@ -30,6 +30,11 @@ public class DisplayManager {
         this.myAvatar = myAvatar;
     }
 
+    /**
+     * Permet de mettre à jour la liste des joueur dans la salle
+     * @param cs
+     *ChatServer courant
+     */
     public void updateList(IChatServer cs){
         try {
             playerList=cs.getNeighbour(myAvatar);
@@ -38,6 +43,9 @@ public class DisplayManager {
         }
     }
 
+    /**
+     * Permet d'effacer l'écran
+     */
     public void clearScreen(){
         for(int i = 0 ; i < 20; i++)
             System.out.println("\n");
@@ -47,6 +55,11 @@ public class DisplayManager {
         return playerList;
     }
 
+    /**
+     * Permet d'afficher le nom des joueurs présent dans la même salle
+     * @param cs
+     * Serveur de chat courant
+     */
     public void displayNeighbour(IChatServer cs){
         updateList(cs);
         System.out.println("Player in the same room :");
@@ -87,6 +100,11 @@ public class DisplayManager {
         //System.out.println(currentRoom.getNorth().toString()+" "+currentRoom.getEast().toString()+" "+monster.getName()+" "+monster.getLifePoint()+"□");
     }
 
+    /**
+     * Permete de mettre en forme la postion
+     * @param position
+     * @return
+     */
     public String parsePosition(Integer position){
         if(position<100){
             if(position<10){
@@ -100,6 +118,11 @@ public class DisplayManager {
         return position.toString();
     }
 
+    /**
+     * Permet au joueur en début de partie de choisir l'avatar en fonction de son nom de joueur
+     * @param avatarList
+     * @return
+     */
     public String selectAvatar(String avatarList){
         System.out.println(avatarList);
         String avatars[] = avatarList.split(" ");
