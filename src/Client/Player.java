@@ -297,22 +297,10 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      *              C'est la position actuelle du joueur (sa case)
      * @param gameServer
      *              Serveur sur lequel se trouve le joueur actuellement
-     * @param power
-     *              C'est la puissance de l'attaque
      * @throws RemoteException
      */
-    public void attackM (Avatar attacker, Integer position, IGameServer gameServer, int power) throws RemoteException {
-        int res = gameServer.attackM(attacker, position, power);
-        if(res==0)
-            printS("Petite attaque sur le monstre en mode ninja !");
-        else if(res==1)
-            printE("Sans surprise le monstre esquive cette attaque faiblarde et vous frappe.");
-        else if(res==2)
-            printS("Le monstre est mort. Ça lui apprendra à bloquer le passage!");
-        else if(res==-1)
-            printE("Il est déjà mort, merci de respecter sa dépouille...");
-        else if(res==-2)
-            printE("Vous êtes mort vous ne pouvez plus combattre.");
+    public void attackM (Avatar attacker, Integer position, IGameServer gameServer) throws RemoteException {
+        gameServer.attackM(attacker, position);
     }
 
     /**
@@ -327,6 +315,7 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
     public void heal(Avatar av, IGameServer gameServer) throws RemoteException, InterruptedException {
         int res = gameServer.heal(av);
         if(res==-1) printE("Pas le temps de se soigner le monstre n'est pas mort! Noob!");
+        else if(res==-2) printE("Vous êtes déjà en pleine forme.");
         else printS("Ca fait du bien");
     }
 
@@ -438,6 +427,27 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         System.out.println(cyan(sender.getName())+purple(" : ")+message);
     }
 
+    @Override
+    public void fightMessage(Integer id, Integer damage) throws RemoteException{
+        if(id==0)
+            printS("Petite attaque sur le monstre en mode ninja ! "+damage+" pv");
+        else if(id==1)
+            printS("Critique : Double salto carpé plongeant! Très belle performance."+damage+" pv");
+        else if(id==2)
+            printS(Colors.bold("Fatale : D'un coup net vous coupez le monstre en trois "+damage+" pv"));
+        else if(id==3)
+            printE("Sans surprise le monstre esquive cette attaque faiblarde et vous frappe : "+damage+" pv");
+        else if(id==4)
+            printE("Critique : Le monstre frappe fort, vous brisant un os "+damage+" pv");
+        else if(id==5)
+            printE(Colors.bold("Fatale : Votre lame rebondit et vous cause des dommages mortelles "+damage+" pv"));
+        else if(id==6)
+            printS("Le monstre est mort. Ça lui apprendra à bloquer le passage!");
+        else if(id==7)
+            printE("Il est déjà mort, merci de respecter sa dépouille...");
+        else if(id==8)
+            printE("Vous êtes mort vous ne pouvez plus combattre.");
+    }
     /**
      * Permet au serveur de vérifier si le client est toujours joignable
      * @return

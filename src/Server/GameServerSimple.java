@@ -381,25 +381,42 @@ public class GameServerSimple implements Runnable{
      * avatar attaquant
      * @param position
      * position de l'avatar
-     * @param lifeLosed
      * @return
      * 0 si le monstre subit des dégats
      * 1 si le monstre contre l'attaque
      * @throws InterruptedException
      */
-    public synchronized int attackM(Avatar attacker, Integer position, int lifeLosed) throws InterruptedException {
+    public synchronized int attackM(Avatar attacker, Integer position) throws InterruptedException, RemoteException {
         Integer currentRound = round;
+        Integer lifeLosed;
         if(!positionMonster.get(position).isInLife())
-            return -1;
+            lclient.get(attacker).fightMessage(7,0);
         if(!attacker.isInLife())
-            return -2;
+            lclient.get(attacker).fightMessage(8,0);
         double nbAleatoire = Math.random();
         int nbRandom = (int) (nbAleatoire*100);
+        double nbAleatoire2 = Math.random();
+        int nbRandom2 = (int) (nbAleatoire2*100);
+        System.out.println(": "+nbRandom+" "+nbRandom2);
+        if(nbRandom<20){
+            lifeLosed=3; //coup ciritique
+            if(nbRandom2>90 && nbRandom<10) lifeLosed=1000; //coup fatale
+        }
+        else {
+            lifeLosed=1;
+        }
         if (round == currentRound)
             wait();
         if ((nbRandom % 2)==0) { //Le joueur touche le monstre
             positionMonster.get(position).loseLife(lifeLosed);
             updateRequest.add(positionMonster.get(position));
+
+            if (lifeLosed<3)
+                lclient.get(attacker).fightMessage(0,lifeLosed);
+            else if(lifeLosed<1000)
+                lclient.get(attacker).fightMessage(1,lifeLosed);
+            else
+                lclient.get(attacker).fightMessage(2,lifeLosed);
 
             //updateDB("Life",positionMonster.get(position).getLifePoint().toString(),"Monster","Place", position.toString());
             if(!positionMonster.get(position).isInLife()) { //le monstre se fait tuer
@@ -412,15 +429,23 @@ public class GameServerSimple implements Runnable{
                     }
                     catch (Exception e){
                         System.out.println("client injoignable");
+
                     }
                 }
-                return 2;
+                lclient.get(attacker).fightMessage(6,0);
             }
-            return 0;
+
+            return lifeLosed;
         } else { //Le monstre a contré
             Avatar avAtt = getAvatar(attacker);
             makeDamage(avAtt, lifeLosed);
-            return  1;
+            if (lifeLosed<3)
+                lclient.get(attacker).fightMessage(3,lifeLosed);
+            else if(lifeLosed<1000)
+                lclient.get(attacker).fightMessage(4,lifeLosed);
+            else
+                lclient.get(attacker).fightMessage(5,lifeLosed);
+            return  -lifeLosed;
         }
     }
 
@@ -618,8 +643,10 @@ public class GameServerSimple implements Runnable{
         if(positionMonster.get(avUsed.getPosition()).isInLife()){
             return -1;
         }
-        avUsed.heal(1);
-        Thread.sleep(4000);
+        int res = avUsed.heal(1);
+        if(res==-1)
+            return -2;
+        Thread.sleep(2000);
         try {
             lclient.get(avUsed).updateAvatar(avUsed);
         } catch (RemoteException e) {

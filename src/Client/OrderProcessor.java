@@ -121,7 +121,7 @@ public class OrderProcessor {
             case "A":
             case "ATTACK":
                 if (order.length==1) {
-                    p.attackM(av, av.getPosition(), p.getObj(), 1);
+                    p.attackM(av, av.getPosition(), p.getObj());
                     break;
                 } else {
                     for (Avatar avt : p.getDm().getPlayerList()) {
@@ -140,7 +140,11 @@ public class OrderProcessor {
                 break;
             case "E":
             case "ESCAPE":
-                p.escapeAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(),p);
+                if (order.length==1) {
+                    System.out.println("Veuillez préciser une direction valide.");
+                } else {
+                    p.escapeAvatar(av, order[1].toUpperCase(), p.getObj(), p.getCs(),p);
+                }
                 break;
             case "H":
             case "HEAL":
