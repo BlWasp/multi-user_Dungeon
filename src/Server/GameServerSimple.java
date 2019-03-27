@@ -368,9 +368,19 @@ public class GameServerSimple implements Runnable{
             wait();
         if ((nbRandom % 2)==0) { //Le joueur touche le joueur
             makeDamage(avVic, lifeLosed);
+            try {
+                lclient.get(avVic).underAttack(avVic, avAtt, lifeLosed);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return ifAvatar.getLifePoint();
         } else { //L'autre joueur a contré, l'attaquant se prend l'attaque
             makeDamage(avAtt, lifeLosed);
+            try {
+                lclient.get(avAtt).underAttack(avAtt, avVic, lifeLosed);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return attacker.getLifePoint();
         }
     }

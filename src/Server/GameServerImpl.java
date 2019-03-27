@@ -123,7 +123,7 @@ public class GameServerImpl extends UnicastRemoteObject implements IGameServerMa
     }
 
     /**
-     * Méthode appelée lorsque le joueur attaque le monstre de la case
+     * Méthode appelétackee lorsque le joueur attaque le monstre de la case
      * @param attacker
      *              Avatar attaquant
      * @param position

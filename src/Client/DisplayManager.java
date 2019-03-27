@@ -101,7 +101,7 @@ public class DisplayManager {
     }
 
     /**
-     * Permete de mettre en forme la postion
+     * Permete de mettre en forme la position
      * @param position
      * @return
      */

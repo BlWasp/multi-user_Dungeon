@@ -75,7 +75,7 @@ public class ServerController extends UnicastRemoteObject implements IServerCont
     }
 
     /**
-     * Mets à jour les zones de tous les servers de jeu
+     * Met à jour les zones de tous les servers de jeu
      * intervient après un ajout ou une suppression de server de jeu
      * @param serv
      * serveur ajouté ou supprimé

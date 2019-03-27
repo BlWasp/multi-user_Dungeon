@@ -45,6 +45,9 @@ public class Avatar extends Entity {
         this.position = position;
     }
 
+    /**
+     * Permet de restorer la vie d'un avatar avec un bonus de 5 points
+     */
     public void levelUp(){
         if(isInLife==false){
             isInLife=true;

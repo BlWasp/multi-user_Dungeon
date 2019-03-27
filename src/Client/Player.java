@@ -403,14 +403,14 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
      * @throws RemoteException
      */
     @Override
-    public void underAttack(Avatar attacked, Entity attacker) throws RemoteException {
+    public void underAttack(Avatar attacked, Entity attacker, int power) throws RemoteException {
         String attackedName = attacked.getName();
         String attackerName = attacker.getName();
-        Integer damage = av.getLifePoint()-attacked.getLifePoint();
-        if (damage>0)
-            System.out.println(attackedName+" : se fait attaquer par "+attackerName+" et perd "+damage+" PV.");
+        //Integer damage = av.getLifePoint()-attacked.getLifePoint();
+        if (power>0)
+            System.out.println(attackedName+" : se fait attaquer par "+attackerName+" et perd "+power+" PV.");
         else
-            System.out.println(attackedName+" : se fait soigner par "+attackerName+" et gagne "+damage*-1+" PV.");
+            System.out.println(attackedName+" : se fait soigner par "+attackerName+" et gagne "+power*-1+" PV.");
         this.updateAvatar(attacked);
     }
 
@@ -427,6 +427,14 @@ public class Player extends UnicastRemoteObject implements IPlayer, Serializable
         System.out.println(cyan(sender.getName())+purple(" : ")+message);
     }
 
+    /**
+     * Les différents messages que l'on peut voir durant un combat
+     * @param id
+     *          Code du message
+     * @param damage
+     *          Valeur des dégâts de l'attaque
+     * @throws RemoteException
+     */
     @Override
     public void fightMessage(Integer id, Integer damage) throws RemoteException{
         if(id==0)

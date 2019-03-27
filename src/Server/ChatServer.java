@@ -288,7 +288,7 @@ public class ChatServer  extends UnicastRemoteObject implements IChatServerManag
     }
 
     /**
-     * Méthode privilégié pour les déplacement. Déplace automatiquement l'avatar à la position voulu
+     * Méthode privilégiée pour les déplacements. Déplace automatiquement l'avatar à la position voulue
      * @param avUsed
      * @param position
      * position visée
